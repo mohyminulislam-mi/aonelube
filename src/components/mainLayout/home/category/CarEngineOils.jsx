@@ -103,7 +103,7 @@ export default function CarEngineOils() {
         {/* Load More Button Logic */}
         {visibleCount < carOilsData.length && (
           <div className="mt-12 flex justify-center">
-            <button
+            <button 
               onClick={handleLoadMore}
               className="flex items-center space-x-2 bg-white hover:bg-gray-950 text-gray-900 hover:text-white border border-gray-300 hover:border-gray-950 font-bold text-sm uppercase tracking-wider px-6 py-3 rounded-xl transition-all duration-300 shadow-xs group"
             >
