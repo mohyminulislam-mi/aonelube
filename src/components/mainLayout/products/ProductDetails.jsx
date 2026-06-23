@@ -5,6 +5,8 @@ import { ShoppingCart, ShieldCheck, Truck, RefreshCw, Star, Minus, Plus } from "
 
 export default function ProductDetails({ product }) {
   const [quantity, setQuantity] = useState(1);
+  const price = Number(product?.price || 0);
+  const compareAtPrice = Number(product?.compare_at_price || 0);
 
   // কোয়ান্টিটি কন্ট্রোল ফাংশন
   const handleQuantityChange = (type) => {
@@ -13,9 +15,9 @@ export default function ProductDetails({ product }) {
   };
 
   // ডিসকাউন্ট পার্সেন্টেজ হিসাব করার জন্য (যদি compare_at_price থাকে)
-  const hasDiscount = product?.compare_at_price && product?.compare_at_price > product?.price;
+  const hasDiscount = compareAtPrice > price;
   const discountPercentage = hasDiscount 
-    ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100) 
+    ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) 
     : null;
 
   return (
@@ -69,11 +71,11 @@ export default function ProductDetails({ product }) {
               {/* Price Area */}
               <div className="bg-gray-50 p-4 rounded-xl flex items-baseline space-x-3 mb-6">
                 <span className="text-3xl font-black text-[#005CA9]">
-                  ${(product?.price * quantity).toFixed(2)}
+                  ${(price * quantity).toFixed(2)}
                 </span>
                 {hasDiscount && (
                   <span className="text-sm text-gray-400 line-through">
-                    ${(product.compare_at_price * quantity).toFixed(2)}
+                    ${(compareAtPrice * quantity).toFixed(2)}
                   </span>
                 )}
                 <span className="text-xs text-gray-500 font-medium">(Total Price)</span>

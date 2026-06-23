@@ -2,9 +2,13 @@ import React from "react";
 import Link from "next/link";
 
 export default function ProductCard({ product }) {
+  const productSlug = product?.slug || product?._id || product?.id;
+  const productHref = productSlug ? `/products/${encodeURIComponent(productSlug)}` : "/products";
+  const price = Number(product?.price || 0);
+
   return (
     <Link
-      href={`/products/${product.slug}`}
+      href={productHref}
       className="bg-white rounded-xl border border-gray-100 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col group cursor-pointer"
     >
       {/* Product Image */}
@@ -31,11 +35,11 @@ export default function ProductCard({ product }) {
         {/* Price & Action */}
         <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-50">
           <span className="text-base font-black text-[#005CA9]">
-            ${product.price?.toFixed(2)}
+            ${price.toFixed(2)}
           </span>
-          <button className="bg-gray-950 hover:bg-[#ED1C24] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
+          <span className="bg-gray-950 group-hover:bg-[#ED1C24] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
             Add to Cart
-          </button>
+          </span>
         </div>
       </div>
     </Link>
