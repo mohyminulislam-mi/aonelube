@@ -2,9 +2,21 @@
 
 import React, { useState } from "react";
 import LinkNext from "next/link";
-import { Search, ShoppingCart, Phone, Menu, X, User, ChevronDown } from "lucide-react";
+import {
+  Search,
+  ShoppingCart,
+  Phone,
+  Menu,
+  X,
+  User,
+  ChevronDown,
+} from "lucide-react";
+import Link from "next/link";
+import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 
 export default function Header() {
+  const { cartItems } = useCart();
+  const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigationItems = [
@@ -21,7 +33,6 @@ export default function Header() {
       {/* Top Bar: Logos, Search, Profile, Cart */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-4">
-          
           {/* Brand Logos */}
           <div className="flex items-center space-x-4 shrink-0">
             <LinkNext href="/" className="flex items-center">
@@ -29,13 +40,17 @@ export default function Header() {
               <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#005CA9]">
                 M<span className="text-[#ED1C24]">o</span>bil
               </span>
-              <span className="text-[10px] font-bold text-[#005CA9] align-super ml-0.5">TM</span>
+              <span className="text-[10px] font-bold text-[#005CA9] align-super ml-0.5">
+                TM
+              </span>
             </LinkNext>
-            
+
             {/* Divider & Partner Logo */}
             <div className="hidden sm:block h-10 w-[1px] bg-gray-300"></div>
             <div className="hidden sm:block text-left">
-              <span className="block text-[10px] text-gray-500 leading-tight">brought to you by</span>
+              <span className="block text-[10px] text-gray-500 leading-tight">
+                brought to you by
+              </span>
               <span className="block text-xs md:text-sm font-bold text-gray-800 tracking-tight">
                 MJL Bangladesh PLC.
               </span>
@@ -56,7 +71,6 @@ export default function Header() {
 
           {/* Right Side Actions (User, Cart, Hotline, Mobile Toggle) */}
           <div className="flex items-center space-x-3 lg:space-x-6">
-            
             {/* User Profile */}
             <div className="hidden lg:flex items-center space-x-2 cursor-pointer group">
               <span className="text-sm font-medium text-gray-700 group-hover:text-[#005CA9] transition-colors">
@@ -68,18 +82,17 @@ export default function Header() {
             </div>
 
             {/* Cart */}
-            <LinkNext href="#" className="flex items-center space-x-1.5 group relative">
-              <span className="hidden sm:inline text-sm font-medium text-gray-700 group-hover:text-[#005CA9]">
-                Cart
-              </span>
-              <div className="p-2.5 bg-gray-900 rounded-full text-white hover:bg-gray-800 transition-colors relative">
-                <ShoppingCart className="h-4 w-4" />
-                {/* Badge example */}
-                <span className="absolute -top-1 -right-1 bg-[#ED1C24] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                  0
+            <Link
+              href="/cart"
+              className="relative p-2 bg-[#ED1C24] cursor-pointer hover:bg-[#d1171e] rounded-lg transition-colors"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
                 </span>
-              </div>
-            </LinkNext>
+              )}
+            </Link>
 
             {/* Hotline Button */}
             <a
@@ -95,10 +108,13 @@ export default function Header() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="xl:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
-
         </div>
       </div>
 
@@ -143,7 +159,9 @@ export default function Header() {
           {/* Mobile User Profile */}
           <div className="flex items-center space-x-3 p-2 bg-gray-50 rounded-lg lg:hidden">
             <User className="h-5 w-5 text-gray-600" />
-            <span className="text-sm font-medium text-gray-800">Mohyminul Islam</span>
+            <span className="text-sm font-medium text-gray-800">
+              Mohyminul Islam
+            </span>
           </div>
 
           {/* Mobile Nav Links */}

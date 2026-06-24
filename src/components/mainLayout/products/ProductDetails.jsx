@@ -2,9 +2,12 @@
 
 import React, { useState } from "react";
 import { ShoppingCart, ShieldCheck, Truck, RefreshCw, Star, Minus, Plus } from "lucide-react";
+import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 
 export default function ProductDetails({ product }) {
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [adding, setAdding] = useState(false);
   const price = Number(product?.price || 0);
   const compareAtPrice = Number(product?.compare_at_price || 0);
 
@@ -19,6 +22,14 @@ export default function ProductDetails({ product }) {
   const discountPercentage = hasDiscount 
     ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) 
     : null;
+  
+    const handleAddToCart = () => {
+    if (!product) return;
+
+    setAdding(true);
+    addToCart(product, quantity);
+    setAdding(false);
+  };
 
   return (
     <div className="bg-[#F8F9FA] min-h-screen py-12 px-4 sm:px-6 lg:px-8 font-sans">
@@ -115,16 +126,19 @@ export default function ProductDetails({ product }) {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
+
                 <button 
                   disabled={product?.stock === 0}
-                  className="flex-1 bg-gray-950 hover:bg-black text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors shadow-xs disabled:bg-gray-400"
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-gray-950 hover:bg-black cursor-pointer text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors shadow-xs disabled:bg-gray-400"
                 >
-                  <ShoppingCart size={18} />
-                  <span>Add to Cart</span>
+                   <span className="mr-2 mb-1"><ShoppingCart size={18} /></span>
+                  {adding ? "Adding..." : "Add to Cart"}
                 </button>
+
                 <button 
                   disabled={product?.stock === 0}
-                  className="flex-1 bg-[#ED1C24] hover:bg-[#d1171e] text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors shadow-xs disabled:bg-gray-400"
+                  className="flex-1 bg-[#ED1C24] cursor-pointer hover:bg-[#d1171e] text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors shadow-xs disabled:bg-gray-400"
                 >
                   Buy Now
                 </button>
