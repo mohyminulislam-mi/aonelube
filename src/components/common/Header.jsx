@@ -143,7 +143,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Drawer. */}
       {isMobileMenuOpen && (
         <div className="xl:hidden border-t border-gray-200 bg-white px-4 pt-4 pb-6 space-y-4 shadow-inner">
           {/* Mobile Search */}
