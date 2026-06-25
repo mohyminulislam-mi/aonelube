@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import LinkNext from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Search,
   ShoppingCart,
@@ -10,14 +11,24 @@ import {
   X,
   User,
   ChevronDown,
+  LogIn,
+  LogOut,
+  LayoutDashboard,
+  Package,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
+import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 
 export default function Header() {
+  const router = useRouter();
   const { cartItems } = useCart();
+  const { user, logout } = useAuth();
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef(null);
 
   const navigationItems = [
     { label: "Car Engine Oils", href: "#" },
@@ -27,6 +38,26 @@ export default function Header() {
     { label: "Industrial & Specialty Lubricants", href: "#" },
     { label: "Campaign", href: "#" },
   ];
+
+  useEffect(() => {
+    if (!isAccountMenuOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+        setIsAccountMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isAccountMenuOpen]);
+
+  const closeMenus = () => {
+    setIsAccountMenuOpen(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  const userInitial = (user?.name || user?.email || "U").charAt(0).toUpperCase();
 
   return (
     <section className="w-full bg-white shadow-sm sticky top-0 z-50 font-sans">
@@ -72,13 +103,93 @@ export default function Header() {
           {/* Right Side Actions (User, Cart, Hotline, Mobile Toggle) */}
           <div className="flex items-center space-x-3 lg:space-x-6">
             {/* User Profile */}
-            <div className="hidden lg:flex items-center space-x-2 cursor-pointer group">
-              <span className="text-sm font-medium text-gray-700 group-hover:text-[#005CA9] transition-colors">
-                Mohyminul Islam
-              </span>
-              <div className="p-2 bg-gray-100 rounded-full group-hover:bg-gray-200 transition-colors">
-                <User className="h-5 w-5 text-gray-800" />
-              </div>
+            <div className="hidden lg:flex items-center" ref={accountMenuRef}>
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsAccountMenuOpen((prev) => !prev)}
+                    className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-2.5 py-2 shadow-sm transition hover:border-[#005CA9]/30 hover:shadow-md"
+                  >
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#ED1C24] text-sm font-black text-white">
+                      {userInitial}
+                    </div>
+                    <span className="hidden xl:block text-sm font-semibold text-gray-700">
+                      {user.name || user.email}
+                    </span>
+                    <ChevronDown
+                      className={`h-4 w-4 text-gray-500 transition ${isAccountMenuOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {isAccountMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-gray-200 bg-white p-3 shadow-xl"
+                      >
+                        <div className="px-2 py-1">
+                          <p className="text-sm font-semibold text-gray-900">
+                            {user.name || "User"}
+                          </p>
+                          <p className="mt-0.5 text-xs text-gray-500">{user.email}</p>
+                        </div>
+                        <div className="my-2 h-px bg-gray-200" />
+                        <button
+                          onClick={() => {
+                            setIsAccountMenuOpen(false);
+                            router.push("/dashboard");
+                          }}
+                          className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                        >
+                          <LayoutDashboard className="h-4 w-4 text-[#005CA9]" />
+                          My Dashboard
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsAccountMenuOpen(false);
+                            router.push("/cart");
+                          }}
+                          className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                        >
+                          <Package className="h-4 w-4 text-[#005CA9]" />
+                          My Orders
+                        </button>
+                        <div className="my-2 h-px bg-gray-200" />
+                        <button
+                          onClick={async () => {
+                            setIsAccountMenuOpen(false);
+                            await logout();
+                            router.push("/");
+                          }}
+                          className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Logout
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center gap-2 rounded-full border border-[#005CA9]/20 bg-white px-3 py-2 text-sm font-semibold text-[#005CA9] transition duration-200 hover:border-[#ED1C24] hover:bg-[#ED1C24] hover:text-white"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="inline-flex items-center rounded-full bg-[#ED1C24] px-3 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-[#d1171e]"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Cart */}
@@ -157,11 +268,73 @@ export default function Header() {
           </div>
 
           {/* Mobile User Profile */}
-          <div className="flex items-center space-x-3 p-2 bg-gray-50 rounded-lg lg:hidden">
-            <User className="h-5 w-5 text-gray-600" />
-            <span className="text-sm font-medium text-gray-800">
-              Mohyminul Islam
-            </span>
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 lg:hidden">
+            {user ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ED1C24] text-sm font-black text-white">
+                    {userInitial}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {user.name || user.email}
+                    </p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <button
+                    onClick={() => {
+                      closeMenus();
+                      router.push("/dashboard");
+                    }}
+                    className="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
+                  >
+                    <LayoutDashboard className="h-4 w-4 text-[#005CA9]" />
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={() => {
+                      closeMenus();
+                      router.push("/cart");
+                    }}
+                    className="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
+                  >
+                    <Package className="h-4 w-4 text-[#005CA9]" />
+                    My Orders
+                  </button>
+                  <button
+                    onClick={async () => {
+                      closeMenus();
+                      await logout();
+                      router.push("/");
+                    }}
+                    className="flex w-full items-center gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-600"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#005CA9]/20 bg-white px-3 py-2.5 text-sm font-semibold text-[#005CA9]"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex w-full items-center justify-center rounded-lg bg-[#ED1C24] px-3 py-2.5 text-sm font-semibold text-white"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Nav Links */}

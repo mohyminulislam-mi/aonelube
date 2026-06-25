@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ShoppingCart, ShieldCheck, Truck, RefreshCw, Star, Minus, Plus } from "lucide-react";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 
 export default function ProductDetails({ product }) {
+  const router = useRouter();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
+  const [actionError, setActionError] = useState("");
   const price = Number(product?.price || 0);
   const compareAtPrice = Number(product?.compare_at_price || 0);
 
@@ -22,13 +25,54 @@ export default function ProductDetails({ product }) {
   const discountPercentage = hasDiscount 
     ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) 
     : null;
-  
-    const handleAddToCart = () => {
-    if (!product) return;
 
+  const handleAddToCart = () => {
+    if (!product) {
+      setActionError("Product details are not available right now.");
+      return;
+    }
+
+    if (product?.stock === 0) {
+      setActionError("This product is currently out of stock.");
+      return;
+    }
+
+    setActionError("");
     setAdding(true);
-    addToCart(product, quantity);
-    setAdding(false);
+
+    try {
+      addToCart(product, quantity);
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+      setActionError("We could not add the item to your cart. Please try again.");
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (!product) {
+      setActionError("Product details are not available right now.");
+      return;
+    }
+
+    if (product?.stock === 0) {
+      setActionError("This product is currently out of stock.");
+      return;
+    }
+
+    setActionError("");
+    setAdding(true);
+
+    try {
+      addToCart(product, quantity, true);
+      router.push("/checkout");
+    } catch (error) {
+      console.error("Failed to start checkout:", error);
+      setActionError("We could not start checkout. Please try again.");
+    } finally {
+      setAdding(false);
+    }
   };
 
   return (
@@ -128,7 +172,7 @@ export default function ProductDetails({ product }) {
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
 
                 <button 
-                  disabled={product?.stock === 0}
+                  disabled={product?.stock === 0 || adding}
                   onClick={handleAddToCart}
                   className="flex-1 bg-gray-950 hover:bg-black cursor-pointer text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors shadow-xs disabled:bg-gray-400"
                 >
@@ -137,12 +181,17 @@ export default function ProductDetails({ product }) {
                 </button>
 
                 <button 
-                  disabled={product?.stock === 0}
+                  disabled={product?.stock === 0 || adding}
+                  onClick={handleBuyNow}
                   className="flex-1 bg-[#ED1C24] cursor-pointer hover:bg-[#d1171e] text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors shadow-xs disabled:bg-gray-400"
                 >
-                  Buy Now
+                  {adding ? "Processing..." : "Buy Now"}
                 </button>
               </div>
+
+              {actionError ? (
+                <p className="mb-6 text-sm font-medium text-red-600">{actionError}</p>
+              ) : null}
             </div>
 
             {/* Badges/Value Proposition */}
