@@ -26,12 +26,14 @@ function matchesProduct(product, slug) {
     .filter(Boolean)
     .map(String);
 
-  return productValues.some((value) => value === target || slugify(value) === target);
+  return productValues.some(
+    (value) => value === target || slugify(value) === target,
+  );
 }
 
 async function getProducts() {
   try {
-    const res = await fetch("http://localhost:5000/api/products", {
+    const res = await fetch("https://aonelube-server.vercel.app/api/products", {
       next: { revalidate: 1800 },
     });
 
@@ -47,14 +49,15 @@ async function getProducts() {
 async function getProductBySlug(slug) {
   try {
     const res = await fetch(
-      `http://localhost:5000/api/products/${encodeURIComponent(slug)}`,
-      { next: { revalidate: 1800 } }
+      `https://aonelube-server.vercel.app/api/products/${encodeURIComponent(slug)}`,
+      { next: { revalidate: 1800 } },
     );
 
     if (res.ok) {
       const data = await res.json();
       if (data?.product) return data.product;
-      if (data && !Array.isArray(data) && (data._id || data.id || data.slug)) return data;
+      if (data && !Array.isArray(data) && (data._id || data.id || data.slug))
+        return data;
     }
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -74,7 +77,8 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${product.name} | MJL Bangladesh`,
-    description: product.description || `Buy ${product.name} at the best price.`,
+    description:
+      product.description || `Buy ${product.name} at the best price.`,
   };
 }
 

@@ -8,7 +8,7 @@ function getProductList(data) {
 
 async function getProducts() {
   try {
-    const res = await fetch("http://localhost:5000/api/products", {
+    const res = await fetch("https://aonelube-server.vercel.app/api/products", {
       next: { revalidate: 3600 },
     });
 

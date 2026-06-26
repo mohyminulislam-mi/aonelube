@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
 
 const categories = [
   { name: "Car Engine Oils", slug: "car-engine-oils" },
@@ -17,18 +18,20 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">
-                  M
-                </span>
-              </div>
-              <span className="text-xl font-bold">
-                Mobil<span className="text-primary">Store</span>
-              </span>
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  width={130}
+                  height={150}
+                  alt="Aonelube"
+                />
+              </Link>
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed mb-4">
-              Premium lubricants and engine oils designed with immaculate
-              engineering to ensure excellent performance of your vehicle.
+              A One Lube delivers premium German-engineered engine oils,
+              transmission fluids, hydraulic oils, gear oils, industrial
+              lubricants, and automotive fluids for superior engine protection,
+              efficiency, and long-lasting performance.
             </p>
           </div>
 
