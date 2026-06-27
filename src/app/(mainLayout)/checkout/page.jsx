@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { useCart } from "../provider/CartProvider";
+import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 import {
   MapPin,
   User,
@@ -19,6 +20,7 @@ export default function CheckoutPage() {
   const { cartItems, subtotal, shipping, discount, total, coupon, isCartReady } =
     useCart();
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,6 +32,12 @@ export default function CheckoutPage() {
     country: "Bangladesh",
     paymentMethod: "card",
   });
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/login?redirect=/checkout");
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     if (isCartReady && cartItems.length === 0) {
@@ -70,6 +78,20 @@ export default function CheckoutPage() {
 
     router.push("/payment");
   };
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex flex-col min-h-screen bg-white">
+        <Breadcrumbs />
+        <main className="flex-grow flex flex-col items-center justify-center gap-4 px-4 py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm font-semibold text-gray-500">
+            Checking authentication...
+          </p>
+        </main>
+      </div>
+    );
+  }
 
   if (!isCartReady) {
     return (

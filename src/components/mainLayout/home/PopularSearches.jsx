@@ -1,48 +1,94 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { getCategories } from "@/lib/api";
 
-// ক্যাটাগরি ডেটা স্ট্রাকচার
-const categoriesData = [
-  {
-    id: 1,
-    title: "Bus & Truck Oils",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=500&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Vehicle Care",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=500&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Industrial Lubricants",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1538334057867-fa6d767c2937?q=80&w=500&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Car Engine Oils",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=500&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Motorcycle Oils",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=500&auto=format&fit=crop",
-  },
-];
+function normalizeCategories(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.categories)) return payload.categories;
+  if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload?.items)) return payload.items;
+  return [];
+}
 
 export default function PopularSearches() {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        if (active) {
+          const list = normalizeCategories(data);
+          list.sort((a, b) => {
+            if (a.display_order !== undefined && b.display_order !== undefined) {
+              return a.display_order - b.display_order;
+            }
+            return (a.name || "").localeCompare(b.name || "");
+          });
+          setCategories(list);
+        }
+      } catch (error) {
+        console.error("Silently failed to fetch categories:", error);
+        if (active) {
+          setCategories([]);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchCategories();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Title & Header (Skeleton) */}
+          <div className="flex items-end justify-between mb-8">
+            <div className="w-1/3 space-y-2">
+              <div className="h-8 bg-gray-150 rounded animate-pulse" />
+              <div className="h-4 bg-gray-100 rounded w-2/3 animate-pulse" />
+            </div>
+            <div className="h-4 bg-gray-150 rounded w-16 animate-pulse" />
+          </div>
+
+          {/* 5-Column Responsive Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-xl border border-gray-100 shadow-xs animate-pulse overflow-hidden flex flex-col"
+              >
+                {/* Category Image Wrapper */}
+                <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden" />
+
+                {/* Category Footer Content */}
+                <div className="p-4 flex flex-col justify-between flex-grow bg-white">
+                  <div className="h-4 bg-gray-100 rounded w-3/4 mb-3" />
+                  <div className="h-3 bg-gray-100 rounded w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (categories.length === 0) {
+    return null;
+  }
+
   return (
     <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -67,36 +113,41 @@ export default function PopularSearches() {
 
         {/* 5-Column Responsive Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {categoriesData.map((category) => (
-            <a
-              key={category.id}
-              href={category.link}
-              className="bg-white rounded-xl border border-gray-100 shadow-xs hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col group"
-            >
-              {/* Category Image Wrapper */}
-              <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden">
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
-              </div>
+          {categories.map((category) => {
+            const categoryId = category.id || category._id;
+            const categoryLink = `/products/category/${category.slug}`;
 
-              {/* Category Footer Content */}
-              <div className="p-4 flex flex-col justify-between flex-grow bg-white">
-                <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#005CA9] transition-colors line-clamp-1">
-                  {category.title}
-                </h3>
+            return (
+              <a
+                key={categoryId}
+                href={categoryLink}
+                className="bg-white rounded-xl border border-gray-100 shadow-xs hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col group"
+              >
+                {/* Category Image Wrapper */}
+                <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                  />
+                </div>
 
-                {/* View All Text Link with Arrow */}
-                <span className="inline-flex items-center text-xs font-medium text-gray-400 mt-2 group-hover:text-[#005CA9] transition-colors">
-                  View all
-                  <ArrowRight className="h-3 w-3 ml-1 transform group-hover:translate-x-1 transition-transform" />
-                </span>
-              </div>
-            </a>
-          ))}
+                {/* Category Footer Content */}
+                <div className="p-4 flex flex-col justify-between flex-grow bg-white">
+                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#005CA9] transition-colors line-clamp-1">
+                    {category.name}
+                  </h3>
+
+                  {/* View All Text Link with Arrow */}
+                  <span className="inline-flex items-center text-xs font-medium text-gray-400 mt-2 group-hover:text-[#005CA9] transition-colors">
+                    View all
+                    <ArrowRight className="h-3 w-3 ml-1 transform group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>

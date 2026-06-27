@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, ShieldCheck, Truck, RefreshCw, Star, Minus, Plus } from "lucide-react";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
+import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 
 export default function ProductDetails({ product }) {
   const router = useRouter();
   const { addToCart } = useCart();
+  const { user } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
   const [actionError, setActionError] = useState("");
@@ -66,7 +68,11 @@ export default function ProductDetails({ product }) {
 
     try {
       addToCart(product, quantity, true);
-      router.push("/checkout");
+      if (user) {
+        router.push("/checkout");
+      } else {
+        router.push("/login?redirect=/checkout");
+      }
     } catch (error) {
       console.error("Failed to start checkout:", error);
       setActionError("We could not start checkout. Please try again.");

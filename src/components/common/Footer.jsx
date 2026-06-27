@@ -18,14 +18,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Link href="/">
+              <span>
                 <Image
                   src="/logo.png"
-                  width={130}
-                  height={150}
+                  width={260}
+                  height={80}
                   alt="Aonelube"
+                  style={{ width: "auto", height: "auto" }}
                 />
-              </Link>
+              </span>
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed mb-4">
               A One Lube delivers premium German-engineered engine oils,

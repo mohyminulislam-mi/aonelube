@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 // JSON Data Structure
 const sliderData = [
@@ -64,7 +65,7 @@ export default function HeroSlider() {
 
   return (
     <div 
-      className="relative w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden group bg-gray-900"
+      className="relative w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[460px] overflow-hidden group bg-gray-900"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -82,24 +83,53 @@ export default function HeroSlider() {
               style={{ backgroundImage: `url(${slide.image})` }}
               className="w-full h-full bg-cover bg-center bg-no-repeat"
             >
+              {/* Left-to-right gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+              {/* Bottom-to-top gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
             </div>
 
             {/* Content */}
-            <div className="absolute inset-0 z-20 flex flex-col justify-center items-start max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 text-white">
-              <span className="text-[#ED1C24] text-xs sm:text-sm lg:text-base font-bold tracking-widest uppercase mb-2 sm:mb-3">
-                {slide.subtitle}
-              </span>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight max-w-xl sm:max-w-2xl leading-tight mb-4 sm:mb-6">
-                {slide.title}
-              </h1>
-              <a
-                href={slide.ctaLink}
-                className="bg-[#ED1C24] hover:bg-[#005CA9] text-white font-bold text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wider transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                {slide.ctaText}
-              </a>
-            </div>
+            {index === currentIndex && (
+              <div className="absolute inset-0 z-20 flex flex-col justify-center items-start max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 text-white">
+                {/* Subtitle with accent element */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="flex items-center space-x-2.5 mb-2 sm:mb-3"
+                >
+                  <span className="w-4 h-[2px] bg-[#ED1C24] shrink-0" />
+                  <span className="text-[#ED1C24] text-xs sm:text-sm lg:text-base font-bold tracking-widest uppercase">
+                    {slide.subtitle}
+                  </span>
+                </motion.div>
+
+                {/* Headline with custom line-height and text shadow */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                  style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)" }}
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight max-w-xl sm:max-w-2xl leading-[1.05] mb-4 sm:mb-6"
+                >
+                  {slide.title}
+                </motion.h1>
+
+                {/* CTA Button with brand tint shadow */}
+                <motion.a
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  href={slide.ctaLink}
+                  className="bg-[#ED1C24] hover:bg-[#005CA9] text-white font-bold text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wider transition-all duration-300 ease-out shadow-[0_8px_24px_rgba(237,28,36,0.35)]"
+                >
+                  {slide.ctaText}
+                </motion.a>
+              </div>
+            )}
           </div>
         ))}
       </div>
