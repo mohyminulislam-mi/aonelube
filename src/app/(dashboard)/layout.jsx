@@ -21,16 +21,23 @@ import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 const getNavItems = (role) => {
   const baseItems = [
     { href: "/dashboard", label: "Dashboard Home", icon: LayoutDashboard },
-    { href: "/dashboard/orders", label: "My Orders", icon: ShoppingBag },
-    { href: "/dashboard/profile", label: "My Profile", icon: UserCircle2 },
   ];
 
   if (role === "manager" || role === "admin") {
     baseItems.push(
+      { href: "/dashboard/orders", label: "Manage Orders", icon: ShoppingBag },
       { href: "/dashboard/products", label: "Manage Products", icon: Package },
       { href: "/dashboard/categories", label: "Manage Categories", icon: Tags }
     );
+  } else {
+    // Customer
+    baseItems.push(
+      { href: "/dashboard/my-orders", label: "My Orders", icon: ShoppingBag }
+    );
   }
+
+  // Profile is for everyone
+  baseItems.push({ href: "/dashboard/profile", label: "My Profile", icon: UserCircle2 });
 
   if (role === "admin") {
     baseItems.push(

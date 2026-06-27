@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPost, updateProfile } from "@/lib/api";
 
 const AuthContext = createContext();
 
@@ -9,19 +9,19 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const data = await apiGet("/api/auth/me");
-        setUser(data?.user || null);
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const checkAuthStatus = async () => {
+    try {
+      const data = await apiGet("/api/auth/me");
+      setUser(data?.user || null);
+    } catch (error) {
+      console.error("Auth check failed:", error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     checkAuthStatus();
   }, []);
 
@@ -45,6 +45,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = async (profileData) => {
+    const data = await updateProfile(profileData);
+    setUser(data?.user || null);
+    return data;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -53,6 +59,7 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
+        updateUser,
       }}
     >
       {children}

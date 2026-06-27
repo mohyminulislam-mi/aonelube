@@ -90,3 +90,70 @@ export async function getProducts(options = {}) {
   const query = new URLSearchParams(options).toString();
   return apiGet(`/api/products${query ? `?${query}` : ""}`);
 }
+
+// ==================== ORDERS ====================
+export async function getAllOrders(filters = {}) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      params.append(key, value);
+    }
+  });
+  const query = params.toString();
+  return request(`/api/orders${query ? `?${query}` : ""}`, { method: "GET" });
+}
+
+export async function getOrderDetail(id) {
+  return request(`/api/orders/${id}`, { method: "GET" });
+}
+
+export async function updateOrderStatus(id, status) {
+  return request(`/api/orders/${id}/status`, {
+    method: "PUT",
+    body: { orderStatus: status },
+  });
+}
+
+export async function getMyOrders() {
+  return request("/api/orders/my-orders", { method: "GET" });
+}
+
+// ==================== USERS ====================
+export async function getAllUsers(filters = {}) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      params.append(key, value);
+    }
+  });
+  const query = params.toString();
+  return request(`/api/admin/users${query ? `?${query}` : ""}`, { method: "GET" });
+}
+
+export async function getUserDetail(id) {
+  return request(`/api/admin/users/${id}`, { method: "GET" });
+}
+
+export async function updateUserRole(id, role) {
+  return request(`/api/admin/users/${id}/role`, {
+    method: "PUT",
+    body: { role },
+  });
+}
+
+// ==================== DASHBOARD ====================
+export async function getDashboardStats() {
+  return request("/api/admin/stats", { method: "GET" });
+}
+
+export async function getDashboardCharts() {
+  return request("/api/admin/charts", { method: "GET" });
+}
+
+// ==================== AUTH PROFILE ====================
+export async function updateProfile(data) {
+  return request("/api/auth/profile", {
+    method: "PUT",
+    body: data,
+  });
+}
