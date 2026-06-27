@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
+import Image from "next/image";
 
 export default function Header() {
   const router = useRouter();
@@ -66,26 +67,9 @@ export default function Header() {
         <div className="flex items-center justify-between h-20 gap-4">
           {/* Brand Logos */}
           <div className="flex items-center space-x-4 shrink-0">
-            <LinkNext href="/" className="flex items-center">
-              {/* Mobil Logo */}
-              <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#005CA9]">
-                M<span className="text-[#ED1C24]">o</span>bil
-              </span>
-              <span className="text-[10px] font-bold text-[#005CA9] align-super ml-0.5">
-                TM
-              </span>
-            </LinkNext>
-
-            {/* Divider & Partner Logo */}
-            <div className="hidden sm:block h-10 w-[1px] bg-gray-300"></div>
-            <div className="hidden sm:block text-left">
-              <span className="block text-[10px] text-gray-500 leading-tight">
-                brought to you by
-              </span>
-              <span className="block text-xs md:text-sm font-bold text-gray-800 tracking-tight">
-                MJL Bangladesh PLC.
-              </span>
-            </div>
+            <Link href="/">
+            <Image src='/logo.png' width={130} height={150} alt="Aonelube" />
+            </Link>
           </div>
 
           {/* Search Bar - Desktop */}

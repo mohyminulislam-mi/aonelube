@@ -6,7 +6,7 @@ import Link from "next/link";
 // API থেকে ফিচার্ড প্রোডাক্ট ফেচ করার ফাংশন
 async function getFeaturedProducts() {
   try {
-    const res = await fetch("http://localhost:5000/api/products", {
+    const res = await fetch("https://aonelube-server.vercel.app/api/products", {
       next: { revalidate: 1800 }, // ৩০ মিনিট পর পর ক্যাশ আপডেট হবে
     });
 
@@ -36,7 +36,6 @@ export default async function FeaturedProducts() {
   return (
     <section className="bg-[#F8F9FA] py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
-        
         {/* Section Header */}
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -45,7 +44,7 @@ export default async function FeaturedProducts() {
             </h2>
             <p className="text-gray-500 text-sm mt-1">Our top picks for you</p>
           </div>
-          
+
           {/* View All Link */}
           <Link
             href="/products"
@@ -62,7 +61,6 @@ export default async function FeaturedProducts() {
             <ProductCard key={product._id || product.id} product={product} />
           ))}
         </div>
-
       </div>
     </section>
   );
