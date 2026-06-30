@@ -134,7 +134,7 @@ export default function Header() {
                         <button
                           onClick={() => {
                             setIsAccountMenuOpen(false);
-                            router.push("/cart");
+                            router.push("/dashboard/my-orders");
                           }}
                           className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                         >
@@ -280,7 +280,7 @@ export default function Header() {
                   <button
                     onClick={() => {
                       closeMenus();
-                      router.push("/cart");
+                      router.push("/dashboard/my-orders");
                     }}
                     className="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
                   >

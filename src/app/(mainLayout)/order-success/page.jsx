@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import { getOrderDetail } from "@/lib/api";
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
@@ -31,7 +32,17 @@ function OrderSuccessContent() {
     const fetchOrder = async () => {
       try {
         const savedOrder = localStorage.getItem(`aonelub_order_${orderId}`);
-        setOrder(savedOrder ? JSON.parse(savedOrder) : null);
+        if (savedOrder) {
+          setOrder(JSON.parse(savedOrder));
+        } else {
+          // Fall back to fetch from backend API
+          const response = await getOrderDetail(orderId);
+          if (response?.order) {
+            setOrder(response.order);
+          } else if (response) {
+            setOrder(response);
+          }
+        }
       } catch (err) {
         console.error("Fetch order error:", err);
       } finally {
@@ -96,7 +107,7 @@ function OrderSuccessContent() {
             <span>Print Invoice Reciept</span>
           </button>
           <Link
-            href="/dashboard/customer"
+            href="/dashboard/my-orders"
             className="bg-light-gray hover:bg-gray-200 text-gray-800 border border-gray-200 font-bold text-xs py-3.5 px-6 rounded-lg transition-all shadow-sm"
           >
             Track Order In Dashboard

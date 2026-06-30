@@ -56,7 +56,7 @@ export default async function FeaturedProducts() {
         </div>
 
         {/* Dynamic Product Grid - API থেকে আসা ডাটা দিয়ে */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {products.map((product) => (
             <ProductCard key={product._id || product.id} product={product} />
           ))}

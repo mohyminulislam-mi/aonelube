@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { useCart } from "../provider/CartProvider";
 import { ShieldCheck, Loader2, ArrowRight } from "lucide-react";
 import Swal from "sweetalert2";
+import { createOrder } from "@/lib/api";
 
 export default function PaymentPage() {
   const { cartItems, total, clearCart, isCartReady } = useCart();
@@ -62,89 +63,87 @@ export default function PaymentPage() {
 
     setLoading(true);
 
-    // Simulate Payment delay
-    setTimeout(async () => {
-      try {
-        const orderId = `AOL-${Date.now()}`;
-        const subtotal = cartItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0,
-        );
-        const shippingCost = subtotal > 150 || subtotal === 0 ? 0 : 5;
-        const discount = Math.max(0, subtotal + shippingCost - total);
-        const orderData = {
-          id: orderId,
-          invoiceNumber: orderId,
-          trackingId: `TRK-${String(Date.now()).slice(-8)}`,
-          createdAt: new Date().toISOString(),
-          items: cartItems.map((item) => ({
-            product: item.product,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-          })),
-          user: checkoutDetails.customer,
-          customer: checkoutDetails.customer,
-          shippingAddress: checkoutDetails.shippingAddress,
-          billingAddress: checkoutDetails.shippingAddress,
-          paymentMethod: checkoutDetails.paymentMethod,
-          paymentStatus:
-            checkoutDetails.paymentMethod === "cod" ? "unpaid" : "paid",
-          orderStatus:
-            checkoutDetails.paymentMethod === "manual"
-              ? "pending_verification"
-              : "processing",
-          couponCode: checkoutDetails.couponCode,
-          subtotal,
-          shippingCost,
-          discount,
-          total,
+    try {
+      const orderPayload = {
+        items: cartItems.map((item) => ({
+          product: item.product,
+          quantity: item.quantity,
+        })),
+        shippingAddress: {
+          street: checkoutDetails.shippingAddress.street,
+          city: checkoutDetails.shippingAddress.city,
+          postalCode: checkoutDetails.shippingAddress.postalCode,
+          country: checkoutDetails.shippingAddress.country,
+        },
+        billingAddress: {
+          street: checkoutDetails.shippingAddress.street,
+          city: checkoutDetails.shippingAddress.city,
+          postalCode: checkoutDetails.shippingAddress.postalCode,
+          country: checkoutDetails.shippingAddress.country,
+        },
+        paymentMethod: checkoutDetails.paymentMethod,
+        couponCode: checkoutDetails.couponCode || undefined,
+      };
+
+      if (checkoutDetails.paymentMethod === "manual") {
+        orderPayload.manualPaymentDetails = {
+          paymentMethod: manualData.paymentMethod,
+          senderMobile: manualData.senderMobile,
+          transactionId: manualData.transactionId,
         };
-
-        if (checkoutDetails.paymentMethod === "manual") {
-          orderData.manualPaymentDetails = {
-            paymentMethod: manualData.paymentMethod,
-            senderMobile: manualData.senderMobile,
-            transactionId: manualData.transactionId,
-          };
-        }
-
-        localStorage.setItem(`aonelub_order_${orderId}`, JSON.stringify(orderData));
-
-        Swal.fire({
-          icon: "success",
-          title:
-            checkoutDetails.paymentMethod === "manual"
-              ? "Order Submitted"
-              : "Payment Successful!",
-          text:
-            checkoutDetails.paymentMethod === "manual"
-              ? "Your manual verification transaction is submitted."
-              : "Your premium lubricant order has been recorded.",
-          background: "#ffffff",
-          color: "#171717",
-          confirmButtonColor: "#e30613",
-        });
-
-        clearCart();
-        localStorage.removeItem("aonelub_checkout_details");
-        router.push(`/order-success?orderId=${orderId}`);
-      } catch (err) {
-        Swal.fire({
-          icon: "error",
-          title: "Order Placement Failed",
-          text:
-            err.response?.data?.message ||
-            err.message ||
-            "Unable to store order record inside database.",
-          background: "#ffffff",
-          color: "#171717",
-          confirmButtonColor: "#e30613",
-        });
-      } finally {
-        setLoading(false);
       }
-    }, 1500);
+
+      const resData = await createOrder(orderPayload);
+      const createdOrder = resData.order;
+
+      if (!createdOrder) {
+        throw new Error(resData.message || "Failed to retrieve placed order metadata.");
+      }
+
+      const orderToStore = {
+        ...createdOrder,
+        user: {
+          name: checkoutDetails.customer.name,
+          email: checkoutDetails.customer.email,
+          phone: checkoutDetails.customer.phone
+        }
+      };
+
+      localStorage.setItem(`aonelub_order_${createdOrder._id}`, JSON.stringify(orderToStore));
+
+      await Swal.fire({
+        icon: "success",
+        title:
+          checkoutDetails.paymentMethod === "manual"
+            ? "Order Submitted"
+            : "Payment Successful!",
+        text:
+          checkoutDetails.paymentMethod === "manual"
+            ? "Your manual verification transaction is submitted."
+            : "Your premium lubricant order has been recorded.",
+        background: "#ffffff",
+        color: "#171717",
+        confirmButtonColor: "#e30613",
+      });
+
+      clearCart();
+      localStorage.removeItem("aonelub_checkout_details");
+      router.push(`/order-success?orderId=${createdOrder._id}`);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Order Placement Failed",
+        text:
+          err.response?.data?.message ||
+          err.message ||
+          "Unable to store order record inside database.",
+        background: "#ffffff",
+        color: "#171717",
+        confirmButtonColor: "#e30613",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isCard = checkoutDetails?.paymentMethod === "card";

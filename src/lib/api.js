@@ -119,6 +119,10 @@ export async function getMyOrders() {
   return request("/api/orders/my-orders", { method: "GET" });
 }
 
+export async function createOrder(data) {
+  return apiPost("/api/orders", data);
+}
+
 // ==================== USERS ====================
 export async function getAllUsers(filters = {}) {
   const params = new URLSearchParams();
