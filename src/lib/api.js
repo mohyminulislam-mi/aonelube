@@ -1,5 +1,4 @@
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://aonelube-server.vercel.app";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
@@ -132,7 +131,9 @@ export async function getAllUsers(filters = {}) {
     }
   });
   const query = params.toString();
-  return request(`/api/admin/users${query ? `?${query}` : ""}`, { method: "GET" });
+  return request(`/api/admin/users${query ? `?${query}` : ""}`, {
+    method: "GET",
+  });
 }
 
 export async function getUserDetail(id) {
