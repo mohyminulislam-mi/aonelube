@@ -57,6 +57,10 @@ export async function getCategories() {
   return apiGet("/api/categories");
 }
 
+export async function getBrands() {
+  return apiGet("/api/products/brands");
+}
+
 export async function createCategory(formData) {
   return requestFormData("/api/categories", "POST", formData);
 }
@@ -89,6 +93,10 @@ export async function getProductsByCategory(slug, options = {}) {
 export async function getProducts(options = {}) {
   const query = new URLSearchParams(options).toString();
   return apiGet(`/api/products${query ? `?${query}` : ""}`);
+}
+
+export async function getProductDetail(id) {
+  return apiGet(`/api/products/${id}`);
 }
 
 // ==================== ORDERS ====================

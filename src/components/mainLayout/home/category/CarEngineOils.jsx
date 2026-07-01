@@ -10,8 +10,11 @@ export default function CarEngineOils({ initialProducts = [] }) {
   const carOilsData = useMemo(() => {
     const products = Array.isArray(initialProducts) ? initialProducts : [];
     const filteredProducts = products.filter((product) => {
-      const category = product?.category || product?.category_name || "";
-      return category.toLowerCase().includes("car");
+      const categoryName =
+        typeof product?.category === "object"
+          ? product?.category?.name || ""
+          : product?.category || product?.category_name || "";
+      return categoryName.toLowerCase().includes("car");
     });
 
     return filteredProducts.length > 0 ? filteredProducts : products;
