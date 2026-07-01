@@ -25,7 +25,9 @@ export default function ProductCard({ product }) {
       <div className="p-4 flex flex-col flex-grow justify-between">
         <div>
           <span className="text-[11px] text-gray-400 font-medium uppercase">
-            {product.category || "Engine Oil"}
+            {typeof product.category === "object"
+              ? product.category?.name || "Engine Oil"
+              : product.category || "Engine Oil"}
           </span>
           <h3 className="text-sm font-bold text-gray-800 group-hover:text-[#005CA9] transition-colors mt-0.5 line-clamp-2">
             {product.name}
