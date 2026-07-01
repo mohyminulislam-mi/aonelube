@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useFieldArray, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { ImagePlus, Loader2, Plus, Trash2, UploadCloud } from "lucide-react";
 import RoleGuard from "@/components/dashboard/RoleGuard";
-import { createProduct, getCategories } from "@/lib/api";
+import { updateProduct, getCategories, getProductDetail } from "@/lib/api";
 
 function normalizeCategories(payload) {
   if (Array.isArray(payload)) return payload;
@@ -16,11 +16,16 @@ function normalizeCategories(payload) {
   return [];
 }
 
-export default function CreateProductPage() {
+export default function EditProductPage() {
   const router = useRouter();
+  const params = useParams();
+  const productId = params.id;
+  
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingProduct, setLoadingProduct] = useState(true);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
@@ -46,7 +51,6 @@ export default function CreateProductPage() {
       stock: "",
       featured: false,
       specifications: [{ key: "", value: "" }],
-      images: undefined,
     },
   });
 
@@ -80,6 +84,56 @@ export default function CreateProductPage() {
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        setLoadingProduct(true);
+        const data = await getProductDetail(productId);
+        const product = data.product || data;
+
+        setValue("name", product.name || "");
+        setValue("slug", product.slug || "");
+        setValue("brand", product.brand || "");
+        setValue("sku", product.sku || "");
+        setValue("category", product.category?._id || product.category?.id || product.category || "");
+        setValue("description", product.description || "");
+        setValue("price", product.price || "");
+        setValue("compareAtPrice", product.compareAtPrice || product.discountPrice || "");
+        setValue("stock", product.stock || "");
+        setValue("featured", product.featured || false);
+
+        const specs = Array.isArray(product.specifications) && product.specifications.length > 0
+          ? product.specifications
+          : [{ key: "", value: "" }];
+        setValue("specifications", specs);
+
+        const images = Array.isArray(product.images) ? product.images : [];
+        setExistingImages(images);
+        const previews = images.map((img, idx) => ({
+          name: `existing-${idx}`,
+          preview: img,
+          isExisting: true,
+        }));
+        setImagePreviews(previews);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Unable to load product",
+          text: error.message || "Please try again.",
+          confirmButtonColor: "#e30613",
+          background: "#ffffff",
+          color: "#171717",
+        });
+        router.push("/dashboard/products");
+      } finally {
+        setLoadingProduct(false);
+      }
+    };
+
+    if (productId) {
+      loadProduct();
+    }
+  }, [productId, router, setValue]);
 
   useEffect(() => {
     if (!nameValue) {
@@ -101,18 +155,28 @@ export default function CreateProductPage() {
     const files = Array.from(event.target.files || []);
     setSelectedFiles(files);
     if (!files.length) {
-      setImagePreviews([]);
       return;
     }
 
-    const previews = files.map((file) => ({ name: file.name, preview: URL.createObjectURL(file) }));
-    setImagePreviews(previews);
+    const newPreviews = files.map((file) => ({ name: file.name, preview: URL.createObjectURL(file), isExisting: false }));
+    setImagePreviews((prev) => [...prev.filter(p => p.isExisting), ...newPreviews]);
+  };
+
+  const handleRemoveExistingImage = (index) => {
+    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleRemoveNewImage = (index) => {
+    const newImageIndex = index - existingImages.length;
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== newImageIndex));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
     return () => {
       imagePreviews.forEach((preview) => {
-        if (preview.preview.startsWith("blob:")) {
+        if (!preview.isExisting && preview.preview.startsWith("blob:")) {
           URL.revokeObjectURL(preview.preview);
         }
       });
@@ -120,18 +184,6 @@ export default function CreateProductPage() {
   }, [imagePreviews]);
 
   const onSubmit = async (data) => {
-    if (selectedFiles.length === 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Image required",
-        text: "Please select at least one product image.",
-        confirmButtonColor: "#e30613",
-        background: "#ffffff",
-        color: "#171717",
-      });
-      return;
-    }
-
     try {
       setIsSubmitting(true);
 
@@ -152,44 +204,30 @@ export default function CreateProductPage() {
         .map(f => ({ key: f.key.trim(), value: f.value.trim() }));
       formData.append("specifications", JSON.stringify(specsArray));
 
+      existingImages.forEach((img) => {
+        formData.append("existingImages", img);
+      });
+
       selectedFiles.forEach((file) => {
         formData.append("images", file);
       });
 
-      await createProduct(formData);
+      await updateProduct(productId, formData);
 
       Swal.fire({
         icon: "success",
-        title: "Product created",
-        text: "The product is now available for review.",
+        title: "Product updated",
+        text: "The product has been successfully updated.",
         confirmButtonColor: "#e30613",
         background: "#ffffff",
         color: "#171717",
       });
 
-      reset({
-        name: "",
-        slug: "",
-        brand: "",
-        sku: "",
-        category: "",
-        description: "",
-        price: "",
-        compareAtPrice: "",
-        stock: "",
-        featured: false,
-        specifications: [{ key: "", value: "" }],
-      });
-      setImagePreviews([]);
-      setSelectedFiles([]);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      };
       router.push("/dashboard/products");
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Product creation failed",
+        title: "Update failed",
         text: error.message || "Please try again.",
         confirmButtonColor: "#e30613",
         background: "#ffffff",
@@ -202,14 +240,27 @@ export default function CreateProductPage() {
 
   const categoryOptions = useMemo(() => categories || [], [categories]);
 
+  if (loadingProduct) {
+    return (
+      <RoleGuard allowedRoles={["manager", "admin"]}>
+        <div className="flex min-h-96 items-center justify-center">
+          <div className="flex items-center gap-2 text-sm font-medium text-slate-600">
+            <Loader2 className="h-4 w-4 animate-spin text-red-500" />
+            Loading product...
+          </div>
+        </div>
+      </RoleGuard>
+    );
+  }
+
   return (
     <RoleGuard allowedRoles={["manager", "admin"]}>
       <div className="space-y-6">
         <div className="rounded-3xl border border-red-100 bg-white p-6 shadow-sm">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">Catalog Management</p>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-800">Create Product</h1>
+          <h1 className="mt-2 text-2xl font-semibold text-slate-800">Edit Product</h1>
           <p className="mt-2 text-sm text-slate-600">
-            Add a new product with rich details, category assignment, and image uploads.
+            Update product details, images, and specifications.
           </p>
         </div>
 
@@ -389,8 +440,8 @@ export default function CreateProductPage() {
             <label className="mb-2 block text-sm font-medium text-slate-700">Images</label>
             <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-red-200 bg-[#FFF5F5] px-4 py-6 text-center text-sm text-slate-600 transition hover:border-red-400 hover:bg-red-50">
               <UploadCloud className="mb-2 h-5 w-5 text-red-500" />
-              <span className="font-medium text-slate-700">Choose product images</span>
-              <span className="mt-1 text-xs text-slate-500">You can select multiple images</span>
+              <span className="font-medium text-slate-700">Add new images</span>
+              <span className="mt-1 text-xs text-slate-500">You can select multiple images to add</span>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -403,10 +454,17 @@ export default function CreateProductPage() {
 
             {imagePreviews.length ? (
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                {imagePreviews.map((preview) => (
-                  <div key={preview.name} className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+                {imagePreviews.map((preview, index) => (
+                  <div key={preview.name} className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white">
                     <img src={preview.preview} alt={preview.name} className="h-28 w-full object-cover" />
-                    <p className="truncate px-3 py-2 text-xs text-slate-600">{preview.name}</p>
+                    <p className="truncate px-3 py-2 text-xs text-slate-600">{preview.isExisting ? "Existing image" : preview.name}</p>
+                    <button
+                      type="button"
+                      onClick={() => preview.isExisting ? handleRemoveExistingImage(index) : handleRemoveNewImage(index)}
+                      className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -414,7 +472,7 @@ export default function CreateProductPage() {
               <div className="mt-4 flex h-24 items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 text-sm text-slate-400">
                 <div className="flex items-center gap-2">
                   <ImagePlus className="h-4 w-4" />
-                  <span>No images selected</span>
+                  <span>No images</span>
                 </div>
               </div>
             )}
@@ -427,7 +485,7 @@ export default function CreateProductPage() {
               className="inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-slate-400"
             >
               {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {isSubmitting ? "Creating product..." : "Create Product"}
+              {isSubmitting ? "Updating product..." : "Update Product"}
             </button>
             <button
               type="button"

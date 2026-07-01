@@ -182,7 +182,7 @@ export default function ProductsPage() {
                   {filteredProducts.map((product) => {
                     const productId = product._id || product.id;
                     const isActive = product.active !== false;
-                    const imageUrl = Array.isArray(product.images) ? product.images[0] : product.images;
+                    const imageUrl = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null;
 
                     return (
                       <tr key={productId} className="hover:bg-gray-50">
@@ -190,7 +190,7 @@ export default function ProductsPage() {
                           <div className="flex items-center gap-3">
                             <div className="h-12 w-12 overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
                               <img
-                                src={imageUrl || "/placeholder-product.jpg"}
+                                src={imageUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='12' fill='%236b7280' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"}
                                 alt={product.name}
                                 className="h-full w-full object-cover"
                               />
@@ -224,23 +224,13 @@ export default function ProductsPage() {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <button
-                              type="button"
+                            <Link
+                              href={`/dashboard/products/edit/${productId}`}
                               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
-                              onClick={() => {
-                                Swal.fire({
-                                  icon: "info",
-                                  title: "Edit coming soon",
-                                  text: "Product edit functionality will be implemented in a follow-up update.",
-                                  confirmButtonColor: "#e30613",
-                                  background: "#ffffff",
-                                  color: "#171717",
-                                });
-                              }}
                             >
                               <Edit2 className="inline h-3 w-3 mr-1" />
                               Edit
-                            </button>
+                            </Link>
                             <button
                               type="button"
                               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
@@ -262,14 +252,14 @@ export default function ProductsPage() {
               {filteredProducts.map((product) => {
                 const productId = product._id || product.id;
                 const isActive = product.active !== false;
-                const imageUrl = Array.isArray(product.images) ? product.images[0] : product.images;
+                const imageUrl = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null;
 
                 return (
                   <div key={productId} className="overflow-hidden rounded-3xl border border-red-100 bg-white p-4 shadow-sm">
                     <div className="flex items-start gap-4">
                       <div className="h-20 w-20 overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
                         <img
-                          src={imageUrl || "/placeholder-product.jpg"}
+                          src={imageUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='12' fill='%236b7280' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"}
                           alt={product.name}
                           className="h-full w-full object-cover"
                         />
@@ -302,23 +292,13 @@ export default function ProductsPage() {
                           <div>Stock: {product.stock}</div>
                         </div>
                         <div className="mt-4 flex gap-2">
-                          <button
-                            type="button"
+                          <Link
+                            href={`/dashboard/products/edit/${productId}`}
                             className="flex-1 rounded-full border border-gray-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-gray-50"
-                            onClick={() => {
-                              Swal.fire({
-                                icon: "info",
-                                title: "Edit coming soon",
-                                text: "Product edit functionality will be implemented in a follow-up update.",
-                                confirmButtonColor: "#e30613",
-                                background: "#ffffff",
-                                color: "#171717",
-                              });
-                            }}
                           >
                             <Edit2 className="inline h-4 w-4 mr-1" />
                             Edit
-                          </button>
+                          </Link>
                           <button
                             type="button"
                             className="flex-1 rounded-full border border-gray-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-gray-50"

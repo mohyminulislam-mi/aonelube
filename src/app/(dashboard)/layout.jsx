@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   Store,
   Tags,
+  Truck,
   UserCircle2,
   Users,
   X,
@@ -26,6 +27,7 @@ const getNavItems = (role) => {
   if (role === "manager" || role === "admin") {
     baseItems.push(
       { href: "/dashboard/orders", label: "Manage Orders", icon: ShoppingBag },
+      { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
       { href: "/dashboard/products", label: "Manage Products", icon: Package },
       { href: "/dashboard/categories", label: "Manage Categories", icon: Tags }
     );

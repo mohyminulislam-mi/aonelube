@@ -168,7 +168,12 @@ export default function OrdersPage() {
       case "pending":
       case "pending_verification":
         return [
-          { label: "Accept", value: "processing", color: "bg-green-600 hover:bg-green-700" },
+          {
+            label: "Accept",
+            value: "processing",
+            color: "bg-green-600 hover:bg-green-700",
+            note: "After accepting, order will appear in Pending Delivery page",
+          },
           { label: "Reject", value: "cancelled", color: "bg-red-600 hover:bg-red-700" },
         ];
       case "processing":
@@ -422,18 +427,27 @@ export default function OrdersPage() {
                       const actions = getNextActions(selectedOrder.orderStatus);
                       if (!actions.length) return null;
                       return (
-                        <div className="flex flex-wrap gap-3 p-4 rounded-2xl bg-gray-50">
-                          {actions.map((action) => (
-                            <button
-                              key={action.value}
-                              onClick={() => handleStatusUpdate(action.value)}
-                              disabled={updatingStatus}
-                              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed ${action.color}`}
-                            >
-                              {updatingStatus && <Loader2 className="h-4 w-4 animate-spin" />}
-                              {action.label}
-                            </button>
-                          ))}
+                        <div className="space-y-3 rounded-2xl bg-gray-50 p-4">
+                          <div className="flex flex-wrap gap-3">
+                            {actions.map((action) => (
+                              <button
+                                key={action.value}
+                                onClick={() => handleStatusUpdate(action.value)}
+                                disabled={updatingStatus}
+                                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed ${action.color}`}
+                              >
+                                {updatingStatus && <Loader2 className="h-4 w-4 animate-spin" />}
+                                {action.label}
+                              </button>
+                            ))}
+                          </div>
+                          {actions.some((action) => action.note) && (
+                            <div className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+                              {actions.map((action) => action.note && (
+                                <p key={action.value}>{action.note}</p>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       );
                     })()}
