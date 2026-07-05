@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { useCart } from "../provider/CartProvider";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
+import { DIVISIONS, DISTRICTS } from "@/lib/bangladeshData";
 import {
   MapPin,
   User,
@@ -30,6 +31,8 @@ export default function CheckoutPage() {
     city: "",
     postalCode: "",
     country: "Bangladesh",
+    division: "",
+    district: "",
     paymentMethod: "card",
   });
 
@@ -38,6 +41,19 @@ export default function CheckoutPage() {
       router.push("/login?redirect=/checkout");
     }
   }, [user, authLoading, router]);
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: user.name || prev.name,
+        email: user.email || prev.email,
+        phone: user.phone || prev.phone,
+        division: user.division || prev.division,
+        district: user.district || prev.district,
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isCartReady && cartItems.length === 0) {
@@ -64,10 +80,8 @@ export default function CheckoutPage() {
           city: formData.city,
           postalCode: formData.postalCode,
           country: formData.country,
-          // Include user's registered division & district so the backend
-          // can scope the order to the correct delivery region.
-          division: user?.division || "",
-          district: user?.district || "",
+          division: formData.division,
+          district: formData.district,
         },
         customer: {
           name: formData.name,
@@ -77,10 +91,8 @@ export default function CheckoutPage() {
         paymentMethod: formData.paymentMethod,
         phone: formData.phone,
         couponCode: coupon ? coupon.code : null,
-        // Top-level fields mirror shippingAddress for the backend's
-        // fallback lookup: division || shippingAddress.division
-        division: user?.division || "",
-        district: user?.district || "",
+        division: formData.division,
+        district: formData.district,
       }),
     );
 
@@ -264,6 +276,50 @@ export default function CheckoutPage() {
                       placeholder="Bangladesh"
                       className="w-full bg-white text-gray-900 border border-gray-250 font-semibold text-sm rounded-lg p-3.5 focus:outline-none focus:border-primary transition-colors"
                     />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                      Division
+                    </label>
+                    <select
+                      name="division"
+                      required
+                      value={formData.division}
+                      onChange={handleChange}
+                      className="w-full bg-white text-gray-900 border border-gray-250 font-semibold text-sm rounded-lg p-3.5 focus:outline-none focus:border-primary transition-colors cursor-pointer"
+                    >
+                      <option value="">Select Division</option>
+                      {DIVISIONS.map((div) => (
+                        <option key={div} value={div}>
+                          {div}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                      District
+                    </label>
+                    <select
+                      name="district"
+                      required
+                      value={formData.district}
+                      onChange={handleChange}
+                      disabled={!formData.division}
+                      className="w-full bg-white text-gray-900 border border-gray-250 font-semibold text-sm rounded-lg p-3.5 focus:outline-none focus:border-primary transition-colors cursor-pointer disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    >
+                      <option value="">Select District</option>
+                      {formData.division && DISTRICTS[formData.division] ? (
+                        DISTRICTS[formData.division].map((dist) => (
+                          <option key={dist} value={dist}>
+                            {dist}
+                          </option>
+                        ))
+                      ) : null}
+                    </select>
                   </div>
                 </div>
               </section>
