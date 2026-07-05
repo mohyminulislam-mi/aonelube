@@ -4,12 +4,14 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { useCart } from "../provider/CartProvider";
+import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 import { ShieldCheck, Loader2, ArrowRight } from "lucide-react";
 import Swal from "sweetalert2";
 import { createOrder } from "@/lib/api";
 
 export default function PaymentPage() {
   const { cartItems, total, clearCart, isCartReady } = useCart();
+  const { user } = useAuth();
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -64,22 +66,32 @@ export default function PaymentPage() {
     setLoading(true);
 
     try {
+      const division = checkoutDetails.division || checkoutDetails.shippingAddress?.division || user?.division || "";
+      const district = checkoutDetails.district || checkoutDetails.shippingAddress?.district || user?.district || "";
+
       const orderPayload = {
         items: cartItems.map((item) => ({
           product: item.product,
           quantity: item.quantity,
         })),
+        // Top-level division/district — backend reads these first
+        division,
+        district,
         shippingAddress: {
           street: checkoutDetails.shippingAddress.street,
           city: checkoutDetails.shippingAddress.city,
           postalCode: checkoutDetails.shippingAddress.postalCode,
           country: checkoutDetails.shippingAddress.country,
+          division,
+          district,
         },
         billingAddress: {
           street: checkoutDetails.shippingAddress.street,
           city: checkoutDetails.shippingAddress.city,
           postalCode: checkoutDetails.shippingAddress.postalCode,
           country: checkoutDetails.shippingAddress.country,
+          division,
+          district,
         },
         paymentMethod: checkoutDetails.paymentMethod,
         couponCode: checkoutDetails.couponCode || undefined,

@@ -1,52 +1,53 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  BarChart3,
+  AlertTriangle,
   LayoutDashboard,
   LogOut,
   Menu,
   Package,
+  ShieldAlert,
   ShoppingBag,
   Store,
-  Tags,
   Truck,
   UserCircle2,
-  Users,
   X,
 } from "lucide-react";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
+import { getAllUsers } from "@/lib/api";
 
-const getNavItems = (role) => {
+const getNavItems = (role, isApproved) => {
   const baseItems = [
     { href: "/dashboard", label: "Dashboard Home", icon: LayoutDashboard },
   ];
 
-  if (role === "manager" || role === "admin") {
+  if (role === "admin") {
+    // Admin sees everything
     baseItems.push(
       { href: "/dashboard/orders", label: "Manage Orders", icon: ShoppingBag },
       { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
-      { href: "/dashboard/products", label: "Manage Products", icon: Package },
-      { href: "/dashboard/categories", label: "Manage Categories", icon: Tags }
+      { href: "/dashboard/products", label: "Manage Products", icon: Package }
     );
-  } else {
+  } else if (role === "manager" && isApproved) {
+    // Approved manager: division-scoped order/product management
+    baseItems.push(
+      { href: "/dashboard/orders", label: "Manage Orders", icon: ShoppingBag },
+      { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
+      { href: "/dashboard/products", label: "Manage Products", icon: Package }
+    );
+  } else if (role !== "manager") {
     // Customer
     baseItems.push(
       { href: "/dashboard/my-orders", label: "My Orders", icon: ShoppingBag }
     );
   }
+  // Unapproved manager: only Dashboard Home (already in baseItems) + My Profile below
 
   // Profile is for everyone
   baseItems.push({ href: "/dashboard/profile", label: "My Profile", icon: UserCircle2 });
-
-  if (role === "admin") {
-    baseItems.push(
-      { href: "/dashboard/users", label: "Manage Users", icon: Users },
-      { href: "/dashboard/analytics", label: "Dashboard Analytics", icon: BarChart3 }
-    );
-  }
 
   return baseItems;
 };
@@ -56,20 +57,35 @@ export default function DashboardLayout({ children }) {
   const pathname = usePathname();
   const { user, loading, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
 
-  const navItems = useMemo(() => getNavItems(user?.role || "user"), [user?.role]);
+  const navItems = useMemo(
+    () => getNavItems(user?.role || "user", user?.isApproved),
+    [user?.role, user?.isApproved]
+  );
 
-  if (loading) {
+  // Fetch pending manager count for admin badge
+  useEffect(() => {
+    if (user?.role !== "admin") return;
+    getAllUsers({ role: "manager", approved: "false" })
+      .then((data) => setPendingCount(data?.total ?? data?.users?.length ?? 0))
+      .catch(() => {}); // Silently ignore; badge just won't show
+  }, [user?.role]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [loading, user, router]);
+
+  if (loading || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#F8F9FA]">
-        <p className="text-sm font-semibold text-gray-600">Loading dashboard...</p>
+        <p className="text-sm font-semibold text-gray-600">
+          {loading ? "Loading dashboard..." : "Redirecting to login..."}
+        </p>
       </div>
     );
-  }
-
-  if (!user) {
-    router.replace("/login");
-    return null;
   }
 
   const displayName = user?.name || user?.fullName || user?.email || "User";
@@ -144,6 +160,27 @@ export default function DashboardLayout({ children }) {
                   </Link>
                 );
               })}
+
+              {/* Pending Approvals — admin only */}
+              {user?.role === "admin" && (
+                <Link
+                  href="/dashboard/users/pending-approvals"
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                    pathname === "/dashboard/users/pending-approvals"
+                      ? "bg-red-600 text-white shadow-sm"
+                      : "text-slate-600 hover:bg-red-50 hover:text-red-600"
+                  }`}
+                >
+                  <ShieldAlert className="h-4 w-4" />
+                  <span className="flex-1">Pending Approvals</span>
+                  {pendingCount > 0 && (
+                    <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-amber-400 px-1.5 text-[11px] font-bold text-white">
+                      {pendingCount}
+                    </span>
+                  )}
+                </Link>
+              )}
             </nav>
 
             <div className="space-y-2 border-t border-red-100 p-4">
@@ -184,6 +221,15 @@ export default function DashboardLayout({ children }) {
             </div>
           </header>
 
+          {user?.role === "manager" && user?.isApproved === false && (
+            <div className="mx-4 mt-4 flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3.5 text-sm text-amber-800 md:mx-6 lg:mx-8">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+              <p>
+                <span className="font-semibold">Account pending approval.</span>{" "}
+                Your account is pending admin approval. Some features are limited until approved.
+              </p>
+            </div>
+          )}
           <main className="p-4 md:p-6 lg:p-8">{children}</main>
         </div>
       </div>

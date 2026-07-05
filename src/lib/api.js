@@ -155,6 +155,14 @@ export async function updateUserRole(id, role) {
   });
 }
 
+export async function approveManager(id) {
+  return request(`/api/admin/users/${id}/approve`, { method: "PUT" });
+}
+
+export async function unapproveManager(id) {
+  return request(`/api/admin/users/${id}/unapprove`, { method: "PUT" });
+}
+
 // ==================== DASHBOARD ====================
 export async function getDashboardStats() {
   return request("/api/admin/stats", { method: "GET" });

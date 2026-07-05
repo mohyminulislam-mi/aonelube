@@ -21,10 +21,10 @@ export default function Footer() {
               <span>
                 <Image
                   src="/logo.png"
-                  width={260}
-                  height={80}
+                  width={150}
+                  height={46}
                   alt="Aonelube"
-                  style={{ width: "auto", height: "auto" }}
+                  style={{ width: "150px", height: "auto" }}
                 />
               </span>
             </Link>

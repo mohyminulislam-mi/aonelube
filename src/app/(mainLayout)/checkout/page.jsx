@@ -64,6 +64,10 @@ export default function CheckoutPage() {
           city: formData.city,
           postalCode: formData.postalCode,
           country: formData.country,
+          // Include user's registered division & district so the backend
+          // can scope the order to the correct delivery region.
+          division: user?.division || "",
+          district: user?.district || "",
         },
         customer: {
           name: formData.name,
@@ -73,6 +77,10 @@ export default function CheckoutPage() {
         paymentMethod: formData.paymentMethod,
         phone: formData.phone,
         couponCode: coupon ? coupon.code : null,
+        // Top-level fields mirror shippingAddress for the backend's
+        // fallback lookup: division || shippingAddress.division
+        division: user?.division || "",
+        district: user?.district || "",
       }),
     );
 
