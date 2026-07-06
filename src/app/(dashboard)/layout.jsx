@@ -9,11 +9,14 @@ import {
   LogOut,
   Menu,
   Package,
+  PlusCircle,
   ShieldAlert,
   ShoppingBag,
   Store,
   Truck,
+  User,
   UserCircle2,
+  Users,
   X,
 } from "lucide-react";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
@@ -29,13 +32,18 @@ const getNavItems = (role, isApproved) => {
     baseItems.push(
       { href: "/dashboard/orders", label: "Manage Orders", icon: ShoppingBag },
       { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
-      { href: "/dashboard/products", label: "Manage Products", icon: Package }
+      { href: "/dashboard/orders/create", label: "Create Order", icon: PlusCircle },
+      { href: "/dashboard/products", label: "Manage Products", icon: Package },
+      { href: "/dashboard/users", label: "Manage Users", icon: User },
+      { href: "/dashboard/customers", label: "Customers", icon: Users }
     );
   } else if (role === "manager" && isApproved) {
     // Approved manager: division-scoped order/product management
     baseItems.push(
       { href: "/dashboard/orders", label: "Manage Orders", icon: ShoppingBag },
       { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
+      { href: "/dashboard/orders/create", label: "Create Order", icon: PlusCircle },
+      { href: "/dashboard/customers", label: "Customers", icon: Users },
       { href: "/dashboard/products", label: "Manage Products", icon: Package }
     );
   } else if (role !== "manager") {
@@ -50,6 +58,21 @@ const getNavItems = (role, isApproved) => {
   baseItems.push({ href: "/dashboard/profile", label: "My Profile", icon: UserCircle2 });
 
   return baseItems;
+};
+
+const isRouteActive = (href, pathname) => {
+  if (href === "/dashboard") {
+    return pathname === "/dashboard";
+  }
+  if (href === "/dashboard/orders") {
+    return pathname.startsWith("/dashboard/orders") && 
+           !pathname.startsWith("/dashboard/orders/pending-delivery") &&
+           !pathname.startsWith("/dashboard/orders/create");
+  }
+  if (href === "/dashboard/users") {
+    return pathname.startsWith("/dashboard/users") && !pathname.startsWith("/dashboard/users/pending-approvals");
+  }
+  return pathname.startsWith(href);
 };
 
 export default function DashboardLayout({ children }) {
@@ -142,7 +165,7 @@ export default function DashboardLayout({ children }) {
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
               {navItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                const isActive = isRouteActive(item.href, pathname);
 
                 return (
                   <Link
@@ -167,7 +190,7 @@ export default function DashboardLayout({ children }) {
                   href="/dashboard/users/pending-approvals"
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-                    pathname === "/dashboard/users/pending-approvals"
+                    isRouteActive("/dashboard/users/pending-approvals", pathname)
                       ? "bg-red-600 text-white shadow-sm"
                       : "text-slate-600 hover:bg-red-50 hover:text-red-600"
                   }`}

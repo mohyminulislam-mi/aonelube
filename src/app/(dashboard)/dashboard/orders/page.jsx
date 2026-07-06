@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import Swal from "sweetalert2";
 import {
   Loader2,
@@ -195,12 +196,20 @@ export default function OrdersPage() {
   return (
     <RoleGuard allowedRoles={["admin", "manager"]}>
       <div className="space-y-6">
-        <div className="rounded-3xl border border-red-100 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">Dashboard</p>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-800">Orders</h1>
-          <p className="mt-2 text-sm text-slate-600">
-            Manage and track all customer orders.
-          </p>
+        <div className="rounded-3xl border border-red-100 bg-white p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">Dashboard</p>
+            <h1 className="mt-2 text-2xl font-semibold text-slate-800">Orders</h1>
+            <p className="mt-2 text-sm text-slate-600">
+              Manage and track all customer orders.
+            </p>
+          </div>
+          <Link
+            href="/dashboard/orders/create"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 shadow-sm whitespace-nowrap self-start sm:self-center cursor-pointer"
+          >
+            + Create Order
+          </Link>
         </div>
 
         {/* Filter Bar */}
@@ -307,7 +316,7 @@ export default function OrdersPage() {
                         {order.invoiceNumber || `#${order._id?.slice(-8)}`}
                       </td>
                       <td className="px-4 py-3 text-slate-600">
-                        {order.user?.name || "Unknown"}
+                        {order.user?.name || order.customerName || "Unknown"}
                       </td>
                       <td className="px-4 py-3 text-slate-600">
                         {order.items?.length || 0} items
@@ -345,7 +354,7 @@ export default function OrdersPage() {
                         {order.invoiceNumber || `#${order._id?.slice(-8)}`}
                       </p>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        {order.user?.name || "Unknown"}
+                        {order.user?.name || order.customerName || "Unknown"}
                       </p>
                     </div>
                     <StatusBadge status={order.orderStatus} />
@@ -456,8 +465,9 @@ export default function OrdersPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="rounded-2xl border border-gray-100 p-4">
                         <h3 className="text-sm font-semibold text-slate-800 mb-3">Customer</h3>
-                        <p className="text-sm text-slate-600">{selectedOrder.user?.name}</p>
-                        <p className="text-sm text-slate-600">{selectedOrder.user?.email}</p>
+                        <p className="text-sm text-slate-600">Name: {selectedOrder.user?.name || selectedOrder.customerName || "N/A"}</p>
+                        {selectedOrder.user?.email && <p className="text-sm text-slate-600">Email: {selectedOrder.user.email}</p>}
+                        {selectedOrder.customerPhone && <p className="text-sm text-slate-600">Phone: {selectedOrder.customerPhone}</p>}
                       </div>
                       <div className="rounded-2xl border border-gray-100 p-4">
                         <h3 className="text-sm font-semibold text-slate-800 mb-3">Payment</h3>
@@ -474,10 +484,21 @@ export default function OrdersPage() {
                     <div className="rounded-2xl border border-gray-100 p-4">
                       <h3 className="text-sm font-semibold text-slate-800 mb-3">Shipping Address</h3>
                       <p className="text-sm text-slate-600">
-                        {selectedOrder.shippingAddress?.street && <>{selectedOrder.shippingAddress.street}<br /></>}
-                        {selectedOrder.shippingAddress?.city && <>{selectedOrder.shippingAddress.city}, </>}
-                        {selectedOrder.shippingAddress?.postalCode && <>{selectedOrder.shippingAddress.postalCode}<br /></>}
-                        {selectedOrder.shippingAddress?.country && <>{selectedOrder.shippingAddress.country}</>}
+                        {selectedOrder.managerCreated ? (
+                          <>
+                            {selectedOrder.customerAddress?.streetAddress && <>{selectedOrder.customerAddress.streetAddress}<br /></>}
+                            {selectedOrder.customerAddress?.city && <>{selectedOrder.customerAddress.city}</>}
+                            {selectedOrder.customerAddress?.postalCode && <>, {selectedOrder.customerAddress.postalCode}<br /></>}
+                            {selectedOrder.customerAddress?.country && <>{selectedOrder.customerAddress.country}</>}
+                          </>
+                        ) : (
+                          <>
+                            {selectedOrder.shippingAddress?.street && <>{selectedOrder.shippingAddress.street}<br /></>}
+                            {selectedOrder.shippingAddress?.city && <>{selectedOrder.shippingAddress.city}, </>}
+                            {selectedOrder.shippingAddress?.postalCode && <>{selectedOrder.shippingAddress.postalCode}<br /></>}
+                            {selectedOrder.shippingAddress?.country && <>{selectedOrder.shippingAddress.country}</>}
+                          </>
+                        )}
                       </p>
                     </div>
 

@@ -99,6 +99,11 @@ export async function getProductDetail(id) {
   return apiGet(`/api/products/${id}`);
 }
 
+export async function searchProducts(query) {
+  const params = new URLSearchParams({ search: query, limit: 10 }).toString();
+  return request(`/api/products?${params}`, { method: "GET" });
+}
+
 // ==================== ORDERS ====================
 export async function getAllOrders(filters = {}) {
   const params = new URLSearchParams();
@@ -128,6 +133,14 @@ export async function getMyOrders() {
 
 export async function createOrder(data) {
   return apiPost("/api/orders", data);
+}
+
+export async function createManagerOrder(orderData) {
+  const { customerName, customerPhone, customerAddress, items } = orderData;
+  return request("/api/orders/manager-create", {
+    method: "POST",
+    body: { customerName, customerPhone, customerAddress, items },
+  });
 }
 
 // ==================== USERS ====================
