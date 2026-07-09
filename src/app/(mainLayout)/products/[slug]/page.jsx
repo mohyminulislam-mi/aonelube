@@ -1,5 +1,12 @@
 import ProductDetails from "@/components/mainLayout/products/ProductDetails";
 import React from "react";
+import { getProducts, getProductDetail } from "@/lib/api";
+
+function getProductList(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.products)) return data.products;
+  return [];
+}
 
 function slugify(value = "") {
   return String(value)
@@ -7,12 +14,6 @@ function slugify(value = "") {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
-
-function getProductList(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.products)) return data.products;
-  return [];
 }
 
 function matchesProduct(product, slug) {
@@ -31,40 +32,24 @@ function matchesProduct(product, slug) {
   );
 }
 
-async function getProducts() {
-  try {
-    const res = await fetch("https://aonelube-server.vercel.app/api/products", {
-      next: { revalidate: 1800 },
-    });
-
-    if (!res.ok) return [];
-
-    return getProductList(await res.json());
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-}
-
 async function getProductBySlug(slug) {
   try {
-    const res = await fetch(
-      `https://aonelube-server.vercel.app/api/products/${encodeURIComponent(slug)}`,
-      { next: { revalidate: 1800 } },
-    );
-
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.product) return data.product;
-      if (data && !Array.isArray(data) && (data._id || data.id || data.slug))
-        return data;
-    }
-  } catch (error) {
-    console.error("Error fetching product:", error);
+    // Try direct slug/id lookup first
+    const data = await getProductDetail(slug);
+    if (data?.product) return data.product;
+    if (data && !Array.isArray(data) && (data._id || data.id || data.slug)) return data;
+  } catch {
+    // fall through to list search
   }
 
-  const products = await getProducts();
-  return products.find((product) => matchesProduct(product, slug)) || null;
+  try {
+    const raw = await getProducts({ limit: 100 });
+    const products = getProductList(raw);
+    return products.find((product) => matchesProduct(product, slug)) || null;
+  } catch (error) {
+    console.error("Error fetching product by slug:", error);
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }) {

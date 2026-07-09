@@ -2,25 +2,19 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "../products/ProductCard/ProductCard";
 import Link from "next/link";
+import { getProducts } from "@/lib/api";
 
-// API থেকে ফিচার্ড প্রোডাক্ট ফেচ করার ফাংশন
+function normalizeProducts(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.products)) return payload.products;
+  return [];
+}
+
+// Fetch featured products from the configured API (uses NEXT_PUBLIC_API_URL)
 async function getFeaturedProducts() {
   try {
-    const res = await fetch("https://aonelube-server.vercel.app/api/products", {
-      next: { revalidate: 1800 }, // ৩০ মিনিট পর পর ক্যাশ আপডেট হবে
-    });
-
-    if (!res.ok) return [];
-
-    const data = await res.json();
-
-    // আপনার API রেসপন্স স্ট্রাকচার অনুযায়ী যদি ডাটা সরাসরি অ্যারে হয় বা "products" কী-তে থাকে
-    if (Array.isArray(data)) return data.slice(0, 8); // প্রথম ৮টি প্রোডাক্ট দেখানোর জন্য
-    if (data && data.success && Array.isArray(data.products)) {
-      return data.products.slice(0, 8);
-    }
-
-    return [];
+    const data = await getProducts({ limit: 8 });
+    return normalizeProducts(data).slice(0, 8);
   } catch (error) {
     console.error("Error fetching featured products:", error);
     return [];

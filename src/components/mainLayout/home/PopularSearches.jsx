@@ -12,7 +12,27 @@ function normalizeCategories(payload) {
   return [];
 }
 
+const CATEGORY_FALLBACK_IMAGES = {
+  "car-engine-oils": "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=600",
+  "motorcycle-engine-oils": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600",
+  "bus-truck-engine-oils": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600",
+  "cng-engine-oils": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=600",
+  "vehicle-care": "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?q=80&w=600",
+  "industrial-lubricants": "https://images.unsplash.com/photo-1565984429576-c83f5e6b0b7a?q=80&w=600"
+};
+
+const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600";
+
+function getCategoryImage(category) {
+  const img = category?.image || category?.image_url;
+  if (!img || img.includes("placeholder") || img.startsWith("/")) {
+    return CATEGORY_FALLBACK_IMAGES[category?.slug] || DEFAULT_FALLBACK;
+  }
+  return img;
+}
+
 export default function PopularSearches() {
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -126,7 +146,7 @@ export default function PopularSearches() {
                 {/* Category Image Wrapper */}
                 <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden">
                   <img
-                    src={category.image}
+                    src={getCategoryImage(category)}
                     alt={category.name}
                     loading="lazy"
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"

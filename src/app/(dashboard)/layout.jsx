@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   AlertTriangle,
   LayoutDashboard,
+  LayoutGrid,
   LogOut,
   Menu,
   Package,
@@ -34,6 +35,7 @@ const getNavItems = (role, isApproved) => {
       { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
       { href: "/dashboard/orders/create", label: "Create Order", icon: PlusCircle },
       { href: "/dashboard/products", label: "Manage Products", icon: Package },
+      { href: "/dashboard/categories", label: "Manage Categories", icon: LayoutGrid },
       { href: "/dashboard/users", label: "Manage Users", icon: User },
       { href: "/dashboard/customers", label: "Customers", icon: Users }
     );
@@ -44,7 +46,8 @@ const getNavItems = (role, isApproved) => {
       { href: "/dashboard/orders/pending-delivery", label: "Pending Delivery", icon: Truck },
       { href: "/dashboard/orders/create", label: "Create Order", icon: PlusCircle },
       { href: "/dashboard/customers", label: "Customers", icon: Users },
-      { href: "/dashboard/products", label: "Manage Products", icon: Package }
+      { href: "/dashboard/products", label: "Manage Products", icon: Package },
+      { href: "/dashboard/categories", label: "Manage Categories", icon: LayoutGrid }
     );
   } else if (role !== "manager") {
     // Customer

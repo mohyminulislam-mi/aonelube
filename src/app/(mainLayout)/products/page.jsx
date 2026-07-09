@@ -1,32 +1,51 @@
 import AllProductsPage from "../../../components/mainLayout/products/AllProducts";
+import { getProducts, getCategories } from "@/lib/api";
 
-function getProductList(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.products)) return data.products;
+function normalizeProducts(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.products)) return payload.products;
   return [];
 }
 
-async function getProducts() {
+function normalizeCategories(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.categories)) return payload.categories;
+  if (Array.isArray(payload?.data)) return payload.data;
+  return [];
+}
+
+async function fetchAllProducts() {
   try {
-    const res = await fetch("https://aonelube-server.vercel.app/api/products", {
-      next: { revalidate: 3600 },
-    });
-
-    if (!res.ok) return [];
-
-    return getProductList(await res.json());
+    const data = await getProducts({ limit: 100 });
+    return normalizeProducts(data);
   } catch (error) {
     console.error("Error fetching products:", error);
     return [];
   }
 }
 
+async function fetchAllCategories() {
+  try {
+    const data = await getCategories();
+    return normalizeCategories(data);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+}
+
 export default async function Page() {
-  const initialProducts = await getProducts();
+  const [initialProducts, initialCategories] = await Promise.all([
+    fetchAllProducts(),
+    fetchAllCategories(),
+  ]);
 
   return (
     <main>
-      <AllProductsPage initialProducts={initialProducts} />
+      <AllProductsPage
+        initialProducts={initialProducts}
+        initialCategories={initialCategories}
+      />
     </main>
   );
 }

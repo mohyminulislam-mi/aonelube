@@ -17,10 +17,19 @@ import {
   Package,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 import Image from "next/image";
+import { getCategories } from "@/lib/api";
+
+function normalizeCategories(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.categories)) return payload.categories;
+  if (Array.isArray(payload?.data)) return payload.data;
+  return [];
+}
+
 
 export default function Header() {
   const router = useRouter();
@@ -31,12 +40,31 @@ export default function Header() {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const accountMenuRef = useRef(null);
 
+  const pathname = usePathname();
+  const [categories, setCategories] = useState([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getCategories();
+        const normalized = normalizeCategories(data);
+        normalized.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+        setCategories(normalized);
+      } catch (error) {
+        console.error("Failed to load header categories:", error);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    }
+    loadCategories();
+  }, []);
+
   const navigationItems = [
-    { label: "Car Engine Oils", href: "#" },
-    { label: "Motorcycle Engine Oils", href: "#" },
-    { label: "Bus & Truck Engine Oils", href: "#" },
-    { label: "Vehicle Care & Other Lubricants", href: "#" },
-    { label: "Industrial & Specialty Lubricants", href: "#" },
+    ...categories.map((c) => ({
+      label: c.name,
+      href: `/products/category/${c.slug}`,
+    })),
     { label: "Campaign", href: "#" },
   ];
 
@@ -68,7 +96,7 @@ export default function Header() {
           {/* Brand Logos */}
           <div className="flex items-center space-x-4 shrink-0">
             <Link href="/">
-            <Image src='/logo.png' width={130} height={150} alt="Aonelube" />
+            <Image src='/logo.png' width={130} height={40} style={{ height: "auto" }} priority alt="Aonelube" />
             </Link>
           </div>
 
@@ -216,16 +244,33 @@ export default function Header() {
       {/* Navigation Bar - Desktop (xl and up) */}
       <div className="hidden xl:block border-t border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <nav className="flex space-x-1 py-1">
-            {navigationItems.map((item, index) => (
-              <LinkNext
-                key={index}
-                href={item.href}
-                className="text-gray-800 hover:text-[#005CA9] px-3 py-3 text-[13px] font-semibold tracking-wide whitespace-nowrap transition-colors"
-              >
-                {item.label}
-              </LinkNext>
-            ))}
+          <nav className="flex items-center space-x-1 py-1">
+            {isLoadingCategories ? (
+              <div className="flex items-center space-x-6 py-3.5">
+                <div className="h-4 w-28 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 w-36 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 w-40 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
+              </div>
+            ) : (
+              navigationItems.map((item, index) => {
+                const isActive = pathname === item.href;
+                return (
+                  <LinkNext
+                    key={index}
+                    href={item.href}
+                    className={`px-3 py-3 text-[13px] font-bold tracking-wide whitespace-nowrap transition-colors border-b-2 ${
+                      isActive
+                        ? "text-[#005CA9] border-[#005CA9]"
+                        : "text-gray-700 hover:text-[#005CA9] border-transparent"
+                    }`}
+                  >
+                    {item.label}
+                  </LinkNext>
+                );
+              })
+            )}
           </nav>
 
           {/* CTA Button */}
@@ -323,16 +368,32 @@ export default function Header() {
 
           {/* Mobile Nav Links */}
           <nav className="flex flex-col space-y-1">
-            {navigationItems.map((item, index) => (
-              <LinkNext
-                key={index}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-700 hover:text-[#005CA9] hover:bg-gray-50 px-3 py-2.5 rounded-md text-sm font-medium transition-all"
-              >
-                {item.label}
-              </LinkNext>
-            ))}
+            {isLoadingCategories ? (
+              <div className="space-y-3 py-2">
+                <div className="h-8 w-full bg-gray-100 rounded animate-pulse" />
+                <div className="h-8 w-full bg-gray-100 rounded animate-pulse" />
+                <div className="h-8 w-full bg-gray-100 rounded animate-pulse" />
+                <div className="h-8 w-full bg-gray-100 rounded animate-pulse" />
+              </div>
+            ) : (
+              navigationItems.map((item, index) => {
+                const isActive = pathname === item.href;
+                return (
+                  <LinkNext
+                    key={index}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                      isActive
+                        ? "bg-[#005CA9]/15 text-[#005CA9]"
+                        : "text-gray-700 hover:text-[#005CA9] hover:bg-gray-50"
+                    }`}
+                  >
+                    {item.label}
+                  </LinkNext>
+                );
+              })
+            )}
           </nav>
 
           {/* Mobile CTA */}

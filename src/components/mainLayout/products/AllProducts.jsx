@@ -4,51 +4,102 @@ import React, { useState, useMemo } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import ProductCard from "./ProductCard/ProductCard";
 
-const CATEGORIES = [
-  "All",
-  "Car Engine Oils",
-  "Motorcycle Oils",
-  "Bus & Truck Oils",
-  "Vehicle Care",
-  "Industrial Lubricants",
-];
+// Resolve category ID from a product regardless of whether category is
+// a populated object, a plain ID string, or null.
+function getCategoryId(product) {
+  const cat = product?.category;
+  if (!cat) return null;
+  if (typeof cat === "object") return cat._id || cat.id || null;
+  return cat; // already a plain string ID
+}
 
-export default function AllProductsPage({ initialProducts = [] }) {
+export default function AllProductsPage({ initialProducts = [], initialCategories = [] }) {
+  const products = Array.isArray(initialProducts) ? initialProducts : [];
+  const categories = Array.isArray(initialCategories) ? initialCategories : [];
+
+  // Compute dynamic max price ceiling from actual product prices
+  const productMaxPrice = useMemo(() => {
+    if (products.length === 0) return 1000;
+    const max = Math.max(...products.map((p) => Number(p.price) || 0));
+    return Math.ceil(max / 100) * 100 || 1000;
+  }, [products]);
+
   // States
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [maxPrice, setMaxPrice] = useState(100);
+  const [selectedCategoryId, setSelectedCategoryId] = useState("all");
+  const [maxPrice, setMaxPrice] = useState(productMaxPrice);
   const [sortBy, setSortBy] = useState("default");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+  const priceStep = productMaxPrice > 1000 ? 100 : productMaxPrice > 100 ? 50 : 10;
+
   // Filtering & Sorting Logic
   const filteredProducts = useMemo(() => {
-    const productsArray = Array.isArray(initialProducts) ? initialProducts : [];
-
-    return productsArray
+    return products
       .filter((product) => {
-        const matchesSearch = product.name
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase());
+        const matchesSearch =
+          !searchQuery ||
+          product.name?.toLowerCase().includes(searchQuery.toLowerCase());
+
+        // Compare by _id — category comes from API as a populated object
         const matchesCategory =
-          selectedCategory === "All" || product.category === selectedCategory;
-        const matchesPrice = product.price <= maxPrice;
+          selectedCategoryId === "all" ||
+          getCategoryId(product) === selectedCategoryId;
+
+        const matchesPrice = Number(product.price) <= maxPrice;
+
         return matchesSearch && matchesCategory && matchesPrice;
       })
       .sort((a, b) => {
-        if (sortBy === "price-low") return a.price - b.price;
-        if (sortBy === "price-high") return b.price - a.price;
-        if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
+        if (sortBy === "price-low") return Number(a.price) - Number(b.price);
+        if (sortBy === "price-high") return Number(b.price) - Number(a.price);
+        if (sortBy === "rating")
+          return (
+            (b.ratingsAverage || b.rating || 0) -
+            (a.ratingsAverage || a.rating || 0)
+          );
         return 0;
       });
-  }, [initialProducts, searchQuery, selectedCategory, maxPrice, sortBy]);
+  }, [products, searchQuery, selectedCategoryId, maxPrice, sortBy]);
 
   const resetFilters = () => {
     setSearchQuery("");
-    setSelectedCategory("All");
-    setMaxPrice(100);
+    setSelectedCategoryId("all");
+    setMaxPrice(productMaxPrice);
     setSortBy("default");
   };
+
+  // Shared category button list — used in both sidebar and mobile drawer
+  const CategoryList = ({ onSelect }) => (
+    <>
+      <button
+        onClick={() => onSelect("all")}
+        className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all ${
+          selectedCategoryId === "all"
+            ? "bg-[#005CA9] text-white font-semibold"
+            : "text-gray-600 hover:bg-gray-50"
+        }`}
+      >
+        All
+      </button>
+      {categories.map((cat) => {
+        const catId = cat._id || cat.id;
+        return (
+          <button
+            key={catId}
+            onClick={() => onSelect(catId)}
+            className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all ${
+              selectedCategoryId === catId
+                ? "bg-[#005CA9] text-white font-semibold"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            {cat.name}
+          </button>
+        );
+      })}
+    </>
+  );
 
   return (
     <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-sans">
@@ -110,42 +161,36 @@ export default function AllProductsPage({ initialProducts = [] }) {
             <div className="mb-6">
               <h4 className="text-sm font-bold text-gray-800 mb-3">Categories</h4>
               <div className="space-y-2">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all ${
-                      selectedCategory === cat
-                        ? "bg-[#005CA9] text-white font-semibold"
-                        : "text-gray-600 hover:bg-gray-50"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+                <CategoryList onSelect={setSelectedCategoryId} />
               </div>
             </div>
 
             <div>
               <h4 className="text-sm font-bold text-gray-800 mb-2">
-                Max Price: <span className="text-[#005CA9]">${maxPrice}</span>
+                Max Price:{" "}
+                <span className="text-[#005CA9]">${maxPrice}</span>
               </h4>
               <input
                 type="range"
-                min="10"
-                max="100"
-                step="5"
+                min={0}
+                max={productMaxPrice}
+                step={priceStep}
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#005CA9]"
               />
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>$0</span>
+                <span>${productMaxPrice}</span>
+              </div>
             </div>
           </aside>
 
           {/* Product Grid Area */}
           <div className="flex-1">
             <div className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              <span>Showing {filteredProducts.length} Products</span>
+              Showing {filteredProducts.length} Product
+              {filteredProducts.length !== 1 ? "s" : ""}
             </div>
 
             {filteredProducts.length === 0 ? (
@@ -163,7 +208,6 @@ export default function AllProductsPage({ initialProducts = [] }) {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  // এখানে রিইউজেবল কম্পোনেন্টটি কল করা হয়েছে
                   <ProductCard key={product._id || product.id} product={product} />
                 ))}
               </div>
@@ -185,41 +229,43 @@ export default function AllProductsPage({ initialProducts = [] }) {
                 <X size={20} />
               </button>
             </div>
+
             <div className="flex-1 overflow-y-auto space-y-6">
               <div>
-                <h4 className="text-sm font-bold text-gray-800 mb-3">Categories</h4>
+                <h4 className="text-sm font-bold text-gray-800 mb-3">
+                  Categories
+                </h4>
                 <div className="space-y-1.5">
-                  {CATEGORIES.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => {
-                        setSelectedCategory(cat);
-                        setIsMobileFilterOpen(false);
-                      }}
-                      className={`block w-full text-left text-sm px-3 py-2 rounded-lg ${
-                        selectedCategory === cat ? "bg-[#005CA9] text-white" : "bg-gray-50"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+                  <CategoryList
+                    onSelect={(id) => {
+                      setSelectedCategoryId(id);
+                      setIsMobileFilterOpen(false);
+                    }}
+                  />
                 </div>
               </div>
+
               <div>
                 <h4 className="text-sm font-bold text-gray-800 mb-2">
-                  Max Price: <span className="text-[#005CA9]">${maxPrice}</span>
+                  Max Price:{" "}
+                  <span className="text-[#005CA9]">${maxPrice}</span>
                 </h4>
                 <input
                   type="range"
-                  min="10"
-                  max="100"
-                  step="5"
+                  min={0}
+                  max={productMaxPrice}
+                  step={priceStep}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
                   className="w-full accent-[#005CA9]"
                 />
+                <div className="flex justify-between text-xs text-gray-400 mt-1">
+                  <span>$0</span>
+                  <span>${productMaxPrice}</span>
+                </div>
               </div>
             </div>
+
             <div className="pt-4 border-t flex gap-3">
               <button
                 onClick={() => {

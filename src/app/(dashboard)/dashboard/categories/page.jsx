@@ -15,6 +15,26 @@ function normalizeCategories(payload) {
   return [];
 }
 
+const CATEGORY_FALLBACK_IMAGES = {
+  "car-engine-oils": "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=600",
+  "motorcycle-engine-oils": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600",
+  "bus-truck-engine-oils": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600",
+  "cng-engine-oils": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=600",
+  "vehicle-care": "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?q=80&w=600",
+  "industrial-lubricants": "https://images.unsplash.com/photo-1565984429576-c83f5e6b0b7a?q=80&w=600"
+};
+
+const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600";
+
+function getCategoryImage(category) {
+  const img = category?.image || category?.image_url;
+  if (!img || img.includes("placeholder") || img.startsWith("/")) {
+    return CATEGORY_FALLBACK_IMAGES[category?.slug] || DEFAULT_FALLBACK;
+  }
+  return img;
+}
+
+
 function CategoryForm({ editingCategory, onSuccess, onCancel }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -355,7 +375,7 @@ export default function CategoriesPage() {
           return (
             <div key={categoryId} className="overflow-hidden rounded-3xl border border-red-100 bg-white shadow-sm">
               <img
-                src={category.image || "/placeholder-category.jpg"}
+                src={getCategoryImage(category)}
                 alt={category.name}
                 className="h-40 w-full object-cover"
               />

@@ -14,7 +14,12 @@ export default function ProductCard({ product }) {
       {/* Product Image */}
       <div className="relative aspect-square bg-gray-50 overflow-hidden">
         <img
-          src={product.image_url || product.image || "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"}
+          src={
+            (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null) ||
+            product.image_url ||
+            product.image ||
+            "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"
+          }
           alt={product.name}
           loading="lazy"
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
