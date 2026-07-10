@@ -14,7 +14,7 @@ const categories = [
 export default function Footer() {
   return (
     <section className="bg-gray-100 text-gray-900 border-t border-gray-200">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 pt-12 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
@@ -56,28 +56,28 @@ export default function Footer() {
 
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
-              Support
+              Important
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/help"
+                  href="/about"
                   className="text-sm text-gray-500 hover:text-primary transition-colors"
                 >
-                  Help Center
+                  About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/orders"
+                  href="/products"
                   className="text-sm text-gray-500 hover:text-primary transition-colors"
                 >
-                  Track Order
+                  Products
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/account"
+                  href="/dashboard"
                   className="text-sm text-gray-500 hover:text-primary transition-colors"
                 >
                   My Account
@@ -85,18 +85,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shipping"
+                  href="/contact"
                   className="text-sm text-gray-500 hover:text-primary transition-colors"
                 >
-                  Shipping Info
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/returns"
-                  className="text-sm text-gray-500 hover:text-primary transition-colors"
-                >
-                  Returns Policy
+                  Contact
                 </Link>
               </li>
             </ul>
@@ -108,14 +100,14 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm text-gray-500">
-                <Phone className="w-4 h-4 shrink-0" /> 1-800-MOBIL-OIL
+                <Phone className="w-4 h-4 shrink-0" /> +880 1850120709
               </li>
               <li className="flex items-center gap-2 text-sm text-gray-500">
-                <Mail className="w-4 h-4 shrink-0" /> support@mobilstore.com
+                <Mail className="w-4 h-4 shrink-0" /> rjgroup@gmail.com
               </li>
               <li className="flex items-start gap-2 text-sm text-gray-500">
-                <MapPin className="w-4 h-4 shrink-0 mt-0.5" /> 123 Lubricant
-                Ave, Houston, TX 77001
+                <MapPin className="w-4 h-4 shrink-0 mt-0.5" /> 695/2/D, Manikdi
+                Road, ECB Chattar, Dhaka Cantorment, Dhaka-1206
               </li>
             </ul>
           </div>
@@ -123,20 +115,15 @@ export default function Footer() {
 
         <div className="border-t border-gray-200 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} MobilStore. All rights reserved.
+            &copy; {new Date().getFullYear()} aonelube. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link
-              href="/privacy"
+              href="https://www.inovixasoft.com/"
+              target="_blank"
               className="text-xs text-gray-400 hover:text-primary transition-colors"
             >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-xs text-gray-400 hover:text-primary transition-colors"
-            >
-              Terms of Service
+              Developed by <span className="text-primary">Inovixasoft</span>
             </Link>
           </div>
         </div>

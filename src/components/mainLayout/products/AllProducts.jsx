@@ -13,7 +13,10 @@ function getCategoryId(product) {
   return cat; // already a plain string ID
 }
 
-export default function AllProductsPage({ initialProducts = [], initialCategories = [] }) {
+export default function AllProductsPage({
+  initialProducts = [],
+  initialCategories = [],
+}) {
   const products = Array.isArray(initialProducts) ? initialProducts : [];
   const categories = Array.isArray(initialCategories) ? initialCategories : [];
 
@@ -31,7 +34,8 @@ export default function AllProductsPage({ initialProducts = [], initialCategorie
   const [sortBy, setSortBy] = useState("default");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  const priceStep = productMaxPrice > 1000 ? 100 : productMaxPrice > 100 ? 50 : 10;
+  const priceStep =
+    productMaxPrice > 1000 ? 100 : productMaxPrice > 100 ? 50 : 10;
 
   // Filtering & Sorting Logic
   const filteredProducts = useMemo(() => {
@@ -149,17 +153,21 @@ export default function AllProductsPage({ initialProducts = [], initialCategorie
           {/* Sidebar Filter - Desktop */}
           <aside className="hidden lg:block w-64 bg-white p-6 rounded-xl border border-gray-100 h-fit sticky top-24">
             <div className="flex justify-between items-center mb-5 pb-3 border-b border-gray-100">
-              <h3 className="font-bold text-gray-900 text-base">Filter Options</h3>
+              <h3 className="font-bold text-gray-900 text-base">
+                Filter Options
+              </h3>
               <button
                 onClick={resetFilters}
-                className="text-xs text-[#ED1C24] hover:underline font-medium"
+                className="text-xs text-primary hover:underline font-medium"
               >
                 Reset All
               </button>
             </div>
 
             <div className="mb-6">
-              <h4 className="text-sm font-bold text-gray-800 mb-3">Categories</h4>
+              <h4 className="text-sm font-bold text-gray-800 mb-3">
+                Categories
+              </h4>
               <div className="space-y-2">
                 <CategoryList onSelect={setSelectedCategoryId} />
               </div>
@@ -167,8 +175,7 @@ export default function AllProductsPage({ initialProducts = [], initialCategorie
 
             <div>
               <h4 className="text-sm font-bold text-gray-800 mb-2">
-                Max Price:{" "}
-                <span className="text-[#005CA9]">${maxPrice}</span>
+                Max Price: <span className="text-[#005CA9]">${maxPrice}</span>
               </h4>
               <input
                 type="range"
@@ -208,7 +215,10 @@ export default function AllProductsPage({ initialProducts = [], initialCategorie
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product._id || product.id} product={product} />
+                  <ProductCard
+                    key={product._id || product.id}
+                    product={product}
+                  />
                 ))}
               </div>
             )}
@@ -247,8 +257,7 @@ export default function AllProductsPage({ initialProducts = [], initialCategorie
 
               <div>
                 <h4 className="text-sm font-bold text-gray-800 mb-2">
-                  Max Price:{" "}
-                  <span className="text-[#005CA9]">${maxPrice}</span>
+                  Max Price: <span className="text-[#005CA9]">${maxPrice}</span>
                 </h4>
                 <input
                   type="range"
@@ -278,7 +287,7 @@ export default function AllProductsPage({ initialProducts = [], initialCategorie
               </button>
               <button
                 onClick={() => setIsMobileFilterOpen(false)}
-                className="flex-1 py-2 rounded-lg text-xs font-bold bg-[#ED1C24] text-white"
+                className="flex-1 py-2 rounded-lg text-xs font-bold bg-primary text-white"
               >
                 Apply
               </button>

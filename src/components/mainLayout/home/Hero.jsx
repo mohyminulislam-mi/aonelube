@@ -10,7 +10,8 @@ const sliderData = [
     id: 1,
     title: "Keep Your Engine Running Like New",
     subtitle: "Mobil 1™ Advanced Full Synthetic Motor Oil",
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=1920&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=1920&auto=format&fit=crop",
     ctaText: "Explore Products",
     ctaLink: "#",
   },
@@ -18,7 +19,8 @@ const sliderData = [
     id: 2,
     title: "Ultimate Performance for Heavy Duty",
     subtitle: "Mobil Delvac™ Commercial Vehicle Lubricants",
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1920&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1920&auto=format&fit=crop",
     ctaText: "Find Your Oil",
     ctaLink: "#",
   },
@@ -26,7 +28,8 @@ const sliderData = [
     id: 3,
     title: "Ride with Ultimate Confidence",
     subtitle: "Mobil Super™ Moto for Two-Wheelers",
-    image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1920&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1920&auto=format&fit=crop",
     ctaText: "View Offers",
     ctaLink: "#",
   },
@@ -64,7 +67,7 @@ export default function HeroSlider() {
   }, [nextSlide, isHovered]);
 
   return (
-    <div 
+    <div
       className="relative w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[460px] overflow-hidden group bg-gray-900"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -99,8 +102,8 @@ export default function HeroSlider() {
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   className="flex items-center space-x-2.5 mb-2 sm:mb-3"
                 >
-                  <span className="w-4 h-[2px] bg-[#ED1C24] shrink-0" />
-                  <span className="text-[#ED1C24] text-xs sm:text-sm lg:text-base font-bold tracking-widest uppercase">
+                  <span className="w-4 h-[2px] bg-primary shrink-0" />
+                  <span className="text-primary text-xs sm:text-sm lg:text-base font-bold tracking-widest uppercase">
                     {slide.subtitle}
                   </span>
                 </motion.div>
@@ -124,7 +127,7 @@ export default function HeroSlider() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   href={slide.ctaLink}
-                  className="bg-[#ED1C24] hover:bg-[#005CA9] text-white font-bold text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wider transition-all duration-300 ease-out shadow-[0_8px_24px_rgba(237,28,36,0.35)]"
+                  className="bg-primary hover:bg-[#005CA9] text-white font-bold text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wider transition-all duration-300 ease-out shadow-[0_8px_24px_rgba(237,28,36,0.35)]"
                 >
                   {slide.ctaText}
                 </motion.a>
@@ -156,8 +159,8 @@ export default function HeroSlider() {
             key={slideIndex}
             onClick={() => goToSlide(slideIndex)}
             className={`transition-all duration-300 rounded-full cursor-pointer ${
-              currentIndex === slideIndex 
-                ? "bg-[#ED1C24] w-6 h-2" 
+              currentIndex === slideIndex
+                ? "bg-primary w-6 h-2"
                 : "bg-white/60 hover:bg-white w-2 h-2"
             }`}
             aria-label={`Go to slide ${slideIndex + 1}`}

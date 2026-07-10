@@ -3,7 +3,9 @@ import Link from "next/link";
 
 export default function ProductCard({ product }) {
   const productSlug = product?.slug || product?._id || product?.id;
-  const productHref = productSlug ? `/products/${encodeURIComponent(productSlug)}` : "/products";
+  const productHref = productSlug
+    ? `/products/${encodeURIComponent(productSlug)}`
+    : "/products";
   const price = Number(product?.price || 0);
 
   return (
@@ -15,7 +17,9 @@ export default function ProductCard({ product }) {
       <div className="relative aspect-square bg-gray-50 overflow-hidden">
         <img
           src={
-            (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null) ||
+            (Array.isArray(product.images) && product.images.length > 0
+              ? product.images[0]
+              : null) ||
             product.image_url ||
             product.image ||
             "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"
@@ -44,7 +48,7 @@ export default function ProductCard({ product }) {
           <span className="text-base font-black text-[#005CA9]">
             ${price.toFixed(2)}
           </span>
-          <span className="bg-gray-950 group-hover:bg-[#ED1C24] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
+          <span className="bg-gray-950 group-hover:bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
             Add to Cart
           </span>
         </div>
