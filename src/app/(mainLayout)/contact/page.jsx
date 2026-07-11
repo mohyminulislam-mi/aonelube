@@ -27,7 +27,7 @@ export default function ContactPage() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ED1C24_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="max-w-4xl mx-auto relative z-10">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Get In <span className="text-[#ED1C24]">Touch</span>
+            Get In <span className="text-primary">Touch</span>
           </h1>
           <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
             Have questions about our premium German-engineered lubricants or
@@ -53,7 +53,7 @@ export default function ContactPage() {
 
             <div className="space-y-6">
               <div className="flex gap-4 items-start">
-                <div className="bg-[#ED1C24]/10 p-3 rounded-xl text-[#ED1C24] shrink-0">
+                <div className="bg-primary/10 p-3 rounded-xl text-primary shrink-0">
                   <Phone size={22} />
                 </div>
                 <div>
@@ -70,7 +70,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex gap-4 items-start">
-                <div className="bg-[#ED1C24]/10 p-3 rounded-xl text-[#ED1C24] shrink-0">
+                <div className="bg-primary/10 p-3 rounded-xl text-primary shrink-0">
                   <Mail size={22} />
                 </div>
                 <div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex gap-4 items-start">
-                <div className="bg-[#ED1C24]/10 p-3 rounded-xl text-[#ED1C24] shrink-0">
+                <div className="bg-primary/10 p-3 rounded-xl text-primary shrink-0">
                   <MapPin size={22} />
                 </div>
                 <div>
@@ -103,7 +103,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex gap-4 items-start">
-                <div className="bg-[#ED1C24]/10 p-3 rounded-xl text-[#ED1C24] shrink-0">
+                <div className="bg-primary/10 p-3 rounded-xl text-primary shrink-0">
                   <Clock size={22} />
                 </div>
                 <div>
@@ -124,7 +124,7 @@ export default function ContactPage() {
           {/* Right Column: Contact Form (3/5 span) */}
           <div className="lg:col-span-3 bg-slate-50 p-8 rounded-2xl border border-slate-100 shadow-sm">
             <div className="flex items-center gap-3 mb-6">
-              <MessageSquare className="text-[#ED1C24]" size={24} />
+              <MessageSquare className="text-primary" size={24} />
               <h3 className="text-xl font-bold text-slate-900">
                 Send us a Message
               </h3>
@@ -147,7 +147,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24] text-sm transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all"
                   />
                 </div>
                 <div>
@@ -165,7 +165,7 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="john@example.com"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24] text-sm transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all"
                   />
                 </div>
               </div>
@@ -185,7 +185,7 @@ export default function ContactPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder="Bulk order inquiry / Partnership / Support"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24] text-sm transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all"
                 />
               </div>
 
@@ -204,13 +204,13 @@ export default function ContactPage() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us how we can help you..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24] text-sm transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all resize-none"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-[#ED1C24] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-[#ED1C24]/10 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/10 flex items-center justify-center gap-2"
               >
                 <Send size={16} />
                 Send Message

@@ -26,41 +26,52 @@ function buildSpecRows(product) {
   const rows = [];
 
   // First add any explicit specifications array entries
-  if (Array.isArray(product?.specifications) && product.specifications.length > 0) {
+  if (
+    Array.isArray(product?.specifications) &&
+    product.specifications.length > 0
+  ) {
     product.specifications.forEach((s) => {
       if (s?.key && s?.value) {
-        rows.push({ label: String(s.key).replace(/_/g, " "), value: String(s.value) });
+        rows.push({
+          label: String(s.key).replace(/_/g, " "),
+          value: String(s.value),
+        });
       }
     });
   }
 
   // Then append root-level known fields that are not already shown
   const fieldMap = [
-    { key: "viscosity",        label: "Viscosity Grade" },
-    { key: "api_grade",        label: "API Grade" },
-    { key: "acea_grade",       label: "ACEA Grade" },
-    { key: "base_oil",         label: "Base Oil Type" },
-    { key: "volume",           label: "Volume" },
-    { key: "net_weight",       label: "Net Weight" },
-    { key: "capacity",         label: "Capacity" },
-    { key: "application",      label: "Application" },
-    { key: "flash_point",      label: "Flash Point" },
-    { key: "pour_point",       label: "Pour Point" },
-    { key: "density",          label: "Density" },
-    { key: "color",            label: "Color" },
-    { key: "origin",           label: "Country of Origin" },
-    { key: "certifications",   label: "Certifications" },
-    { key: "sae_class",        label: "SAE Class" },
-    { key: "model",            label: "Model" },
-    { key: "sku",              label: "SKU / Model No." },
-    { key: "barcode",          label: "Barcode" },
+    { key: "viscosity", label: "Viscosity Grade" },
+    { key: "api_grade", label: "API Grade" },
+    { key: "acea_grade", label: "ACEA Grade" },
+    { key: "base_oil", label: "Base Oil Type" },
+    { key: "volume", label: "Volume" },
+    { key: "net_weight", label: "Net Weight" },
+    { key: "capacity", label: "Capacity" },
+    { key: "application", label: "Application" },
+    { key: "flash_point", label: "Flash Point" },
+    { key: "pour_point", label: "Pour Point" },
+    { key: "density", label: "Density" },
+    { key: "color", label: "Color" },
+    { key: "origin", label: "Country of Origin" },
+    { key: "certifications", label: "Certifications" },
+    { key: "sae_class", label: "SAE Class" },
+    { key: "model", label: "Model" },
+    { key: "sku", label: "SKU / Model No." },
+    { key: "barcode", label: "Barcode" },
   ];
 
   const existingLabels = new Set(rows.map((r) => r.label.toLowerCase()));
 
   fieldMap.forEach(({ key, label }) => {
     const val = product?.[key];
-    if (val !== undefined && val !== null && val !== "" && !existingLabels.has(label.toLowerCase())) {
+    if (
+      val !== undefined &&
+      val !== null &&
+      val !== "" &&
+      !existingLabels.has(label.toLowerCase())
+    ) {
       rows.push({ label, value: String(val) });
     }
   });
@@ -68,14 +79,21 @@ function buildSpecRows(product) {
   // Add brand name from populated brand object
   const brandName =
     product?.brand?.name || product?.brand_name || product?.brand;
-  if (brandName && typeof brandName === "string" && !existingLabels.has("brand")) {
+  if (
+    brandName &&
+    typeof brandName === "string" &&
+    !existingLabels.has("brand")
+  ) {
     rows.unshift({ label: "Brand", value: brandName });
   }
 
   // Add category name from populated category object
-  const catName =
-    product?.category?.name || product?.category_name;
-  if (catName && typeof catName === "string" && !existingLabels.has("category")) {
+  const catName = product?.category?.name || product?.category_name;
+  if (
+    catName &&
+    typeof catName === "string" &&
+    !existingLabels.has("category")
+  ) {
     rows.unshift({ label: "Category", value: catName });
   }
 
@@ -101,11 +119,14 @@ export default function ProductDetails({ product }) {
 
   // Build image list — prefer `images[]` (Cloudinary), fall back to `image_url` / `image`
   const images = (() => {
-    if (Array.isArray(product?.images) && product.images.length > 0) return product.images;
+    if (Array.isArray(product?.images) && product.images.length > 0)
+      return product.images;
     const single = product?.image_url || product?.image;
     return single
       ? [single]
-      : ["https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"];
+      : [
+          "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600",
+        ];
   })();
 
   const categoryName =
@@ -125,22 +146,28 @@ export default function ProductDetails({ product }) {
   };
 
   const handleAddToCart = () => {
-    if (!product) return setActionError("Product details are not available right now.");
-    if (!inStock) return setActionError("This product is currently out of stock.");
+    if (!product)
+      return setActionError("Product details are not available right now.");
+    if (!inStock)
+      return setActionError("This product is currently out of stock.");
     setActionError("");
     setAdding(true);
     try {
       addToCart(product, quantity);
     } catch {
-      setActionError("We could not add the item to your cart. Please try again.");
+      setActionError(
+        "We could not add the item to your cart. Please try again.",
+      );
     } finally {
       setAdding(false);
     }
   };
 
   const handleBuyNow = () => {
-    if (!product) return setActionError("Product details are not available right now.");
-    if (!inStock) return setActionError("This product is currently out of stock.");
+    if (!product)
+      return setActionError("Product details are not available right now.");
+    if (!inStock)
+      return setActionError("This product is currently out of stock.");
     setActionError("");
     setAdding(true);
     try {
@@ -162,26 +189,33 @@ export default function ProductDetails({ product }) {
   return (
     <div className="bg-[#F8F9FA] min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
-
         {/* Breadcrumb */}
         <nav className="flex items-center text-xs text-gray-400 mb-6 gap-1 font-medium">
-          <a href="/" className="hover:text-[#005CA9] transition-colors">Home</a>
+          <a href="/" className="hover:text-[#005CA9] transition-colors">
+            Home
+          </a>
           <ChevronRight size={13} />
-          <a href="/products" className="hover:text-[#005CA9] transition-colors">Products</a>
+          <a
+            href="/products"
+            className="hover:text-[#005CA9] transition-colors"
+          >
+            Products
+          </a>
           <ChevronRight size={13} />
-          <span className="text-gray-600 truncate max-w-[200px]">{product?.name}</span>
+          <span className="text-gray-600 truncate max-w-[200px]">
+            {product?.name}
+          </span>
         </nav>
 
         {/* Main Card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-
             {/* ── Left: Image Gallery ── */}
             <div className="p-6 md:p-10 bg-gray-50 border-r border-gray-100 flex flex-col items-center gap-4">
               {/* Main Image */}
               <div className="relative w-full max-w-[480px] aspect-square rounded-xl overflow-hidden bg-white border border-gray-100 flex items-center justify-center group">
                 {discountPct && (
-                  <span className="absolute top-4 left-4 z-10 bg-[#ED1C24] text-white text-xs font-black px-2.5 py-1 rounded-full shadow">
+                  <span className="absolute top-4 left-4 z-10 bg-primary text-white text-xs font-black px-2.5 py-1 rounded-full shadow">
                     {discountPct}% OFF
                   </span>
                 )}
@@ -210,7 +244,11 @@ export default function ProductDetails({ product }) {
                           : "border-gray-200 hover:border-gray-400"
                       }`}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={img}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
                     </button>
                   ))}
                 </div>
@@ -219,7 +257,6 @@ export default function ProductDetails({ product }) {
 
             {/* ── Right: Product Info ── */}
             <div className="p-6 md:p-10 flex flex-col gap-6">
-
               {/* Top Meta Row */}
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-bold text-[#005CA9] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-widest">
@@ -244,7 +281,9 @@ export default function ProductDetails({ product }) {
                     <Star key={i} size={15} className="fill-current" />
                   ))}
                 </div>
-                <span className="text-sm font-semibold text-gray-700">(4.8)</span>
+                <span className="text-sm font-semibold text-gray-700">
+                  (4.8)
+                </span>
                 <span className="text-gray-300">|</span>
                 <span className="text-sm text-[#005CA9] font-medium hover:underline cursor-pointer">
                   Verified Reviews
@@ -271,11 +310,15 @@ export default function ProductDetails({ product }) {
                       ৳{(compareAtPrice * quantity).toLocaleString()}
                     </span>
                   )}
-                  <span className="text-xs text-gray-400 font-medium mb-1">(Total Price)</span>
+                  <span className="text-xs text-gray-400 font-medium mb-1">
+                    (Total Price)
+                  </span>
                 </div>
                 {hasDiscount && (
                   <p className="text-xs text-emerald-600 font-semibold mt-1">
-                    You save ৳{((compareAtPrice - price) * quantity).toLocaleString()} ({discountPct}% off)
+                    You save ৳
+                    {((compareAtPrice - price) * quantity).toLocaleString()} (
+                    {discountPct}% off)
                   </p>
                 )}
               </div>
@@ -308,7 +351,9 @@ export default function ProductDetails({ product }) {
 
               {/* Quantity Selector */}
               <div className="flex items-center gap-4">
-                <span className="text-sm font-bold text-gray-700">Quantity:</span>
+                <span className="text-sm font-bold text-gray-700">
+                  Quantity:
+                </span>
                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white shadow-xs">
                   <button
                     onClick={() => handleQuantityChange("dec")}
@@ -341,14 +386,16 @@ export default function ProductDetails({ product }) {
                 <button
                   disabled={!inStock || adding}
                   onClick={handleBuyNow}
-                  className="flex-1 bg-[#ED1C24] hover:bg-[#c8161d] disabled:bg-gray-300 text-white py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-sm active:scale-95"
+                  className="flex-1 bg-primary hover:bg-[#c8161d] disabled:bg-gray-300 text-white py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-sm active:scale-95"
                 >
                   {adding ? "Processing…" : "Buy Now"}
                 </button>
               </div>
 
               {actionError && (
-                <p className="text-sm font-medium text-red-600">{actionError}</p>
+                <p className="text-sm font-medium text-red-600">
+                  {actionError}
+                </p>
               )}
 
               {/* Trust Badges */}
@@ -358,7 +405,10 @@ export default function ProductDetails({ product }) {
                   { icon: Truck, label: "Fast Delivery" },
                   { icon: RefreshCw, label: "Easy Returns" },
                 ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex flex-col items-center gap-1.5 text-center">
+                  <div
+                    key={label}
+                    className="flex flex-col items-center gap-1.5 text-center"
+                  >
                     <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center">
                       <Icon size={16} className="text-[#005CA9]" />
                     </div>
@@ -393,34 +443,50 @@ export default function ProductDetails({ product }) {
 
             {/* Tab Content */}
             <div className="px-6 md:px-10 py-8">
-
               {/* Description Tab */}
               {activeTab === "description" && (
                 <div className="max-w-3xl">
-                  <h3 className="text-lg font-black text-gray-900 mb-4">Product Description</h3>
+                  <h3 className="text-lg font-black text-gray-900 mb-4">
+                    Product Description
+                  </h3>
                   <div className="prose prose-sm text-gray-600 leading-relaxed max-w-none">
-                    <p>{product?.description || "No description available for this product."}</p>
+                    <p>
+                      {product?.description ||
+                        "No description available for this product."}
+                    </p>
                   </div>
-                  {product?.features && Array.isArray(product.features) && product.features.length > 0 && (
-                    <div className="mt-6">
-                      <h4 className="text-sm font-black text-gray-800 mb-3 uppercase tracking-wider">Key Features</h4>
-                      <ul className="space-y-2">
-                        {product.features.map((f, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                            <CheckCircle2 size={15} className="text-[#005CA9] mt-0.5 shrink-0" />
-                            <span>{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {product?.features &&
+                    Array.isArray(product.features) &&
+                    product.features.length > 0 && (
+                      <div className="mt-6">
+                        <h4 className="text-sm font-black text-gray-800 mb-3 uppercase tracking-wider">
+                          Key Features
+                        </h4>
+                        <ul className="space-y-2">
+                          {product.features.map((f, i) => (
+                            <li
+                              key={i}
+                              className="flex items-start gap-2 text-sm text-gray-600"
+                            >
+                              <CheckCircle2
+                                size={15}
+                                className="text-[#005CA9] mt-0.5 shrink-0"
+                              />
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                 </div>
               )}
 
               {/* Specifications Tab */}
               {activeTab === "specifications" && (
                 <div className="max-w-3xl">
-                  <h3 className="text-lg font-black text-gray-900 mb-5">Technical Specifications</h3>
+                  <h3 className="text-lg font-black text-gray-900 mb-5">
+                    Technical Specifications
+                  </h3>
                   {specRows.length > 0 ? (
                     <div className="border border-gray-100 rounded-xl overflow-hidden text-sm">
                       {/* Header */}
@@ -436,8 +502,12 @@ export default function ProductDetails({ product }) {
                             i % 2 === 0 ? "bg-white" : "bg-gray-50"
                           }`}
                         >
-                          <span className="font-semibold text-gray-700 capitalize">{row.label}</span>
-                          <span className="text-gray-600 capitalize">{row.value}</span>
+                          <span className="font-semibold text-gray-700 capitalize">
+                            {row.label}
+                          </span>
+                          <span className="text-gray-600 capitalize">
+                            {row.value}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -458,25 +528,48 @@ export default function ProductDetails({ product }) {
               {/* Reviews Tab */}
               {activeTab === "reviews" && (
                 <div className="max-w-2xl">
-                  <h3 className="text-lg font-black text-gray-900 mb-5">Customer Reviews</h3>
+                  <h3 className="text-lg font-black text-gray-900 mb-5">
+                    Customer Reviews
+                  </h3>
                   {/* Rating Summary */}
                   <div className="flex items-center gap-6 p-5 bg-gray-50 rounded-xl border border-gray-100 mb-6">
                     <div className="text-center">
-                      <div className="text-5xl font-black text-gray-900">4.8</div>
-                      <div className="flex text-[#FFB300] justify-center mt-1">
-                        {[...Array(5)].map((_, i) => <Star key={i} size={14} className="fill-current" />)}
+                      <div className="text-5xl font-black text-gray-900">
+                        4.8
                       </div>
-                      <div className="text-xs text-gray-400 mt-1 font-medium">Verified Rating</div>
+                      <div className="flex text-[#FFB300] justify-center mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={14} className="fill-current" />
+                        ))}
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1 font-medium">
+                        Verified Rating
+                      </div>
                     </div>
                     <div className="flex-1 space-y-1.5">
                       {[5, 4, 3, 2, 1].map((n) => (
-                        <div key={n} className="flex items-center gap-2 text-xs text-gray-500">
+                        <div
+                          key={n}
+                          className="flex items-center gap-2 text-xs text-gray-500"
+                        >
                           <span className="w-3 text-right">{n}</span>
-                          <Star size={10} className="fill-[#FFB300] text-[#FFB300]" />
+                          <Star
+                            size={10}
+                            className="fill-[#FFB300] text-[#FFB300]"
+                          />
                           <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-[#FFB300] rounded-full"
-                              style={{ width: n === 5 ? "72%" : n === 4 ? "18%" : n === 3 ? "7%" : "2%" }}
+                              style={{
+                                width:
+                                  n === 5
+                                    ? "72%"
+                                    : n === 4
+                                      ? "18%"
+                                      : n === 3
+                                        ? "7%"
+                                        : "2%",
+                              }}
                             />
                           </div>
                         </div>
@@ -490,7 +583,6 @@ export default function ProductDetails({ product }) {
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>

@@ -30,7 +30,6 @@ function normalizeCategories(payload) {
   return [];
 }
 
-
 export default function Header() {
   const router = useRouter();
   const { cartItems } = useCart();
@@ -49,7 +48,9 @@ export default function Header() {
       try {
         const data = await getCategories();
         const normalized = normalizeCategories(data);
-        normalized.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+        normalized.sort(
+          (a, b) => (a.display_order || 0) - (b.display_order || 0),
+        );
         setCategories(normalized);
       } catch (error) {
         console.error("Failed to load header categories:", error);
@@ -72,7 +73,10 @@ export default function Header() {
     if (!isAccountMenuOpen) return;
 
     const handleClickOutside = (event) => {
-      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target)
+      ) {
         setIsAccountMenuOpen(false);
       }
     };
@@ -86,7 +90,9 @@ export default function Header() {
     setIsMobileMenuOpen(false);
   };
 
-  const userInitial = (user?.name || user?.email || "U").charAt(0).toUpperCase();
+  const userInitial = (user?.name || user?.email || "U")
+    .charAt(0)
+    .toUpperCase();
 
   return (
     <section className="w-full bg-white shadow-sm sticky top-0 z-50 font-sans">
@@ -96,7 +102,14 @@ export default function Header() {
           {/* Brand Logos */}
           <div className="flex items-center space-x-4 shrink-0">
             <Link href="/">
-            <Image src='/logo.png' width={130} height={40} style={{ height: "auto" }} priority alt="Aonelube" />
+              <Image
+                src="/logo.png"
+                width={130}
+                height={40}
+                style={{ height: "auto" }}
+                priority
+                alt="Aonelube"
+              />
             </Link>
           </div>
 
@@ -108,7 +121,7 @@ export default function Header() {
                 placeholder="Search"
                 className="w-full bg-[#F2F4F7] text-gray-700 pl-4 pr-10 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#005CA9] transition-all"
               />
-              <Search className="absolute right-3 top-2.5 h-5 w-5 text-[#ED1C24] cursor-pointer" />
+              <Search className="absolute right-3 top-2.5 h-5 w-5 text-primary cursor-pointer" />
             </div>
           </div>
 
@@ -120,9 +133,9 @@ export default function Header() {
                 <div className="relative">
                   <button
                     onClick={() => setIsAccountMenuOpen((prev) => !prev)}
-                    className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-2.5 py-2 shadow-sm transition hover:border-[#005CA9]/30 hover:shadow-md"
+                    className="flex items-center gap-2 cursor-pointer rounded-full border border-gray-200 bg-white px-2.5 py-2 shadow-sm transition hover:border-[#005CA9]/30 hover:shadow-md"
                   >
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#ED1C24] text-sm font-black text-white">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-black text-white">
                       {userInitial}
                     </div>
                     <span className="hidden xl:block text-sm font-semibold text-gray-700">
@@ -146,7 +159,9 @@ export default function Header() {
                           <p className="text-sm font-semibold text-gray-900">
                             {user.name || "User"}
                           </p>
-                          <p className="mt-0.5 text-xs text-gray-500">{user.email}</p>
+                          <p className="mt-0.5 text-xs text-gray-500">
+                            {user.email}
+                          </p>
                         </div>
                         <div className="my-2 h-px bg-gray-200" />
                         <button
@@ -154,9 +169,9 @@ export default function Header() {
                             setIsAccountMenuOpen(false);
                             router.push("/dashboard");
                           }}
-                          className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                          className="flex w-full items-center cursor-pointer gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                         >
-                          <LayoutDashboard className="h-4 w-4 text-[#005CA9]" />
+                          <LayoutDashboard className="h-4 w-4 text-primary" />
                           My Dashboard
                         </button>
                         <button
@@ -164,9 +179,9 @@ export default function Header() {
                             setIsAccountMenuOpen(false);
                             router.push("/dashboard/my-orders");
                           }}
-                          className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                          className="flex w-full items-center cursor-pointer gap-2 rounded-xl px-2 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                         >
-                          <Package className="h-4 w-4 text-[#005CA9]" />
+                          <Package className="h-4 w-4 text-primary" />
                           My Orders
                         </button>
                         <div className="my-2 h-px bg-gray-200" />
@@ -176,7 +191,7 @@ export default function Header() {
                             await logout();
                             router.push("/");
                           }}
-                          className="flex w-full items-center gap-2 rounded-xl px-2 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                          className="flex w-full items-center cursor-pointer gap-2 rounded-xl px-2 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
                         >
                           <LogOut className="h-4 w-4" />
                           Logout
@@ -189,14 +204,14 @@ export default function Header() {
                 <div className="flex items-center gap-2">
                   <Link
                     href="/login"
-                    className="inline-flex items-center gap-2 rounded-full border border-[#005CA9]/20 bg-white px-3 py-2 text-sm font-semibold text-[#005CA9] transition duration-200 hover:border-[#ED1C24] hover:bg-[#ED1C24] hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-full border border-primary bg-white px-3 py-2 text-sm font-semibold text-primary transition duration-200 hover:border-primary hover:bg-primary hover:text-white"
                   >
                     <LogIn className="h-4 w-4" />
                     Login
                   </Link>
                   <Link
                     href="/register"
-                    className="inline-flex items-center rounded-full bg-[#ED1C24] px-3 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-[#d1171e]"
+                    className="inline-flex items-center rounded-full bg-primary px-3 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-[#d1171e]"
                   >
                     Register
                   </Link>
@@ -207,24 +222,24 @@ export default function Header() {
             {/* Cart */}
             <Link
               href="/cart"
-              className="relative p-2 bg-[#ED1C24] cursor-pointer hover:bg-[#d1171e] rounded-lg transition-colors"
+              className="relative p-2 bg-primary cursor-pointer hover:bg-[#d1171e] rounded-lg transition-colors"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-5 h-5 text-white" />
               {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 bg-[#62090c] text-accent-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
             </Link>
 
             {/* Hotline Button */}
-            <a
-              href="tel:16669"
-              className="bg-[#ED1C24] hover:bg-[#d1171e] text-white px-4 py-2.5 rounded-full flex items-center space-x-2 shadow-sm font-bold text-sm transition-all shrink-0"
+            <Link
+              href="tel:+8801850120709"
+              className="bg-primary hover:bg-[#d1171e] text-white px-4 py-2.5 rounded-full flex items-center space-x-2 shadow-sm font-bold text-sm transition-all shrink-0"
             >
               <Phone className="h-4 w-4 fill-white" />
-              <span>16669</span>
-            </a>
+              <span>Call Us</span>
+            </Link>
 
             {/* Mobile Menu Toggle */}
             <button
@@ -293,7 +308,7 @@ export default function Header() {
               placeholder="Search products..."
               className="w-full bg-[#F2F4F7] text-gray-700 pl-4 pr-10 py-2 rounded-lg text-sm focus:outline-none"
             />
-            <Search className="absolute right-3 top-2.5 h-4 w-4 text-[#ED1C24]" />
+            <Search className="absolute right-3 top-2.5 h-4 w-4 text-primary" />
           </div>
 
           {/* Mobile User Profile */}
@@ -301,7 +316,7 @@ export default function Header() {
             {user ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ED1C24] text-sm font-black text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-black text-white">
                     {userInitial}
                   </div>
                   <div>
@@ -358,7 +373,7 @@ export default function Header() {
                 <Link
                   href="/register"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex w-full items-center justify-center rounded-lg bg-[#ED1C24] px-3 py-2.5 text-sm font-semibold text-white"
+                  className="flex w-full items-center justify-center rounded-lg bg-primary px-3 py-2.5 text-sm font-semibold text-white"
                 >
                   Register
                 </Link>

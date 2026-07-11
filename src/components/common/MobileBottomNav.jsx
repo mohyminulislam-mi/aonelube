@@ -44,7 +44,7 @@ export default function MobileBottomNav() {
                 className={`
                   flex flex-col items-center justify-center h-full gap-0.5 px-1
                   transition-all duration-150 active:scale-95
-                  ${active ? "text-[#ED1C24]" : "text-gray-500 hover:text-gray-700"}
+                  ${active ? "text-primary" : "text-gray-500 hover:text-gray-700"}
                 `}
               >
                 {/* Icon with optional cart badge */}
@@ -55,7 +55,7 @@ export default function MobileBottomNav() {
                     style={{ color: active ? BRAND_RED : undefined }}
                   />
                   {badge > 0 && (
-                    <span className="absolute -top-1.5 -right-2 min-w-[17px] h-[17px] flex items-center justify-center rounded-full bg-[#ED1C24] text-white text-[10px] font-bold leading-none px-0.5">
+                    <span className="absolute -top-1.5 -right-2 min-w-[17px] h-[17px] flex items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold leading-none px-0.5">
                       {badge > 99 ? "99+" : badge}
                     </span>
                   )}

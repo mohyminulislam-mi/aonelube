@@ -3,7 +3,9 @@ import Link from "next/link";
 
 export default function ProductCard({ product }) {
   const productSlug = product?.slug || product?._id || product?.id;
-  const productHref = productSlug ? `/products/${encodeURIComponent(productSlug)}` : "/products";
+  const productHref = productSlug
+    ? `/products/${encodeURIComponent(productSlug)}`
+    : "/products";
   const price = Number(product?.price || 0);
 
   return (
@@ -20,7 +22,9 @@ export default function ProductCard({ product }) {
 
         <img
           src={
-            (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null) ||
+            (Array.isArray(product.images) && product.images.length > 0
+              ? product.images[0]
+              : null) ||
             product.image_url ||
             product.image ||
             "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"
@@ -42,7 +46,7 @@ export default function ProductCard({ product }) {
           <h3 className="text-xs sm:text-sm font-extrabold text-gray-800 group-hover:text-[#005CA9] transition-colors mt-1 line-clamp-2 leading-snug">
             {product.name}
           </h3>
-          
+
           {/* Star Rating */}
           <div className="flex items-center gap-1 mt-1.5">
             <div className="flex text-amber-400">
@@ -79,8 +83,7 @@ export default function ProductCard({ product }) {
           <span className="text-sm sm:text-base font-black text-[#005CA9]">
             ${price.toFixed(2)}
           </span>
-          {/* Desktop Buy Button */}
-          <span className="hidden sm:inline-block bg-gray-950 group-hover:bg-[#ED1C24] text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors duration-200">
+          <span className="bg-gray-950 group-hover:bg-[#ED1C24] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
             Add to Cart
           </span>
           {/* Mobile Icon Button */}
