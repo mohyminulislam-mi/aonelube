@@ -174,6 +174,7 @@ export default function ProductsPage() {
                     <th className="px-4 py-3 font-medium">Category</th>
                     <th className="px-4 py-3 font-medium">Price</th>
                     <th className="px-4 py-3 font-medium">Stock</th>
+                    <th className="px-4 py-3 font-medium">Divisions</th>
                     <th className="px-4 py-3 font-medium">Status</th>
                     <th className="px-4 py-3 font-medium text-right">Actions</th>
                   </tr>
@@ -211,6 +212,24 @@ export default function ProductsPage() {
                           )}
                         </td>
                         <td className="px-4 py-3 text-slate-600">{product.stock}</td>
+                        <td className="px-4 py-3">
+                          {!product.availableDivisions || product.availableDivisions.length === 0 ? (
+                            <span className="rounded-full bg-green-100 text-green-700 px-2.5 py-1 text-xs font-medium">
+                              All Divisions
+                            </span>
+                          ) : (
+                            <div className="flex flex-wrap gap-1">
+                              {product.availableDivisions.map((division) => (
+                                <span
+                                  key={division}
+                                  className="rounded-full bg-slate-100 text-slate-600 px-2 py-0.5 text-xs font-medium"
+                                >
+                                  {division}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </td>
                         <td className="px-4 py-3">
                           <span
                             className={`rounded-full px-2.5 py-1 text-xs font-medium ${
@@ -291,6 +310,26 @@ export default function ProductsPage() {
                           </div>
                           <div>Stock: {product.stock}</div>
                         </div>
+
+                        <div className="mt-2.5">
+                          {!product.availableDivisions || product.availableDivisions.length === 0 ? (
+                            <span className="inline-block rounded-full bg-green-100 text-green-700 px-2 py-0.5 text-xs font-medium">
+                              All Divisions
+                            </span>
+                          ) : (
+                            <div className="flex flex-wrap gap-1">
+                              {product.availableDivisions.map((division) => (
+                                <span
+                                  key={division}
+                                  className="rounded-full bg-slate-100 text-slate-600 px-2 py-0.5 text-xs font-medium"
+                                >
+                                  {division}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
                         <div className="mt-4 flex gap-2">
                           <Link
                             href={`/dashboard/products/edit/${productId}`}

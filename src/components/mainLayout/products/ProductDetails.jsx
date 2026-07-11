@@ -280,6 +280,27 @@ export default function ProductDetails({ product }) {
                 )}
               </div>
 
+              {/* Available Divisions */}
+              <div className="flex items-center gap-2 text-sm text-gray-600 bg-slate-50 border border-gray-100 rounded-xl px-4 py-2.5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-4 h-4 text-[#005CA9] shrink-0"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+                <span className="font-bold text-gray-800">Available In:</span>
+                <span className="text-gray-600 font-medium">
+                  {!product?.availableDivisions || product.availableDivisions.length === 0
+                    ? "All Divisions (Nationwide)"
+                    : product.availableDivisions.join(", ")}
+                </span>
+              </div>
+
               {/* Short Description */}
               <p className="text-gray-500 text-sm leading-relaxed border-l-4 border-[#005CA9]/20 pl-4">
                 {product?.description}

@@ -132,7 +132,7 @@ export default function PopularSearches() {
         </div>
 
         {/* 5-Column Responsive Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           {categories.map((category) => {
             const categoryId = category.id || category._id;
             const categoryLink = `/products/category/${category.slug}`;
@@ -141,7 +141,7 @@ export default function PopularSearches() {
               <a
                 key={categoryId}
                 href={categoryLink}
-                className="bg-white rounded-xl border border-gray-100 shadow-xs hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col group"
+                className="bg-white rounded-2xl border border-gray-150/70 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col group"
               >
                 {/* Category Image Wrapper */}
                 <div className="relative aspect-[4/3] w-full bg-gray-50 overflow-hidden">
@@ -154,13 +154,13 @@ export default function PopularSearches() {
                 </div>
 
                 {/* Category Footer Content */}
-                <div className="p-4 flex flex-col justify-between flex-grow bg-white">
-                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#005CA9] transition-colors line-clamp-1">
+                <div className="p-3 sm:p-4 flex flex-col justify-between flex-grow bg-white">
+                  <h3 className="text-xs sm:text-sm font-extrabold text-gray-900 group-hover:text-[#005CA9] transition-colors line-clamp-1">
                     {category.name}
                   </h3>
 
                   {/* View All Text Link with Arrow */}
-                  <span className="inline-flex items-center text-xs font-medium text-gray-400 mt-2 group-hover:text-[#005CA9] transition-colors">
+                  <span className="inline-flex items-center text-[10px] sm:text-xs font-semibold text-gray-400 mt-2 group-hover:text-[#005CA9] transition-colors">
                     View all
                     <ArrowRight className="h-3 w-3 ml-1 transform group-hover:translate-x-1 transition-transform" />
                   </span>

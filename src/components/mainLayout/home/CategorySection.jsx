@@ -94,7 +94,7 @@ export default function CategorySection({ category, products }) {
 
       {/* Product Grid below banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
           {displayedProducts.map((product) => (
             <ProductCard key={product._id || product.id} product={product} />
           ))}

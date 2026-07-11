@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { ImagePlus, Loader2, Plus, Trash2, UploadCloud } from "lucide-react";
 import RoleGuard from "@/components/dashboard/RoleGuard";
 import { updateProduct, getCategories, getProductDetail } from "@/lib/api";
+import { DIVISIONS } from "@/lib/bangladeshData";
 
 function normalizeCategories(payload) {
   if (Array.isArray(payload)) return payload;
@@ -28,6 +29,7 @@ export default function EditProductPage() {
   const [existingImages, setExistingImages] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedDivisions, setSelectedDivisions] = useState([]);
   const fileInputRef = useRef(null);
 
   const {
@@ -115,6 +117,7 @@ export default function EditProductPage() {
           isExisting: true,
         }));
         setImagePreviews(previews);
+        setSelectedDivisions(Array.isArray(product.availableDivisions) ? product.availableDivisions : []);
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -198,6 +201,7 @@ export default function EditProductPage() {
       formData.append("compareAtPrice", data.compareAtPrice || "");
       formData.append("stock", data.stock);
       formData.append("featured", data.featured ? "true" : "false");
+      formData.append('availableDivisions', JSON.stringify(selectedDivisions));
 
       const specsArray = (data.specifications || [])
         .filter(f => f?.key?.trim() && f?.value?.trim())
@@ -344,6 +348,32 @@ export default function EditProductPage() {
                 Mark as featured product
               </label>
             </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-700">Available Divisions</label>
+            <div className="flex flex-wrap gap-4 rounded-2xl border border-gray-200 p-4">
+              {DIVISIONS.map((division) => (
+                <label key={division} className="flex items-center gap-2 cursor-pointer text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={selectedDivisions.includes(division)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedDivisions([...selectedDivisions, division]);
+                      } else {
+                        setSelectedDivisions(selectedDivisions.filter((d) => d !== division));
+                      }
+                    }}
+                    className="h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
+                  />
+                  {division}
+                </label>
+              ))}
+            </div>
+            <p className="mt-1 text-xs text-slate-500">
+              Leave all unchecked = available in all divisions (this is just informational, it will not hide the product from anyone)
+            </p>
           </div>
 
           <div>
