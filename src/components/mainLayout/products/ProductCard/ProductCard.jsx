@@ -1,12 +1,24 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
-export default function ProductCard({ product }) {
+const BLUR_PLACEHOLDER =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
+
+export default function ProductCard({ product, priority = false }) {
   const productSlug = product?.slug || product?._id || product?.id;
   const productHref = productSlug
     ? `/products/${encodeURIComponent(productSlug)}`
     : "/products";
   const price = Number(product?.price || 0);
+
+  const imageSrc =
+    (Array.isArray(product.images) && product.images.length > 0
+      ? product.images[0]
+      : null) ||
+    product.image_url ||
+    product.image ||
+    "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600";
 
   return (
     <Link
@@ -20,18 +32,15 @@ export default function ProductCard({ product }) {
           German Quality
         </div>
 
-        <img
-          src={
-            (Array.isArray(product.images) && product.images.length > 0
-              ? product.images[0]
-              : null) ||
-            product.image_url ||
-            product.image ||
-            "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"
-          }
+        <Image
+          src={imageSrc}
           alt={product.name}
-          loading="lazy"
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
+          priority={priority}
+          className="object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
       </div>
 
@@ -83,17 +92,16 @@ export default function ProductCard({ product }) {
           <span className="text-sm sm:text-base font-black text-[#005CA9]">
             ${price.toFixed(2)}
           </span>
-          <span className="bg-gray-950 group-hover:bg-[#ED1C24] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
-            Add to Cart
-          </span>
-          {/* Mobile Icon Button */}
-          <span className="inline-block sm:hidden bg-gray-950 group-hover:bg-[#ED1C24] text-white p-1.5 rounded-lg transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-4 h-4">
+          {/* Single responsive cart button: icon-only on mobile, icon+text on desktop */}
+          <span className="flex items-center gap-1.5 bg-gray-950 group-hover:bg-[#ED1C24] text-white text-xs font-bold px-2 py-1.5 sm:px-3 rounded-lg transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-3.5 h-3.5 shrink-0">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
             </svg>
+            <span className="hidden sm:inline">Add to Cart</span>
           </span>
         </div>
       </div>
     </Link>
   );
 }
+

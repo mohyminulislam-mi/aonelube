@@ -8,6 +8,26 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL:
       process.env.NEXT_PUBLIC_API_URL || "https://aonelube-server.vercel.app",
   },
+
+  images: {
+    remotePatterns: [
+      {
+        // Unsplash — used for hero slides, category banners, and product fallback images
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        // Cloudinary — used for uploaded product/category images from the backend
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        // Pexels — existing product images referenced in the project
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
