@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { ImagePlus, Loader2, PencilLine, Trash2, UploadCloud } from "lucide-react";
+import { ImagePlus, Loader2, PencilLine, Trash2, UploadCloud, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import RoleGuard from "@/components/dashboard/RoleGuard";
 import { createCategory, deleteCategory, getCategories, updateCategory } from "@/lib/api";
 
@@ -35,7 +36,7 @@ function getCategoryImage(category) {
 }
 
 
-function CategoryForm({ editingCategory, onSuccess, onCancel }) {
+function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -161,7 +162,14 @@ function CategoryForm({ editingCategory, onSuccess, onCancel }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-3xl border border-red-100 bg-white p-5 shadow-sm">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={`space-y-4 ${
+        isInModal
+          ? ""
+          : "rounded-3xl border border-red-100 bg-white p-5 shadow-sm"
+      }`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-slate-800">
@@ -171,7 +179,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel }) {
             {editingCategory ? "Update the category details below." : "Add a new product category to the storefront."}
           </p>
         </div>
-        {editingCategory ? (
+        {editingCategory && !isInModal ? (
           <button
             type="button"
             onClick={onCancel}
@@ -430,13 +438,45 @@ export default function CategoriesPage() {
         </div>
 
         <CategoryForm
-          editingCategory={editingCategory}
+          editingCategory={null}
           onSuccess={() => {
-            setEditingCategory(null);
             loadCategories();
           }}
-          onCancel={() => setEditingCategory(null)}
         />
+
+        {/* Edit Category Modal */}
+        <AnimatePresence>
+          {editingCategory && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[28px] border border-gray-100 bg-white p-6 shadow-2xl"
+              >
+                {/* Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setEditingCategory(null)}
+                  className="absolute top-6 right-6 p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer z-10"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
+                <CategoryForm
+                  editingCategory={editingCategory}
+                  isInModal={true}
+                  onSuccess={() => {
+                    setEditingCategory(null);
+                    loadCategories();
+                  }}
+                  onCancel={() => setEditingCategory(null)}
+                />
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">

@@ -20,10 +20,12 @@ export default function ProfilePage() {
       reset({
         name: user.name || "",
         phone: user.phone || "",
-        "address.street": user.address?.street || "",
-        "address.city": user.address?.city || "",
-        "address.postalCode": user.address?.postalCode || "",
-        "address.country": user.address?.country || "",
+        address: {
+          street: user.address?.street || "",
+          city: user.address?.city || "",
+          postalCode: user.address?.postalCode || "",
+          country: user.address?.country || "",
+        },
       });
     }
   }, [user, reset]);
@@ -34,10 +36,10 @@ export default function ProfilePage() {
         name: data.name,
         phone: data.phone,
         address: {
-          street: data["address.street"],
-          city: data["address.city"],
-          postalCode: data["address.postalCode"],
-          country: data["address.country"],
+          street: data.address?.street || "",
+          city: data.address?.city || "",
+          postalCode: data.address?.postalCode || "",
+          country: data.address?.country || "",
         },
       });
       Swal.fire({

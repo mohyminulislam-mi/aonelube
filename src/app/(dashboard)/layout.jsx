@@ -129,10 +129,10 @@ export default function DashboardLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-slate-800">
-      <div className="flex min-h-screen flex-col md:flex-row">
+    <div className="h-screen overflow-hidden bg-[#F8F9FA] text-slate-800">
+      <div className="flex h-full flex-col md:flex-row">
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-72 border-r border-red-100 bg-white/95 shadow-sm backdrop-blur transition-transform duration-200 md:static md:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-40 w-72 border-r border-red-100 bg-white/95 shadow-sm backdrop-blur transition-transform duration-200 md:sticky md:top-0 md:h-screen md:translate-x-0 ${
             mobileOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -230,7 +230,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </aside>
 
-        <div className="flex-1">
+        <div className="flex h-full flex-1 flex-col overflow-y-auto">
           <header className="border-b border-red-100 bg-white/90 px-4 py-4 shadow-sm backdrop-blur md:hidden">
             <div className="flex items-center justify-between">
               <div>

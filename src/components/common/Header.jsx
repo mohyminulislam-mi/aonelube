@@ -17,7 +17,7 @@ import {
   Package,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 import Image from "next/image";
@@ -42,6 +42,27 @@ export default function Header() {
   const pathname = usePathname();
   const [categories, setCategories] = useState([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  const searchParams = useSearchParams();
+  const searchParamQuery = searchParams ? searchParams.get("search") || "" : "";
+  const [searchVal, setSearchVal] = useState(searchParamQuery);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setSearchVal(searchParamQuery);
+    }, 0);
+    return () => clearTimeout(t);
+  }, [searchParamQuery]);
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    if (searchVal.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchVal.trim())}`);
+    } else {
+      router.push("/products");
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   useEffect(() => {
     async function loadCategories() {
@@ -114,16 +135,23 @@ export default function Header() {
           </div>
 
           {/* Search Bar - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-md mx-4">
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-4">
             <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search"
+                value={searchVal}
+                onChange={(e) => setSearchVal(e.target.value)}
                 className="w-full bg-[#F2F4F7] text-gray-700 pl-4 pr-10 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#005CA9] transition-all"
               />
-              <Search className="absolute right-3 top-2.5 h-5 w-5 text-primary cursor-pointer" />
+              <button
+                type="submit"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer flex items-center justify-center text-primary"
+              >
+                <Search className="h-5 w-5" />
+              </button>
             </div>
-          </div>
+          </form>
 
           {/* Right Side Actions (User, Cart, Hotline, Mobile Toggle) */}
           <div className="flex items-center space-x-3 lg:space-x-6">
@@ -302,14 +330,21 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="xl:hidden border-t border-gray-200 bg-white px-4 pt-4 pb-6 space-y-4 shadow-inner">
           {/* Mobile Search */}
-          <div className="relative w-full md:hidden">
+          <form onSubmit={handleSearch} className="relative w-full md:hidden">
             <input
               type="text"
               placeholder="Search products..."
+              value={searchVal}
+              onChange={(e) => setSearchVal(e.target.value)}
               className="w-full bg-[#F2F4F7] text-gray-700 pl-4 pr-10 py-2 rounded-lg text-sm focus:outline-none"
             />
-            <Search className="absolute right-3 top-2.5 h-4 w-4 text-primary" />
-          </div>
+            <button
+              type="submit"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer flex items-center justify-center text-primary"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+          </form>
 
           {/* Mobile User Profile */}
           <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 lg:hidden">

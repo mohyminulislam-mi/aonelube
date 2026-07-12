@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import ProductCard from "./ProductCard/ProductCard";
+import { useSearchParams } from "next/navigation";
 
 // Resolve category ID from a product regardless of whether category is
 // a populated object, a plain ID string, or null.
@@ -27,8 +28,18 @@ export default function AllProductsPage({
     return Math.ceil(max / 100) * 100 || 1000;
   }, [products]);
 
+  const searchParams = useSearchParams();
+  const searchParamQuery = searchParams ? searchParams.get("search") || "" : "";
+
   // States
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParamQuery);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setSearchQuery(searchParamQuery);
+    }, 0);
+    return () => clearTimeout(t);
+  }, [searchParamQuery]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("all");
   const [maxPrice, setMaxPrice] = useState(productMaxPrice);
   const [sortBy, setSortBy] = useState("default");

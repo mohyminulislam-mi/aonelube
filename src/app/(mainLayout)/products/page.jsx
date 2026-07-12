@@ -1,5 +1,6 @@
 import AllProductsPage from "../../../components/mainLayout/products/AllProducts";
 import { getProducts, getCategories } from "@/lib/api";
+import { Suspense } from "react";
 
 function normalizeProducts(payload) {
   if (Array.isArray(payload)) return payload;
@@ -42,10 +43,16 @@ export default async function Page() {
 
   return (
     <main>
-      <AllProductsPage
-        initialProducts={initialProducts}
-        initialCategories={initialCategories}
-      />
+      <Suspense fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="h-10 w-10 border-4 border-[#005CA9] border-t-transparent rounded-full animate-spin" />
+        </div>
+      }>
+        <AllProductsPage
+          initialProducts={initialProducts}
+          initialCategories={initialCategories}
+        />
+      </Suspense>
     </main>
   );
 }
