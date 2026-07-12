@@ -89,9 +89,9 @@ export default function AllProductsPage({
     <>
       <button
         onClick={() => onSelect("all")}
-        className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all ${
+        className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all cursor-pointer ${
           selectedCategoryId === "all"
-            ? "bg-[#005CA9] text-white font-semibold"
+            ? "bg-primary text-white font-semibold"
             : "text-gray-600 hover:bg-gray-50"
         }`}
       >
@@ -103,9 +103,9 @@ export default function AllProductsPage({
           <button
             key={catId}
             onClick={() => onSelect(catId)}
-            className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all ${
+            className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-all cursor-pointer ${
               selectedCategoryId === catId
-                ? "bg-[#005CA9] text-white font-semibold"
+                ? "bg-primary text-white font-semibold"
                 : "text-gray-600 hover:bg-gray-50"
             }`}
           >
@@ -127,7 +127,7 @@ export default function AllProductsPage({
               placeholder="Search products by name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#005CA9]"
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
           </div>
@@ -135,7 +135,7 @@ export default function AllProductsPage({
           <div className="flex items-center justify-between w-full md:w-auto gap-4">
             <button
               onClick={() => setIsMobileFilterOpen(true)}
-              className="lg:hidden flex items-center space-x-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium"
+              className="lg:hidden flex items-center space-x-2 cursor-pointer bg-gray-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium"
             >
               <SlidersHorizontal size={16} />
               <span>Filters</span>
@@ -148,7 +148,7 @@ export default function AllProductsPage({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#005CA9]"
+                className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="default">Default</option>
                 <option value="price-low">Price: Low to High</option>
@@ -169,7 +169,7 @@ export default function AllProductsPage({
               </h3>
               <button
                 onClick={resetFilters}
-                className="text-xs text-primary hover:underline font-medium"
+                className="text-xs text-primary hover:underline font-medium cursor-pointer"
               >
                 Reset All
               </button>
@@ -186,7 +186,7 @@ export default function AllProductsPage({
 
             <div>
               <h4 className="text-sm font-bold text-gray-800 mb-2">
-                Max Price: <span className="text-[#005CA9]">${maxPrice}</span>
+                Max Price: <span className="text-primary">${maxPrice}</span>
               </h4>
               <input
                 type="range"
@@ -195,7 +195,7 @@ export default function AllProductsPage({
                 step={priceStep}
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#005CA9]"
+                className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
               />
               <div className="flex justify-between text-xs text-gray-400 mt-1">
                 <span>$0</span>
@@ -218,7 +218,7 @@ export default function AllProductsPage({
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="mt-4 bg-[#005CA9] text-white px-5 py-2 rounded-lg text-sm font-bold"
+                  className="mt-4 bg-primary text-white px-5 py-2 rounded-lg text-sm font-bold cursor-pointer"
                 >
                   Clear All Filters
                 </button>
@@ -245,7 +245,7 @@ export default function AllProductsPage({
               <h3 className="font-bold text-gray-900">Filters</h3>
               <button
                 onClick={() => setIsMobileFilterOpen(false)}
-                className="p-1 rounded-md hover:bg-gray-100"
+                className="p-1 rounded-md hover:bg-gray-100 cursor-pointer"
               >
                 <X size={20} />
               </button>
@@ -268,7 +268,7 @@ export default function AllProductsPage({
 
               <div>
                 <h4 className="text-sm font-bold text-gray-800 mb-2">
-                  Max Price: <span className="text-[#005CA9]">${maxPrice}</span>
+                  Max Price: <span className="text-primary">${maxPrice}</span>
                 </h4>
                 <input
                   type="range"
@@ -277,7 +277,7 @@ export default function AllProductsPage({
                   step={priceStep}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full accent-[#005CA9]"
+                  className="w-full accent-primary"
                 />
                 <div className="flex justify-between text-xs text-gray-400 mt-1">
                   <span>$0</span>
@@ -292,13 +292,13 @@ export default function AllProductsPage({
                   resetFilters();
                   setIsMobileFilterOpen(false);
                 }}
-                className="flex-1 py-2 rounded-lg text-xs font-bold bg-gray-100 text-gray-800"
+                className="flex-1 py-2 rounded-lg text-xs font-bold bg-gray-100 text-gray-800 cursor-pointer"
               >
                 Reset
               </button>
               <button
                 onClick={() => setIsMobileFilterOpen(false)}
-                className="flex-1 py-2 rounded-lg text-xs font-bold bg-primary text-white"
+                className="flex-1 py-2 rounded-lg text-xs font-bold bg-primary text-white cursor-pointer"
               >
                 Apply
               </button>

@@ -38,7 +38,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/login?redirect=/checkout");
+      router.push("/auth/login?redirect=/checkout");
     }
   }, [user, authLoading, router]);
 

@@ -143,7 +143,7 @@ export default function CartPage() {
                           onClick={() =>
                             updateQuantity(item.product, item.quantity - 1)
                           }
-                          className="p-2.5 hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="p-2.5 cursor-pointer hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                           aria-label={`Decrease ${item.name} quantity`}
                         >
                           <Minus className="h-4 w-4" />
@@ -236,7 +236,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={removeCoupon}
-                      className="underline text-[10px] font-black tracking-wider uppercase hover:text-red-700"
+                      className="underline text-[10px] font-black tracking-wider uppercase hover:text-red-700 cursor-pointer"
                     >
                       Remove
                     </button>

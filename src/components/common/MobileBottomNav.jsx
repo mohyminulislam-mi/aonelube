@@ -19,7 +19,7 @@ export default function MobileBottomNav() {
   const { user } = useAuth();
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const accountHref = user ? "/dashboard" : "/login";
+  const accountHref = user ? "/dashboard" : "/auth/login";
 
   const navItems = [
     { label: "Home", href: "/", icon: Home },

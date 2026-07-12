@@ -122,7 +122,7 @@ export default function PendingApprovalsPage() {
               onClick={fetchPendingManagers}
               disabled={loading}
               title="Refresh list"
-              className="mt-1 rounded-full border border-gray-200 p-2.5 text-slate-500 transition hover:bg-gray-50 hover:text-slate-700 disabled:opacity-50"
+              className="mt-1 rounded-full cursor-pointer border border-gray-200 p-2.5 text-slate-500 transition hover:bg-gray-50 hover:text-slate-700 disabled:opacity-50"
             >
               <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             </button>
@@ -145,7 +145,7 @@ export default function PendingApprovalsPage() {
             <p className="text-sm font-medium text-slate-700">{error}</p>
             <button
               onClick={fetchPendingManagers}
-              className="rounded-full bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+              className="rounded-full cursor-pointer bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
             >
               Try Again
             </button>
@@ -238,7 +238,7 @@ export default function PendingApprovalsPage() {
                           <button
                             onClick={() => handleApprove(manager)}
                             disabled={isApproving}
-                            className="inline-flex items-center gap-1.5 rounded-full bg-green-600 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-green-600 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             {isApproving ? (
                               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -294,7 +294,7 @@ export default function PendingApprovalsPage() {
                       <button
                         onClick={() => handleApprove(manager)}
                         disabled={isApproving}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-green-600 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="inline-flex items-center gap-1.5 cursor-pointer rounded-full bg-green-600 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         {isApproving ? (
                           <Loader2 className="h-3.5 w-3.5 animate-spin" />

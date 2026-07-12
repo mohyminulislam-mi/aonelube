@@ -101,7 +101,7 @@ function OrderSuccessContent() {
         <div className="pt-2 flex flex-wrap gap-4 justify-center">
           <button
             onClick={handlePrint}
-            className="bg-dark hover:bg-primary text-white font-extrabold text-xs py-3.5 px-6 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-md hover-glow-red"
+            className="bg-dark hover:bg-primary text-white font-extrabold text-xs py-3.5 px-6 cursor-pointer rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-md hover-glow-red"
           >
             <Printer className="h-4 w-4" />
             <span>Print Invoice Reciept</span>

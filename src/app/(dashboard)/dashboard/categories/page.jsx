@@ -183,7 +183,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-full border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+            className="rounded-full border border-red-200 cursor-pointer px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
           >
             Cancel
           </button>
@@ -270,7 +270,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+          className="inline-flex items-center gap-2 cursor-pointer rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-slate-400"
         >
           {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           {editingCategory ? "Save Changes" : "Create Category"}
@@ -279,7 +279,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-full border border-gray-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
+            className="rounded-full border border-gray-200 cursor-pointer px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
           >
             Discard
           </button>
@@ -404,7 +404,7 @@ export default function CategoriesPage() {
                   <button
                     type="button"
                     onClick={() => setEditingCategory(category)}
-                    className="inline-flex items-center gap-2 rounded-full border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    className="inline-flex items-center cursor-pointer gap-2 cursor-pointer rounded-full border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
                   >
                     <PencilLine className="h-4 w-4" />
                     Edit
@@ -412,7 +412,7 @@ export default function CategoriesPage() {
                   <button
                     type="button"
                     onClick={() => handleDelete(category)}
-                    className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-gray-50"
+                    className="inline-flex items-center cursor-pointer gap-2 cursor-pointer rounded-full border border-gray-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-gray-50"
                   >
                     <Trash2 className="h-4 w-4" />
                     Delete
@@ -459,7 +459,7 @@ export default function CategoriesPage() {
                 <button
                   type="button"
                   onClick={() => setEditingCategory(null)}
-                  className="absolute top-6 right-6 p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer z-10"
+                  className="absolute top-6 right-6 p-1.5 cursor-pointer rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer z-10"
                 >
                   <X className="h-5 w-5" />
                 </button>

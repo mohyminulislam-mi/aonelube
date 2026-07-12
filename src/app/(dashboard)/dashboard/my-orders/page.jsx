@@ -149,7 +149,7 @@ export default function MyOrdersPage() {
         <p className="text-lg font-medium text-slate-700">{error}</p>
         <button
           onClick={fetchOrders}
-          className="rounded-full bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+          className="rounded-full cursor-pointer bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
         >
           Try Again
         </button>
@@ -226,7 +226,7 @@ export default function MyOrdersPage() {
                   </p>
                   <button
                     onClick={() => setSelectedOrder(order)}
-                    className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
+                    className="inline-flex items-center gap-1 cursor-pointer rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
                   >
                     <Eye className="h-3.5 w-3.5" />
                     View Details
@@ -253,7 +253,7 @@ export default function MyOrdersPage() {
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="rounded-full border border-gray-200 p-2 text-slate-600 transition hover:bg-gray-50"
+                className="rounded-full border cursor-pointer border-gray-200 p-2 text-slate-600 transition hover:bg-gray-50"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -369,7 +369,7 @@ export default function MyOrdersPage() {
             <div className="border-t border-gray-100 p-5 flex justify-end">
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
+                className="rounded-full cursor-pointer border border-gray-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
               >
                 Close
               </button>

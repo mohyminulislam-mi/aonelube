@@ -172,7 +172,7 @@ export default function ProductDetails({ product }) {
     setAdding(true);
     try {
       addToCart(product, quantity, true);
-      router.push(user ? "/checkout" : "/login?redirect=/checkout");
+      router.push(user ? "/checkout" : "/auth/login?redirect=/checkout");
     } catch {
       setActionError("We could not start checkout. Please try again.");
     } finally {
@@ -191,14 +191,11 @@ export default function ProductDetails({ product }) {
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumb */}
         <nav className="flex items-center text-xs text-gray-400 mb-6 gap-1 font-medium">
-          <a href="/" className="hover:text-[#005CA9] transition-colors">
+          <a href="/" className="hover:text-primary transition-colors">
             Home
           </a>
           <ChevronRight size={13} />
-          <a
-            href="/products"
-            className="hover:text-[#005CA9] transition-colors"
-          >
+          <a href="/products" className="hover:text-primary transition-colors">
             Products
           </a>
           <ChevronRight size={13} />
@@ -238,9 +235,9 @@ export default function ProductDetails({ product }) {
                     <button
                       key={i}
                       onClick={() => setActiveImage(i)}
-                      className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
                         activeImage === i
-                          ? "border-[#005CA9] shadow-md"
+                          ? "border-primary shadow-md"
                           : "border-gray-200 hover:border-gray-400"
                       }`}
                     >
@@ -259,7 +256,7 @@ export default function ProductDetails({ product }) {
             <div className="p-6 md:p-10 flex flex-col gap-6">
               {/* Top Meta Row */}
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-bold text-[#005CA9] bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-primary bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-widest">
                   {categoryName}
                 </span>
                 {brandName && (
@@ -285,7 +282,7 @@ export default function ProductDetails({ product }) {
                   (4.8)
                 </span>
                 <span className="text-gray-300">|</span>
-                <span className="text-sm text-[#005CA9] font-medium hover:underline cursor-pointer">
+                <span className="text-sm text-primary font-medium hover:underline cursor-pointer">
                   Verified Reviews
                 </span>
                 {product?.stock > 0 && (
@@ -300,9 +297,9 @@ export default function ProductDetails({ product }) {
               </div>
 
               {/* Price Block */}
-              <div className="bg-gradient-to-r from-[#005CA9]/5 to-transparent border border-blue-100 rounded-xl px-5 py-4">
+              <div className="bg-gradient-to-r from-primary/5 to-transparent border border-blue-100 rounded-xl px-5 py-4">
                 <div className="flex items-end gap-3">
-                  <span className="text-4xl font-black text-[#005CA9]">
+                  <span className="text-4xl font-black text-primary">
                     ৳{(price * quantity).toLocaleString()}
                   </span>
                   {hasDiscount && (
@@ -331,21 +328,30 @@ export default function ProductDetails({ product }) {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="w-4 h-4 text-[#005CA9] shrink-0"
+                  className="w-4 h-4 text-primary shrink-0"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                  />
                 </svg>
                 <span className="font-bold text-gray-800">Available In:</span>
                 <span className="text-gray-600 font-medium">
-                  {!product?.availableDivisions || product.availableDivisions.length === 0
+                  {!product?.availableDivisions ||
+                  product.availableDivisions.length === 0
                     ? "All Divisions (Nationwide)"
                     : product.availableDivisions.join(", ")}
                 </span>
               </div>
 
               {/* Short Description */}
-              <p className="text-gray-500 text-sm leading-relaxed border-l-4 border-[#005CA9]/20 pl-4">
+              <p className="text-gray-500 text-sm leading-relaxed border-l-4 border-primary/20 pl-4">
                 {product?.description}
               </p>
 
@@ -357,7 +363,7 @@ export default function ProductDetails({ product }) {
                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white shadow-xs">
                   <button
                     onClick={() => handleQuantityChange("dec")}
-                    className="px-3 py-2.5 hover:bg-gray-50 text-gray-600 transition-colors"
+                    className="px-3 py-2.5 hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer"
                   >
                     <Minus size={14} />
                   </button>
@@ -366,7 +372,7 @@ export default function ProductDetails({ product }) {
                   </span>
                   <button
                     onClick={() => handleQuantityChange("inc")}
-                    className="px-3 py-2.5 hover:bg-gray-50 text-gray-600 transition-colors"
+                    className="px-3 py-2.5 hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer"
                   >
                     <Plus size={14} />
                   </button>
@@ -386,7 +392,7 @@ export default function ProductDetails({ product }) {
                 <button
                   disabled={!inStock || adding}
                   onClick={handleBuyNow}
-                  className="flex-1 bg-primary hover:bg-[#c8161d] disabled:bg-gray-300 text-white py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-sm active:scale-95"
+                  className="flex-1 bg-primary cursor-pointer hover:bg-[#c8161d] disabled:bg-gray-300 text-white py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-sm active:scale-95"
                 >
                   {adding ? "Processing…" : "Buy Now"}
                 </button>
@@ -410,7 +416,7 @@ export default function ProductDetails({ product }) {
                     className="flex flex-col items-center gap-1.5 text-center"
                   >
                     <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center">
-                      <Icon size={16} className="text-[#005CA9]" />
+                      <Icon size={16} className="text-primary" />
                     </div>
                     <span className="text-[10px] font-bold text-gray-600 uppercase tracking-wide">
                       {label}
@@ -429,9 +435,9 @@ export default function ProductDetails({ product }) {
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className={`flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all cursor-pointer ${
                     activeTab === id
-                      ? "border-[#005CA9] text-[#005CA9]"
+                      ? "border-primary text-primary"
                       : "border-transparent text-gray-400 hover:text-gray-700"
                   }`}
                 >
@@ -470,7 +476,7 @@ export default function ProductDetails({ product }) {
                             >
                               <CheckCircle2
                                 size={15}
-                                className="text-[#005CA9] mt-0.5 shrink-0"
+                                className="text-primary mt-0.5 shrink-0"
                               />
                               <span>{f}</span>
                             </li>
@@ -490,7 +496,7 @@ export default function ProductDetails({ product }) {
                   {specRows.length > 0 ? (
                     <div className="border border-gray-100 rounded-xl overflow-hidden text-sm">
                       {/* Header */}
-                      <div className="grid grid-cols-2 bg-[#005CA9] text-white font-bold text-xs uppercase tracking-widest px-5 py-3">
+                      <div className="grid grid-cols-2 bg-primary text-white font-bold text-xs uppercase tracking-widest px-5 py-3">
                         <span>Property</span>
                         <span>Value</span>
                       </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import Image from "next/image";
@@ -34,24 +32,6 @@ export default function Footer() {
               lubricants, and automotive fluids for superior engine protection,
               efficiency, and long-lasting performance.
             </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
-              Categories
-            </h3>
-            <ul className="space-y-2">
-              {categories.map((cat) => (
-                <li key={cat.slug}>
-                  <Link
-                    href={`/products?category=${cat.slug}`}
-                    className="text-sm text-gray-500 hover:text-primary transition-colors"
-                  >
-                    {cat.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           <div>
@@ -96,6 +76,24 @@ export default function Footer() {
 
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
+              Categories
+            </h3>
+            <ul className="space-y-2">
+              {categories.map((cat) => (
+                <li key={cat.slug}>
+                  <Link
+                    href={`/products?category=${cat.slug}`}
+                    className="text-sm text-gray-500 hover:text-primary transition-colors"
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
               Contact
             </h3>
             <ul className="space-y-3">
@@ -113,7 +111,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-gray-200 mt-10 mb-14 md:mb-0 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400">
             &copy; {new Date().getFullYear()} aonelube. All rights reserved.
           </p>

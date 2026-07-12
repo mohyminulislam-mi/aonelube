@@ -135,14 +135,17 @@ export default function Header() {
           </div>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-4">
+          <form
+            onSubmit={handleSearch}
+            className="hidden md:flex flex-1 max-w-md mx-4"
+          >
             <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search"
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
-                className="w-full bg-[#F2F4F7] text-gray-700 pl-4 pr-10 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#005CA9] transition-all"
+                className="w-full bg-[#F2F4F7] text-gray-700 pl-4 pr-10 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               />
               <button
                 type="submit"
@@ -161,7 +164,7 @@ export default function Header() {
                 <div className="relative">
                   <button
                     onClick={() => setIsAccountMenuOpen((prev) => !prev)}
-                    className="flex items-center gap-2 cursor-pointer rounded-full border border-gray-200 bg-white px-2.5 py-2 shadow-sm transition hover:border-[#005CA9]/30 hover:shadow-md"
+                    className="flex items-center gap-2 cursor-pointer rounded-full border border-gray-200 bg-white px-2.5 py-2 shadow-sm transition hover:border-primary/30 hover:shadow-md"
                   >
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-black text-white">
                       {userInitial}
@@ -231,7 +234,7 @@ export default function Header() {
               ) : (
                 <div className="flex items-center gap-2">
                   <Link
-                    href="/login"
+                    href="/auth/login"
                     className="inline-flex items-center gap-2 rounded-full border border-primary bg-white px-3 py-2 text-sm font-semibold text-primary transition duration-200 hover:border-primary hover:bg-primary hover:text-white"
                   >
                     <LogIn className="h-4 w-4" />
@@ -272,7 +275,7 @@ export default function Header() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="xl:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+              className="xl:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none cursor-pointer"
             >
               {isMobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -305,8 +308,8 @@ export default function Header() {
                     href={item.href}
                     className={`px-3 py-3 text-[13px] font-bold tracking-wide whitespace-nowrap transition-colors border-b-2 ${
                       isActive
-                        ? "text-[#005CA9] border-[#005CA9]"
-                        : "text-gray-700 hover:text-[#005CA9] border-transparent"
+                        ? "text-primary border-primary"
+                        : "text-gray-700 hover:text-primary border-transparent"
                     }`}
                   >
                     {item.label}
@@ -367,9 +370,9 @@ export default function Header() {
                       closeMenus();
                       router.push("/dashboard");
                     }}
-                    className="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
+                    className="flex w-full items-center gap-2  cursor-pointer rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
                   >
-                    <LayoutDashboard className="h-4 w-4 text-[#005CA9]" />
+                    <LayoutDashboard className="h-4 w-4 text-primary" />
                     Dashboard
                   </button>
                   <button
@@ -377,9 +380,9 @@ export default function Header() {
                       closeMenus();
                       router.push("/dashboard/my-orders");
                     }}
-                    className="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
+                    className="flex w-full items-center gap-2 rounded-lg cursor-pointer border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
                   >
-                    <Package className="h-4 w-4 text-[#005CA9]" />
+                    <Package className="h-4 w-4 text-primary" />
                     My Orders
                   </button>
                   <button
@@ -388,7 +391,7 @@ export default function Header() {
                       await logout();
                       router.push("/");
                     }}
-                    className="flex w-full items-center gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-600"
+                    className="flex w-full items-center gap-2 cursor-pointer rounded-lg border border-red-100 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-600"
                   >
                     <LogOut className="h-4 w-4" />
                     Logout
@@ -398,9 +401,9 @@ export default function Header() {
             ) : (
               <div className="space-y-2">
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#005CA9]/20 bg-white px-3 py-2.5 text-sm font-semibold text-[#005CA9]"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/20 bg-white px-3 py-2.5 text-sm font-semibold text-primary"
                 >
                   <LogIn className="h-4 w-4" />
                   Login
@@ -435,8 +438,8 @@ export default function Header() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
                       isActive
-                        ? "bg-[#005CA9]/15 text-[#005CA9]"
-                        : "text-gray-700 hover:text-[#005CA9] hover:bg-gray-50"
+                        ? "bg-primary/15 text-primary"
+                        : "text-gray-700 hover:text-primary hover:bg-gray-50"
                     }`}
                   >
                     {item.label}

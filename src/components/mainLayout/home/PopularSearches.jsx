@@ -13,15 +13,22 @@ function normalizeCategories(payload) {
 }
 
 const CATEGORY_FALLBACK_IMAGES = {
-  "car-engine-oils": "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=600",
-  "motorcycle-engine-oils": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600",
-  "bus-truck-engine-oils": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600",
-  "cng-engine-oils": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=600",
-  "vehicle-care": "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?q=80&w=600",
-  "industrial-lubricants": "https://images.unsplash.com/photo-1565984429576-c83f5e6b0b7a?q=80&w=600"
+  "car-engine-oils":
+    "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=600",
+  "motorcycle-engine-oils":
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600",
+  "bus-truck-engine-oils":
+    "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600",
+  "cng-engine-oils":
+    "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=600",
+  "vehicle-care":
+    "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?q=80&w=600",
+  "industrial-lubricants":
+    "https://images.unsplash.com/photo-1565984429576-c83f5e6b0b7a?q=80&w=600",
 };
 
-const DEFAULT_FALLBACK = "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600";
+const DEFAULT_FALLBACK =
+  "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600";
 
 function getCategoryImage(category) {
   const img = category?.image || category?.image_url;
@@ -32,7 +39,6 @@ function getCategoryImage(category) {
 }
 
 export default function PopularSearches() {
-
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +50,10 @@ export default function PopularSearches() {
         if (active) {
           const list = normalizeCategories(data);
           list.sort((a, b) => {
-            if (a.display_order !== undefined && b.display_order !== undefined) {
+            if (
+              a.display_order !== undefined &&
+              b.display_order !== undefined
+            ) {
               return a.display_order - b.display_order;
             }
             return (a.name || "").localeCompare(b.name || "");
@@ -124,7 +133,7 @@ export default function PopularSearches() {
           {/* View All Details */}
           <a
             href="#"
-            className="flex items-center text-sm font-semibold text-[#005CA9] hover:text-[#004480] transition-colors group"
+            className="flex items-center text-sm font-semibold text-primary hover:text-[#004480] transition-colors group"
           >
             View All
             <ChevronRight className="h-4 w-4 ml-0.5 transform group-hover:translate-x-0.5 transition-transform" />
@@ -155,12 +164,12 @@ export default function PopularSearches() {
 
                 {/* Category Footer Content */}
                 <div className="p-3 sm:p-4 flex flex-col justify-between flex-grow bg-white">
-                  <h3 className="text-xs sm:text-sm font-extrabold text-gray-900 group-hover:text-[#005CA9] transition-colors line-clamp-1">
+                  <h3 className="text-xs sm:text-sm font-extrabold text-gray-900 group-hover:text-primary transition-colors line-clamp-1">
                     {category.name}
                   </h3>
 
                   {/* View All Text Link with Arrow */}
-                  <span className="inline-flex items-center text-[10px] sm:text-xs font-semibold text-gray-400 mt-2 group-hover:text-[#005CA9] transition-colors">
+                  <span className="inline-flex items-center text-[10px] sm:text-xs font-semibold text-gray-400 mt-2 group-hover:text-primary transition-colors">
                     View all
                     <ArrowRight className="h-3 w-3 ml-1 transform group-hover:translate-x-1 transition-transform" />
                   </span>

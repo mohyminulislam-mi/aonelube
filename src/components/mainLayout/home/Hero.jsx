@@ -127,7 +127,7 @@ export default function HeroSlider() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   href={slide.ctaLink}
-                  className="bg-primary hover:bg-[#005CA9] text-white font-bold text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wider transition-all duration-300 ease-out shadow-[0_8px_24px_rgba(237,28,36,0.35)]"
+                  className="bg-primary hover:bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-3.5 rounded-full uppercase tracking-wider transition-all duration-300 ease-out shadow-[0_8px_24px_rgba(237,28,36,0.35)]"
                 >
                   {slide.ctaText}
                 </motion.a>

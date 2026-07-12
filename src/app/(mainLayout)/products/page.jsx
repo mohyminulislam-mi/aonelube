@@ -43,11 +43,13 @@ export default async function Page() {
 
   return (
     <main>
-      <Suspense fallback={
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="h-10 w-10 border-4 border-[#005CA9] border-t-transparent rounded-full animate-spin" />
-        </div>
-      }>
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        }
+      >
         <AllProductsPage
           initialProducts={initialProducts}
           initialCategories={initialCategories}

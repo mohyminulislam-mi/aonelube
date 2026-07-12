@@ -208,7 +208,7 @@ export default function CustomersPage() {
             <p className="text-lg font-medium text-slate-700">{error}</p>
             <button
               onClick={fetchCustomers}
-              className="rounded-full bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+              className="rounded-full bg-red-600 px-6 py-2 cursor-pointer text-sm font-semibold text-white transition hover:bg-red-700"
             >
               Try Again
             </button>
@@ -264,7 +264,7 @@ export default function CustomersPage() {
                       <td className="px-4 py-3 text-right">
                         <button
                           onClick={() => handleViewCustomer(cust._id || cust.id)}
-                          className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
+                          className="inline-flex items-center gap-1 cursor-pointer rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
                         >
                           <Eye className="h-3.5 w-3.5" /> View Details
                         </button>
@@ -303,7 +303,7 @@ export default function CustomersPage() {
                   <div className="flex justify-end">
                     <button
                       onClick={() => handleViewCustomer(cust._id || cust.id)}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
+                      className="w-full cursor-pointer sm:w-auto inline-flex items-center justify-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
                     >
                       <Eye className="h-3.5 w-3.5" /> View Details
                     </button>
@@ -318,7 +318,7 @@ export default function CustomersPage() {
                 <button
                   onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                   disabled={page <= 1}
-                  className="rounded-full border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-full border border-gray-200 p-2 cursor-pointer text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -328,7 +328,7 @@ export default function CustomersPage() {
                 <button
                   onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={page >= totalPages}
-                  className="rounded-full border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-full cursor-pointer border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -357,7 +357,7 @@ export default function CustomersPage() {
                 </div>
                 <button
                   onClick={() => setSelectedCustomer(null)}
-                  className="rounded-full border border-gray-200 p-2 text-slate-600 transition hover:bg-gray-50"
+                  className="rounded-full cursor-pointer border border-gray-200 p-2 text-slate-600 transition hover:bg-gray-50"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -451,7 +451,7 @@ export default function CustomersPage() {
               <div className="border-t border-gray-100 p-5 flex justify-end shrink-0 bg-gray-50/50">
                 <button
                   onClick={() => setSelectedCustomer(null)}
-                  className="rounded-full border border-gray-200 px-5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-gray-100"
+                  className="rounded-full border cursor-pointer border-gray-200 px-5 py-2 text-sm font-semibold text-slate-700 transition hover:bg-gray-100"
                 >
                   Close
                 </button>

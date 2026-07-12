@@ -42,7 +42,7 @@ export default async function FeaturedProducts() {
           {/* View All Link */}
           <Link
             href="/products"
-            className="flex items-center text-sm font-semibold text-[#005CA9] hover:text-[#004480] transition-colors group"
+            className="flex items-center text-sm font-semibold text-primary hover:text-[#004480] transition-colors group"
           >
             View All
             <ArrowRight className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" />

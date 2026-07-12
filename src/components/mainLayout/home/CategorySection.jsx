@@ -33,13 +33,10 @@ function getCategoryImage(category) {
     rawImage.includes("placeholder") ||
     rawImage.startsWith("/placeholder")
   ) {
-    return (
-      CATEGORY_FALLBACK_IMAGES[category?.slug] || DEFAULT_FALLBACK_IMAGE
-    );
+    return CATEGORY_FALLBACK_IMAGES[category?.slug] || DEFAULT_FALLBACK_IMAGE;
   }
   return rawImage;
 }
-
 
 export default function CategorySection({ category, products }) {
   // If no products in this category, don't render this section
@@ -82,10 +79,12 @@ export default function CategorySection({ category, products }) {
             <div className="mt-4 md:mt-5">
               <Link
                 href={categoryLink}
-                className="inline-flex items-center text-xs md:text-sm font-bold text-white bg-[#005CA9] hover:bg-[#004480] px-4 py-2 rounded-lg transition-all shadow-md active:scale-95 group"
+                className="inline-flex items-center text-xs md:text-sm font-bold text-white bg-primary hover:bg-[#004480] px-4 py-2 rounded-lg transition-all shadow-md active:scale-95 group"
               >
                 <span>View All</span>
-                <span className="ml-1.5 transform transition-transform group-hover:translate-x-1">→</span>
+                <span className="ml-1.5 transform transition-transform group-hover:translate-x-1">
+                  →
+                </span>
               </Link>
             </div>
           </div>

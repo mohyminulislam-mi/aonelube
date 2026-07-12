@@ -250,7 +250,7 @@ export default function UsersPage() {
             <p className="text-lg font-medium text-slate-700">{error}</p>
             <button
               onClick={fetchUsers}
-              className="rounded-full bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+              className="rounded-full cursor-pointer bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
             >
               Try Again
             </button>
@@ -306,7 +306,7 @@ export default function UsersPage() {
                       <td className="px-4 py-3 text-right">
                         <button
                           onClick={() => handleViewUser(user._id || user.id)}
-                          className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
+                          className="inline-flex items-center gap-1 cursor-pointer rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
                         >
                           <Eye className="h-3.5 w-3.5" /> View
                         </button>
@@ -341,7 +341,7 @@ export default function UsersPage() {
                     </p>
                     <button
                       onClick={() => handleViewUser(user._id || user.id)}
-                      className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
+                      className="inline-flex items-center cursor-pointer gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
                     >
                       <Eye className="h-3.5 w-3.5" /> View
                     </button>
@@ -356,7 +356,7 @@ export default function UsersPage() {
                 <button
                   onClick={() => setFilters((prev) => ({ ...prev, page: Math.max(1, prev.page - 1) }))}
                   disabled={filters.page <= 1}
-                  className="rounded-full border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-full cursor-pointer border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -366,7 +366,7 @@ export default function UsersPage() {
                 <button
                   onClick={() => setFilters((prev) => ({ ...prev, page: Math.min(totalPages, prev.page + 1) }))}
                   disabled={filters.page >= totalPages}
-                  className="rounded-full border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-full cursor-pointer border border-gray-200 p-2 text-slate-700 transition hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -395,7 +395,7 @@ export default function UsersPage() {
                 </div>
                 <button
                   onClick={() => setSelectedUser(null)}
-                  className="rounded-full border border-gray-200 p-2 text-slate-600 transition hover:bg-gray-50"
+                  className="rounded-full cursor-pointer border border-gray-200 p-2 text-slate-600 transition hover:bg-gray-50"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -471,7 +471,7 @@ export default function UsersPage() {
                               (currentUser?._id === selectedUser.user?._id || currentUser?.id === selectedUser.user?.id) ||
                               updatingRole
                             }
-                            className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="mt-6 inline-flex items-center gap-2 cursor-pointer rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {updatingRole && <Loader2 className="h-4 w-4 animate-spin" />}
                             Update Role
@@ -525,7 +525,7 @@ export default function UsersPage() {
               <div className="border-t border-gray-100 p-5 flex justify-end">
                 <button
                   onClick={() => setSelectedUser(null)}
-                  className="rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
+                  className="rounded-full cursor-pointer border border-gray-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
                 >
                   Close
                 </button>

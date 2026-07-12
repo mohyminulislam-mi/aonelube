@@ -104,7 +104,7 @@ export default function CategoryProductsPage() {
       <div className="flex flex-col min-h-screen bg-[#F8F9FA]">
         <Breadcrumbs />
         <main className="flex-grow flex flex-col items-center justify-center gap-4 py-24">
-          <Loader2 className="h-8 w-8 animate-spin text-[#005CA9]" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-sm font-semibold text-gray-500">
             Loading products...
           </p>
@@ -131,7 +131,7 @@ export default function CategoryProductsPage() {
           </p>
           <Link
             href="/products"
-            className="mt-2 inline-flex items-center gap-2 bg-[#005CA9] hover:bg-[#004480] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors"
+            className="mt-2 inline-flex items-center gap-2 bg-primary hover:bg-[#004480] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors"
           >
             Browse All Products
           </Link>
@@ -154,7 +154,7 @@ export default function CategoryProductsPage() {
           </p>
           <button
             onClick={() => fetchData(currentPage)}
-            className="mt-2 inline-flex items-center gap-2 bg-primary hover:bg-[#d1171e] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors"
+            className="mt-2 cursor-pointer inline-flex items-center gap-2 bg-primary hover:bg-[#d1171e] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors"
           >
             Try Again
           </button>
@@ -172,7 +172,7 @@ export default function CategoryProductsPage() {
       <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
         {/* Page Header */}
         <div className="mb-8 pb-6 border-b border-gray-200">
-          <span className="text-xs font-bold text-[#005CA9] uppercase tracking-wider block mb-1">
+          <span className="text-xs font-bold text-primary uppercase tracking-wider block mb-1">
             Browse Category
           </span>
           <h1 className="text-2xl md:text-3xl font-black text-gray-950 tracking-tight">
@@ -204,7 +204,7 @@ export default function CategoryProductsPage() {
             </p>
             <Link
               href="/products"
-              className="mt-2 inline-flex items-center gap-2 bg-[#005CA9] hover:bg-[#004480] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors"
+              className="mt-2 inline-flex items-center gap-2 bg-primary hover:bg-[#004480] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors"
             >
               Browse All Products
             </Link>
@@ -227,7 +227,7 @@ export default function CategoryProductsPage() {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage <= 1}
-                  className="p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 cursor-pointer rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   aria-label="Previous page"
                 >
                   <ChevronLeft size={18} />
@@ -238,9 +238,9 @@ export default function CategoryProductsPage() {
                     <button
                       key={page}
                       onClick={() => handlePageChange(page)}
-                      className={`h-9 w-9 rounded-lg text-sm font-bold transition-colors ${
+                      className={`h-9 w-9 rounded-lg text-sm font-bold transition-colors cursor-pointer ${
                         page === currentPage
-                          ? "bg-[#005CA9] text-white shadow-sm"
+                          ? "bg-primary text-white shadow-sm"
                           : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                       }`}
                       aria-label={`Go to page ${page}`}
@@ -254,7 +254,7 @@ export default function CategoryProductsPage() {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage >= totalPages}
-                  className="p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 cursor-pointer rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   aria-label="Next page"
                 >
                   <ChevronRight size={18} />

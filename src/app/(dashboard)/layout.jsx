@@ -100,7 +100,7 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/login");
+      router.replace("/auth/login");
     }
   }, [loading, user, router]);
 
@@ -125,7 +125,7 @@ export default function DashboardLayout({ children }) {
 
   const handleLogout = async () => {
     await logout();
-    router.push("/login");
+    router.push("/auth/login");
   };
 
   return (
@@ -145,7 +145,7 @@ export default function DashboardLayout({ children }) {
                 </div>
                 <button
                   type="button"
-                  className="rounded-full p-2 text-slate-600 hover:bg-red-50 hover:text-red-600 md:hidden"
+                  className="rounded-full p-2 cursor-pointer text-slate-600 hover:bg-red-50 hover:text-red-600 md:hidden"
                   onClick={() => setMobileOpen(false)}
                 >
                   <X className="h-5 w-5" />
@@ -221,7 +221,7 @@ export default function DashboardLayout({ children }) {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-xl border border-red-200 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                className="flex w-full items-center gap-3 cursor-pointer rounded-xl border border-red-200 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
@@ -240,7 +240,7 @@ export default function DashboardLayout({ children }) {
               <button
                 type="button"
                 onClick={() => setMobileOpen(true)}
-                className="rounded-full p-2 text-slate-600 hover:bg-red-50 hover:text-red-600"
+                className="rounded-full p-2 cursor-pointer text-slate-600 hover:bg-red-50 hover:text-red-600"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -264,7 +264,7 @@ export default function DashboardLayout({ children }) {
         <button
           type="button"
           aria-label="Close menu"
-          className="fixed inset-0 z-30 bg-slate-900/30 md:hidden"
+          className="fixed inset-0 z-30 bg-slate-900/30 md:hidden cursor-pointer"
           onClick={() => setMobileOpen(false)}
         />
       ) : null}

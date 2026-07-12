@@ -210,7 +210,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/10 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-primary text-white px-6 py-3 cursor-pointer rounded-xl font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/10 flex items-center justify-center gap-2"
               >
                 <Send size={16} />
                 Send Message

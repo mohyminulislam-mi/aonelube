@@ -433,7 +433,7 @@ export default function EditProductPage() {
               <button
                 type="button"
                 onClick={() => append({ key: "", value: "" })}
-                className="inline-flex items-center gap-2 rounded-full border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                className="inline-flex items-center gap-2 cursor-pointer rounded-full border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
               >
                 <Plus className="h-4 w-4" />
                 Add Specification
@@ -457,7 +457,7 @@ export default function EditProductPage() {
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="rounded-2xl border border-gray-200 p-2.5 text-slate-600 transition hover:bg-gray-50"
+                    className="rounded-2xl border border-gray-200 p-2.5 cursor-pointer text-slate-600 transition hover:bg-gray-50"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -491,7 +491,7 @@ export default function EditProductPage() {
                     <button
                       type="button"
                       onClick={() => preview.isExisting ? handleRemoveExistingImage(index) : handleRemoveNewImage(index)}
-                      className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                      className="absolute right-2 top-2 cursor-pointer rounded-full bg-red-600 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
                     >
                       <Trash2 className="h-3 w-3" />
                     </button>
@@ -512,7 +512,7 @@ export default function EditProductPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="inline-flex items-center gap-2 cursor-pointer rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-slate-400"
             >
               {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {isSubmitting ? "Updating product..." : "Update Product"}
@@ -520,7 +520,7 @@ export default function EditProductPage() {
             <button
               type="button"
               onClick={() => router.push("/dashboard/products")}
-              className="rounded-full border border-gray-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
+              className="rounded-full border border-gray-200 px-4 py-2.5 cursor-pointer text-sm font-semibold text-slate-700 transition hover:bg-gray-50"
             >
               Cancel
             </button>

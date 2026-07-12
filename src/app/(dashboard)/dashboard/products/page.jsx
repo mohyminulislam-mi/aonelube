@@ -252,7 +252,7 @@ export default function ProductsPage() {
                             </Link>
                             <button
                               type="button"
-                              className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
+                              className="rounded-full cursor-pointer border border-gray-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-gray-50"
                               onClick={() => handleDelete(product)}
                             >
                               <Trash2 className="inline h-3 w-3 mr-1" />

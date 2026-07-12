@@ -366,7 +366,7 @@ export default function PaymentPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full cursor-pointer bg-red-700 text-white font-extrabold text-sm py-4 px-8 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 shadow-md hover-glow-red disabled:opacity-50 cursor-pointer"
+              className="w-full bg-red-700 text-white font-extrabold text-sm py-4 px-8 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 shadow-md hover-glow-red disabled:opacity-50 cursor-pointer"
             >
               {loading ? (
                 <>

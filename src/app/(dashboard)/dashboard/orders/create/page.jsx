@@ -407,7 +407,7 @@ export default function CreateOrderPage() {
                             <button
                               type="button"
                               onClick={() => handleAddItem(prod)}
-                              className="w-full flex items-center justify-between px-4 py-3 text-left text-sm text-slate-700 hover:bg-red-50/50 transition-colors"
+                              className="w-full flex items-center justify-between px-4 py-3 cursor-pointer text-left text-sm text-slate-700 hover:bg-red-50/50 transition-colors"
                             >
                               <div>
                                 <span className="font-semibold text-slate-800">{prod.name}</span>
@@ -477,7 +477,7 @@ export default function CreateOrderPage() {
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(item.product)}
-                                className="text-slate-400 hover:text-red-650 transition-colors p-1"
+                                className="text-slate-400 hover:text-red-650 transition-colors p-1 cursor-pointer"
                               >
                                 <Trash2 className="h-4.5 w-4.5" />
                               </button>

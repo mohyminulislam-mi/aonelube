@@ -161,7 +161,7 @@ export default function AnalyticsPage() {
             <p className="text-lg font-medium text-slate-700">{error}</p>
             <button
               onClick={fetchData}
-              className="rounded-full bg-red-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+              className="rounded-full bg-red-600 px-6 py-2 cursor-pointer text-sm font-semibold text-white transition hover:bg-red-700"
             >
               Try Again
             </button>

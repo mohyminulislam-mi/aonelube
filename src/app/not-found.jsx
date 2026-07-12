@@ -17,7 +17,7 @@ export default function NotFound() {
         </div>
 
         <h1 className="text-7xl font-extrabold text-slate-900 tracking-tighter">
-          4<span className="text-primary">0</span>4
+          404
         </h1>
 
         <h2 className="text-2xl font-bold text-slate-900 mt-4 tracking-tight">
@@ -41,7 +41,7 @@ export default function NotFound() {
 
           <button
             onClick={() => window.history.back()}
-            className="w-full sm:w-auto bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200 px-5 py-2.5 rounded-xl font-medium hover:bg-slate-100 transition-colors flex items-center justify-center gap-2 text-sm"
+            className="w-full sm:w-auto cursor-pointer bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200 px-5 py-2.5 rounded-xl font-medium hover:bg-slate-100 transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <ArrowLeft size={16} />
             Go Back

@@ -145,7 +145,7 @@ export default function AboutPage() {
           Choose the right protection for your machinery. Switch to A One Lube’s
           premium fluid technology today.
         </p>
-        <button className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/20">
+        <button className="bg-primary text-white px-8 py-3 rounded-lg cursor-pointer font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/20">
           Explore Our Products
         </button>
       </section>

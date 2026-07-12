@@ -44,7 +44,7 @@ export default function Error({ error, reset }) {
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
           <button
             onClick={() => reset()}
-            className="w-full sm:w-auto bg-primary text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/10 flex items-center justify-center gap-2 text-sm"
+            className="w-full sm:w-auto bg-primary cursor-pointer text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#d0141b] transition-colors shadow-md shadow-primary/10 flex items-center justify-center gap-2 text-sm"
           >
             <RotateCcw size={16} />
             Try Resetting
