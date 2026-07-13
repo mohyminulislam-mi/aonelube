@@ -125,8 +125,8 @@ export default function Header() {
             <Link href="/">
               <Image
                 src="/logo.png"
-                width={130}
-                height={40}
+                width={90}
+                height={28}
                 style={{ width: "auto", height: "auto" }}
                 priority
                 alt="Aonelube"
