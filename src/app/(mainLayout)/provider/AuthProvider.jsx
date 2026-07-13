@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
       const data = await apiGet("/api/auth/me");
       setUser(data?.user || null);
     } catch (error) {
-      console.error("Auth check failed:", error);
+      if (error?.message !== "Not authorized to access this route") {
+        console.error("Auth check failed:", error);
+      }
       setUser(null);
     } finally {
       setLoading(false);

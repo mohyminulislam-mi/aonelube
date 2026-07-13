@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
-import { User, Mail, Lock, ArrowRight, Eye, EyeOff, UserCheck, MapPin } from "lucide-react";
+import { User, Mail, Lock, ArrowRight, Eye, EyeOff, MapPin } from "lucide-react";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
 import { DIVISIONS, DISTRICTS } from "@/lib/bangladeshData";
 
@@ -44,30 +44,19 @@ export default function RegisterPage() {
         name: data.name,
         email: data.email,
         password: data.password,
-        role: data.role,
+        role: "customer",
         division: data.division,
         district: data.district,
       });
 
-      if (data.role === "manager") {
-        Swal.fire({
-          icon: "info",
-          title: "Registration successful",
-          text: "Your manager account is pending admin approval. You can login but will have limited access until approved.",
-          confirmButtonColor: "#e30613",
-          background: "#ffffff",
-          color: "#171717",
-        });
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: "Registration successful",
-          text: "Your account has been created. Please log in to continue.",
-          confirmButtonColor: "#e30613",
-          background: "#ffffff",
-          color: "#171717",
-        });
-      }
+      Swal.fire({
+        icon: "success",
+        title: "Registration successful",
+        text: "Your account has been created. Please log in to continue.",
+        confirmButtonColor: "#e30613",
+        background: "#ffffff",
+        color: "#171717",
+      });
 
       router.push("/");
     } catch (error) {
@@ -216,28 +205,7 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Role dropdown */}
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Role
-              </label>
-              <div className="relative">
-                <UserCheck className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                <select
-                  {...register("role", { required: "Role is required" })}
-                  className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-11 pr-10 text-sm text-slate-900 outline-none transition duration-200 focus:scale-[1.01] focus:border-red-400 focus:ring-2 focus:ring-red-100 appearance-none cursor-pointer"
-                >
-                  <option value="customer">Customer</option>
-                  <option value="manager">Manager</option>
-                </select>
-                <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                  <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                  </svg>
-                </div>
-              </div>
-              {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>}
-            </div>
+
 
             {/* Division & District */}
             <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-3">

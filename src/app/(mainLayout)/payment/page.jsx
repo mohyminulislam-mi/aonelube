@@ -177,7 +177,7 @@ export default function PaymentPage() {
             </h2>
             <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">
               Amount Due:{" "}
-              <span className="text-primary text-sm">${total.toFixed(2)}</span>
+              <span className="text-primary text-sm">৳{total.toFixed(2)}</span>
             </p>
           </div>
 

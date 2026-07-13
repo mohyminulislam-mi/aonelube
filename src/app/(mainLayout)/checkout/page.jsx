@@ -422,7 +422,7 @@ export default function CheckoutPage() {
                       </span>
                     </div>
                     <span className="font-bold text-gray-950 shrink-0">
-                      ${(Number(item.price) * item.quantity).toFixed(2)}
+                      ৳{(Number(item.price) * item.quantity).toFixed(2)}
                     </span>
                   </div>
                 ))}
@@ -432,25 +432,25 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="font-bold text-gray-950">
-                    ${subtotal.toFixed(2)}
+                    ৳{subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   <span className="font-bold text-gray-950">
-                    {shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? "FREE" : `৳${shipping.toFixed(2)}`}
                   </span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-primary font-bold">
                     <span>Discount</span>
-                    <span>-${discount.toFixed(2)}</span>
+                    <span>-৳{discount.toFixed(2)}</span>
                   </div>
                 )}
                 <hr className="border-gray-100" />
                 <div className="flex justify-between text-sm sm:text-base font-black text-gray-950">
                   <span>Grand Total</span>
-                  <span className="text-primary">${total.toFixed(2)}</span>
+                  <span className="text-primary">৳{total.toFixed(2)}</span>
                 </div>
               </div>
             </div>

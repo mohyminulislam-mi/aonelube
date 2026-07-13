@@ -172,7 +172,7 @@ export default function DashboardPage() {
               {stats?.totalRevenue !== undefined && (
                 <StatCard
                   title="Total Revenue"
-                  value={`$${Number(stats.totalRevenue).toLocaleString()}`}
+                  value={`৳${Number(stats.totalRevenue).toLocaleString()}`}
                   icon={DollarSign}
                 />
               )}
@@ -207,7 +207,7 @@ export default function DashboardPage() {
               {stats?.totalInvestments !== undefined && (
                 <StatCard
                   title="Total Investments"
-                  value={`$${Number(stats.totalInvestments).toLocaleString()}`}
+                  value={`৳${Number(stats.totalInvestments).toLocaleString()}`}
                   icon={TrendingUp}
                 />
               )}
@@ -247,7 +247,7 @@ export default function DashboardPage() {
                           borderRadius: "12px",
                           boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                         }}
-                        formatter={(value) => [`$${value}`, "Revenue"]}
+                        formatter={(value) => [`৳${value}`, "Revenue"]}
                       />
                       <Bar dataKey="value" fill="#ef4444" radius={[6, 6, 0, 0]} />
                     </BarChart>

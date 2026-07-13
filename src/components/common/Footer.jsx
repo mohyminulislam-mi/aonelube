@@ -1,15 +1,45 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import Image from "next/image";
+import { getCategories } from "@/lib/api";
 
-const categories = [
+const staticCategories = [
   { name: "Car Engine Oils", slug: "car-engine-oils" },
   { name: "Motorcycle Engine Oils", slug: "motorcycle-engine-oils" },
   { name: "Bus & Truck Engine Oils", slug: "bus-truck-engine-oils" },
   { name: "Vehicle Care", slug: "vehicle-care" },
 ];
 
+function normalizeCategories(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.categories)) return payload.categories;
+  if (Array.isArray(payload?.data)) return payload.data;
+  return [];
+}
+
 export default function Footer() {
+  const [categories, setCategories] = useState(staticCategories);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getCategories();
+        const normalized = normalizeCategories(data);
+        if (normalized.length > 0) {
+          normalized.sort(
+            (a, b) => (a.display_order || 0) - (b.display_order || 0)
+          );
+          setCategories(normalized);
+        }
+      } catch (error) {
+        console.error("Failed to load footer categories:", error);
+      }
+    }
+    loadCategories();
+  }, []);
   return (
     <section className="bg-gray-100 text-gray-900 border-t border-gray-200">
       <div className="container mx-auto px-4 pt-12 pb-6">
@@ -22,7 +52,7 @@ export default function Footer() {
                   width={150}
                   height={46}
                   alt="Aonelube"
-                  style={{ width: "150px", height: "auto" }}
+                  style={{ width: "auto", height: "auto" }}
                 />
               </span>
             </Link>
@@ -82,7 +112,7 @@ export default function Footer() {
               {categories.map((cat) => (
                 <li key={cat.slug}>
                   <Link
-                    href={`/products?category=${cat.slug}`}
+                    href={`/products/category/${cat.slug}`}
                     className="text-sm text-gray-500 hover:text-primary transition-colors"
                   >
                     {cat.name}

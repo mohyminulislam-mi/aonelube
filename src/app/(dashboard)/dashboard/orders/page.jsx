@@ -322,7 +322,7 @@ export default function OrdersPage() {
                         {order.items?.length || 0} items
                       </td>
                       <td className="px-4 py-3 font-semibold text-slate-800">
-                        ${Number(order.total).toFixed(2)}
+                        ৳{Number(order.total).toFixed(2)}
                       </td>
                       <td className="px-4 py-3">
                         <StatusBadge status={order.orderStatus} />
@@ -362,7 +362,7 @@ export default function OrdersPage() {
                   <div className="grid grid-cols-2 gap-2 mb-4 text-sm text-slate-600">
                     <div>Items: {order.items?.length || 0}</div>
                     <div className="text-right font-semibold text-slate-800">
-                      ${Number(order.total).toFixed(2)}
+                      ৳{Number(order.total).toFixed(2)}
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
@@ -538,10 +538,10 @@ export default function OrdersPage() {
                             </div>
                             <div className="text-right">
                               <p className="font-semibold text-slate-800">
-                                ${Number(item.price).toFixed(2)}
+                                ৳{Number(item.price).toFixed(2)}
                               </p>
                               <p className="text-xs text-slate-500">
-                                ${(Number(item.price) * item.quantity).toFixed(2)}
+                                ৳{(Number(item.price) * item.quantity).toFixed(2)}
                               </p>
                             </div>
                           </div>
@@ -553,25 +553,25 @@ export default function OrdersPage() {
                     <div className="rounded-2xl border border-gray-100 p-4 space-y-2">
                       <div className="flex items-center justify-between text-sm text-slate-600">
                         <span>Subtotal</span>
-                        <span>${Number(selectedOrder.subtotal).toFixed(2)}</span>
+                        <span>৳{Number(selectedOrder.subtotal).toFixed(2)}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm text-slate-600">
                         <span>Shipping</span>
                         <span>
                           {Number(selectedOrder.shippingCost) > 0
-                            ? `$${Number(selectedOrder.shippingCost).toFixed(2)}`
+                            ? `৳${Number(selectedOrder.shippingCost).toFixed(2)}`
                             : "Free"}
                         </span>
                       </div>
                       {Number(selectedOrder.discount) > 0 && (
                         <div className="flex items-center justify-between text-sm text-red-600">
                           <span>Discount</span>
-                          <span>-${Number(selectedOrder.discount).toFixed(2)}</span>
+                          <span>-৳{Number(selectedOrder.discount).toFixed(2)}</span>
                         </div>
                       )}
                       <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2 text-base font-semibold text-slate-800">
                         <span>Total</span>
-                        <span>${Number(selectedOrder.total).toFixed(2)}</span>
+                        <span>৳{Number(selectedOrder.total).toFixed(2)}</span>
                       </div>
                     </div>
                   </>

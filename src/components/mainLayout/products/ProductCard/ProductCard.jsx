@@ -90,7 +90,7 @@ export default function ProductCard({ product, priority = false }) {
         {/* Price & Action */}
         <div className="flex items-center justify-between mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-gray-100">
           <span className="text-xs sm:text-sm md:text-base font-extrabold text-accent">
-            ${price.toFixed(2)}
+            ৳{price.toFixed(2)}
           </span>
           {/* Single responsive cart button: icon-only circle on mobile, icon+text on desktop */}
           <span className="flex items-center justify-center gap-1.5 bg-gray-900 group-hover:bg-primary text-white text-xs font-bold w-7 h-7 sm:w-auto sm:h-auto rounded-full sm:rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 sm:px-3 sm:py-1.5">

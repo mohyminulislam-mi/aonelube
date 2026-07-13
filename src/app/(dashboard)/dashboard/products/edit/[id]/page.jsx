@@ -295,7 +295,7 @@ export default function EditProductPage() {
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <div>
+            <div className="col-span-full">
               <label className="mb-1.5 block text-sm font-medium text-slate-700">Brand</label>
               <input
                 type="text"
@@ -306,7 +306,7 @@ export default function EditProductPage() {
               {errors.brand ? <p className="mt-1 text-sm text-red-600">{errors.brand.message}</p> : null}
             </div>
 
-            <div>
+            <div className="hidden">
               <label className="mb-1.5 block text-sm font-medium text-slate-700">Slug</label>
               <input
                 type="text"

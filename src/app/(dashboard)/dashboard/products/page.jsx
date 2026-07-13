@@ -204,10 +204,10 @@ export default function ProductsPage() {
                         </td>
                         <td className="px-4 py-3 text-slate-600">{getCategoryName(product)}</td>
                         <td className="px-4 py-3 text-slate-800">
-                          ${Number(product.price).toFixed(2)}
+                          ৳{Number(product.price).toFixed(2)}
                           {product.compareAtPrice && (
                             <span className="ml-2 text-xs text-slate-400 line-through">
-                              ${Number(product.compareAtPrice).toFixed(2)}
+                              ৳{Number(product.compareAtPrice).toFixed(2)}
                             </span>
                           )}
                         </td>
@@ -301,10 +301,10 @@ export default function ProductsPage() {
                         </div>
                         <div className="mt-3 flex items-center gap-4 text-sm text-slate-600">
                           <div>
-                            <span className="font-medium text-slate-800">${Number(product.price).toFixed(2)}</span>
+                            <span className="font-medium text-slate-800">৳{Number(product.price).toFixed(2)}</span>
                             {product.compareAtPrice && (
                               <span className="ml-2 text-xs text-slate-400 line-through">
-                                ${Number(product.compareAtPrice).toFixed(2)}
+                                ৳{Number(product.compareAtPrice).toFixed(2)}
                               </span>
                             )}
                           </div>

@@ -413,7 +413,7 @@ export default function CreateOrderPage() {
                                 <span className="font-semibold text-slate-800">{prod.name}</span>
                                 <span className="block text-xs text-slate-450">Stock: {prod.stock} units</span>
                               </div>
-                              <span className="font-semibold text-red-600">${price.toFixed(2)}</span>
+                              <span className="font-semibold text-red-600">৳{price.toFixed(2)}</span>
                             </button>
                           </li>
                         );
@@ -459,7 +459,7 @@ export default function CreateOrderPage() {
                         {items.map((item) => (
                           <tr key={item.product}>
                             <td className="px-4 py-3.5 font-medium text-slate-850">{item.name}</td>
-                            <td className="px-4 py-3.5 text-right text-slate-650">${item.price.toFixed(2)}</td>
+                            <td className="px-4 py-3.5 text-right text-slate-650">৳{item.price.toFixed(2)}</td>
                             <td className="px-4 py-3.5">
                               <input
                                 type="number"
@@ -471,7 +471,7 @@ export default function CreateOrderPage() {
                               />
                             </td>
                             <td className="px-4 py-3.5 text-right font-semibold text-slate-800">
-                              ${(item.price * item.quantity).toFixed(2)}
+                              ৳{(item.price * item.quantity).toFixed(2)}
                             </td>
                             <td className="px-4 py-3.5 text-center">
                               <button
@@ -500,19 +500,19 @@ export default function CreateOrderPage() {
               <div className="space-y-2 text-sm text-slate-650">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-slate-800">${subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-800">৳{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping Cost</span>
                   <span className="font-semibold text-slate-800">
-                    {shippingCost > 0 ? `$${shippingCost.toFixed(2)}` : "Free"}
+                    {shippingCost > 0 ? `৳${shippingCost.toFixed(2)}` : "Free"}
                   </span>
                 </div>
               </div>
 
               <div className="border-t border-gray-100 pt-4 flex justify-between items-end">
                 <span className="text-sm font-semibold text-slate-700 font-sans">Total Amount</span>
-                <span className="text-2xl font-bold text-red-600 font-sans">${total.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-red-600 font-sans">৳{total.toFixed(2)}</span>
               </div>
 
               <button

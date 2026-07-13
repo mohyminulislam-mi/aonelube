@@ -239,9 +239,9 @@ function OrderSuccessContent() {
                       {item.product?.name || item.name}
                     </td>
                     <td className="p-4 text-center">{item.quantity}</td>
-                    <td className="p-4 text-right">${item.price.toFixed(2)}</td>
+                    <td className="p-4 text-right">৳{item.price.toFixed(2)}</td>
                     <td className="p-4 text-right">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ৳{(item.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -256,26 +256,26 @@ function OrderSuccessContent() {
             <div className="flex justify-between">
               <span>Subtotal</span>
               <span className="text-gray-950 font-bold">
-                ${order.subtotal.toFixed(2)}
+                ৳{order.subtotal.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between">
               <span>Estimated Shipping</span>
               <span className="text-gray-950 font-bold">
-                ${order.shippingCost.toFixed(2)}
+                ৳{order.shippingCost.toFixed(2)}
               </span>
             </div>
             {order.discount > 0 && (
               <div className="flex justify-between text-primary font-bold">
                 <span>Coupon Applied</span>
-                <span>-${order.discount.toFixed(2)}</span>
+                <span>-৳{order.discount.toFixed(2)}</span>
               </div>
             )}
             <hr className="border-gray-100" />
             <div className="flex justify-between text-base font-black text-gray-950">
               <span>Grand Total</span>
               <span className="text-lg text-primary">
-                ${order.total.toFixed(2)}
+                ৳{order.total.toFixed(2)}
               </span>
             </div>
           </div>

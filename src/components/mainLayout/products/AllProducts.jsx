@@ -186,7 +186,7 @@ export default function AllProductsPage({
 
             <div>
               <h4 className="text-sm font-bold text-gray-800 mb-2">
-                Max Price: <span className="text-primary">${maxPrice}</span>
+                Max Price: <span className="text-primary">৳{maxPrice}</span>
               </h4>
               <input
                 type="range"
@@ -198,8 +198,8 @@ export default function AllProductsPage({
                 className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
               />
               <div className="flex justify-between text-xs text-gray-400 mt-1">
-                <span>$0</span>
-                <span>${productMaxPrice}</span>
+                <span>৳0</span>
+                <span>৳{productMaxPrice}</span>
               </div>
             </div>
           </aside>
@@ -268,7 +268,7 @@ export default function AllProductsPage({
 
               <div>
                 <h4 className="text-sm font-bold text-gray-800 mb-2">
-                  Max Price: <span className="text-primary">${maxPrice}</span>
+                  Max Price: <span className="text-primary">৳{maxPrice}</span>
                 </h4>
                 <input
                   type="range"
@@ -280,8 +280,8 @@ export default function AllProductsPage({
                   className="w-full accent-primary"
                 />
                 <div className="flex justify-between text-xs text-gray-400 mt-1">
-                  <span>$0</span>
-                  <span>${productMaxPrice}</span>
+                  <span>৳0</span>
+                  <span>৳{productMaxPrice}</span>
                 </div>
               </div>
             </div>

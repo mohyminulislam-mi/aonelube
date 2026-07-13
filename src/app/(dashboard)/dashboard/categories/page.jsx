@@ -191,7 +191,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <div>
+        <div className="col-span-full">
           <label className="mb-1.5 block text-sm font-medium text-slate-700">Name</label>
           <input
             type="text"
@@ -202,7 +202,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
           {errors.name ? <p className="mt-1 text-sm text-red-600">{errors.name.message}</p> : null}
         </div>
 
-        <div>
+        <div className="hidden">
           <label className="mb-1.5 block text-sm font-medium text-slate-700">Slug</label>
           <input
             type="text"

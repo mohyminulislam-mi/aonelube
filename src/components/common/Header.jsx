@@ -127,7 +127,7 @@ export default function Header() {
                 src="/logo.png"
                 width={130}
                 height={40}
-                style={{ height: "auto" }}
+                style={{ width: "auto", height: "auto" }}
                 priority
                 alt="Aonelube"
               />
@@ -241,7 +241,7 @@ export default function Header() {
                     Login
                   </Link>
                   <Link
-                    href="/register"
+                    href="/auth/register"
                     className="inline-flex items-center rounded-full bg-primary px-3 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-[#d1171e]"
                   >
                     Register
@@ -409,7 +409,7 @@ export default function Header() {
                   Login
                 </Link>
                 <Link
-                  href="/register"
+                  href="/auth/register"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex w-full items-center justify-center rounded-lg bg-primary px-3 py-2.5 text-sm font-semibold text-white"
                 >
