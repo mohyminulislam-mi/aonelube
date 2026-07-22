@@ -30,7 +30,7 @@ export default function Footer() {
         const normalized = normalizeCategories(data);
         if (normalized.length > 0) {
           normalized.sort(
-            (a, b) => (a.display_order || 0) - (b.display_order || 0)
+            (a, b) => (a.display_order || 0) - (b.display_order || 0),
           );
           setCategories(normalized);
         }
@@ -47,13 +47,16 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
               <span>
-                <Image
-                  src="/logo.png"
-                  width={150}
-                  height={46}
-                  alt="Aonelube"
-                  style={{ width: "auto", height: "auto" }}
-                />
+                <Link href="/">
+                  <Image
+                    src="/logo.png"
+                    width={90}
+                    height={28}
+                    style={{ width: "auto", height: "auto" }}
+                    priority
+                    alt="Aonelube"
+                  />
+                </Link>
               </span>
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed mb-4">
@@ -142,14 +145,14 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-10 mb-14 md:mb-0 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-400">
+          <p className="text-small text-gray-400">
             &copy; {new Date().getFullYear()} aonelube. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link
               href="https://www.inovixasoft.com/"
               target="_blank"
-              className="text-xs text-gray-400 hover:text-primary transition-colors"
+              className="text-small text-gray-400 hover:text-primary transition-colors"
             >
               Developed by <span className="text-primary">Inovixasoft</span>
             </Link>

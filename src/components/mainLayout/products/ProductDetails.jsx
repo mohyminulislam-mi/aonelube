@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/app/(mainLayout)/provider/CartProvider";
 import { useAuth } from "@/app/(mainLayout)/provider/AuthProvider";
+import Link from "next/link";
 
 // Derive specification rows from any available product fields
 function buildSpecRows(product) {
@@ -187,23 +188,8 @@ export default function ProductDetails({ product }) {
   ];
 
   return (
-    <div className="bg-[#F8F9FA] min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-[#F8F9FA] min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-outfit">
       <div className="max-w-7xl mx-auto">
-        {/* Breadcrumb */}
-        <nav className="flex items-center text-xs text-gray-400 mb-6 gap-1 font-medium">
-          <a href="/" className="hover:text-primary transition-colors">
-            Home
-          </a>
-          <ChevronRight size={13} />
-          <a href="/products" className="hover:text-primary transition-colors">
-            Products
-          </a>
-          <ChevronRight size={13} />
-          <span className="text-gray-600 truncate max-w-[200px]">
-            {product?.name}
-          </span>
-        </nav>
-
         {/* Main Card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
@@ -253,9 +239,26 @@ export default function ProductDetails({ product }) {
             </div>
 
             {/* ── Right: Product Info ── */}
-            <div className="p-6 md:p-10 flex flex-col gap-6">
+            <div className="p-6 md:p-10 flex flex-col gap-2">
+              {/* Breadcrumb */}
+              <nav className="flex items-center text-small text-gray-400 mb-2 gap-1 font-medium">
+                <Link href="/" className="hover:text-primary transition-colors">
+                  Home
+                </Link>
+                <ChevronRight size={13} />
+                <Link
+                  href="/products"
+                  className="hover:text-primary transition-colors"
+                >
+                  Products
+                </Link>
+                <ChevronRight size={13} />
+                <span className="text-gray-600 truncate max-w-[200px]">
+                  {product?.name}
+                </span>
+              </nav>
               {/* Top Meta Row */}
-              <div className="flex items-center gap-2 flex-wrap">
+              {/* <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-bold text-primary bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-widest">
                   {categoryName}
                 </span>
@@ -264,12 +267,16 @@ export default function ProductDetails({ product }) {
                     {brandName}
                   </span>
                 )}
-              </div>
+              </div> */}
 
               {/* Title */}
               <h1 className="text-2xl sm:text-3xl font-black text-gray-950 leading-tight">
                 {product?.name}
               </h1>
+
+              <div>
+                <h3 className="font-extrabold text-xl">1 Litter</h3>
+              </div>
 
               {/* Rating Row */}
               <div className="flex items-center gap-2">
@@ -350,10 +357,16 @@ export default function ProductDetails({ product }) {
                 </span>
               </div>
 
-              {/* Short Description */}
-              <p className="text-gray-500 text-sm leading-relaxed border-l-4 border-primary/20 pl-4">
-                {product?.description}
-              </p>
+              <div>
+                {/* Title */}
+                <h1 className="text-2xl sm:text-3xl font-black text-gray-950 leading-tight mb-2">
+                  {product?.name}
+                </h1>
+                {/* Short Description */}
+                <p className="text-gray-500 text-sm leading-relaxed border-l-4 border-primary/20 pl-4">
+                  {product?.description}
+                </p>
+              </div>
 
               {/* Quantity Selector */}
               <div className="flex items-center gap-4">
@@ -384,7 +397,7 @@ export default function ProductDetails({ product }) {
                 <button
                   disabled={!inStock || adding}
                   onClick={handleAddToCart}
-                  className="flex-1 bg-gray-950 hover:bg-black disabled:bg-gray-300 text-white py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
+                  className="flex-1 bg-gray-950 hover:bg-black disabled:bg-gray-300 text-white cursor-pointer py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
                 >
                   <ShoppingCart size={17} />
                   {adding ? "Adding…" : "Add to Cart"}

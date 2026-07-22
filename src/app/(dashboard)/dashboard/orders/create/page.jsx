@@ -73,7 +73,9 @@ export default function CreateOrderPage() {
     const delayDebounceFn = setTimeout(async () => {
       try {
         const data = await getProducts({ search: searchQuery, limit: 10 });
-        const list = Array.isArray(data) ? data : (data?.products || data?.data || []);
+        const list = Array.isArray(data)
+          ? data
+          : data?.products || data?.data || [];
         setSearchResults(list);
       } catch (err) {
         console.error("Search products error:", err);
@@ -89,7 +91,9 @@ export default function CreateOrderPage() {
     try {
       setSearching(true);
       const data = await getProducts({ limit: 50 });
-      const list = Array.isArray(data) ? data : (data?.products || data?.data || []);
+      const list = Array.isArray(data)
+        ? data
+        : data?.products || data?.data || [];
       setSearchResults(list);
     } catch (err) {
       console.error("Browse all products error:", err);
@@ -109,7 +113,9 @@ export default function CreateOrderPage() {
       return;
     }
 
-    const existingIndex = items.findIndex((item) => item.product === (product._id || product.id));
+    const existingIndex = items.findIndex(
+      (item) => item.product === (product._id || product.id),
+    );
     if (existingIndex > -1) {
       const updated = [...items];
       if (updated[existingIndex].quantity >= product.stock) {
@@ -124,7 +130,8 @@ export default function CreateOrderPage() {
       updated[existingIndex].quantity += 1;
       setItems(updated);
     } else {
-      const activePrice = product.discountPrice != null ? product.discountPrice : product.price;
+      const activePrice =
+        product.discountPrice != null ? product.discountPrice : product.price;
       setItems([
         ...items,
         {
@@ -158,7 +165,10 @@ export default function CreateOrderPage() {
   };
 
   // Math summary
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const shippingCost = subtotal > 0 ? (subtotal > 150 ? 0 : 5.0) : 0;
   const total = Math.max(0, subtotal + shippingCost);
 
@@ -213,7 +223,9 @@ export default function CreateOrderPage() {
   };
 
   const isAdmin = user?.role === "admin";
-  const districtsForDivision = selectedDivision ? DISTRICTS[selectedDivision] || [] : [];
+  const districtsForDivision = selectedDivision
+    ? DISTRICTS[selectedDivision] || []
+    : [];
 
   return (
     <RoleGuard allowedRoles={["admin", "manager"]}>
@@ -221,9 +233,15 @@ export default function CreateOrderPage() {
         {/* Header */}
         <div className="rounded-3xl border border-red-100 bg-white p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">Dashboard</p>
-            <h1 className="mt-2 text-2xl font-semibold text-slate-800">Create Order</h1>
-            <p className="mt-2 text-sm text-slate-600">Create an order on behalf of a customer</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">
+              Dashboard
+            </p>
+            <h1 className="mt-2 text-2xl font-semibold text-slate-800">
+              Create Order
+            </h1>
+            <p className="mt-2 text-sm text-slate-600">
+              Create an order on behalf of a customer
+            </p>
           </div>
           <Link
             href="/dashboard/orders"
@@ -233,10 +251,12 @@ export default function CreateOrderPage() {
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 lg:grid-cols-3">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid gap-6 lg:grid-cols-3"
+        >
           {/* Left Column (Forms) */}
           <div className="lg:col-span-2 space-y-6">
-            
             {/* Section 1: Customer Information */}
             <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm space-y-4">
               <h2 className="text-lg font-semibold text-slate-800 border-b border-gray-50 pb-3 flex items-center gap-2">
@@ -245,84 +265,137 @@ export default function CreateOrderPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">Customer Name *</label>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                    Customer Name *
+                  </label>
                   <input
                     type="text"
                     placeholder="Enter customer name"
-                    {...register("customerName", { required: "Name is required" })}
+                    {...register("customerName", {
+                      required: "Name is required",
+                    })}
                     className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {errors.customerName && <p className="text-xs text-red-500 mt-1">{errors.customerName.message}</p>}
+                  {errors.customerName && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.customerName.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">Customer Phone *</label>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                    Customer Phone *
+                  </label>
                   <input
                     type="text"
                     placeholder="Enter phone number"
-                    {...register("customerPhone", { required: "Phone number is required" })}
+                    {...register("customerPhone", {
+                      required: "Phone number is required",
+                    })}
                     className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {errors.customerPhone && <p className="text-xs text-red-500 mt-1">{errors.customerPhone.message}</p>}
+                  {errors.customerPhone && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.customerPhone.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">Street Address *</label>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                    Street Address *
+                  </label>
                   <input
                     type="text"
                     placeholder="Street name, holding no, apartment details"
-                    {...register("streetAddress", { required: "Street address is required" })}
+                    {...register("streetAddress", {
+                      required: "Street address is required",
+                    })}
                     className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {errors.streetAddress && <p className="text-xs text-red-500 mt-1">{errors.streetAddress.message}</p>}
+                  {errors.streetAddress && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.streetAddress.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">City *</label>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                    City *
+                  </label>
                   <input
                     type="text"
                     placeholder="City"
                     {...register("city", { required: "City is required" })}
                     className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city.message}</p>}
+                  {errors.city && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.city.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">Postal Code *</label>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                    Postal Code *
+                  </label>
                   <input
                     type="text"
                     placeholder="Postal Code"
-                    {...register("postalCode", { required: "Postal code is required" })}
+                    {...register("postalCode", {
+                      required: "Postal code is required",
+                    })}
                     className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {errors.postalCode && <p className="text-xs text-red-500 mt-1">{errors.postalCode.message}</p>}
+                  {errors.postalCode && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.postalCode.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">Country *</label>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                    Country *
+                  </label>
                   <input
                     type="text"
                     placeholder="Country"
-                    {...register("country", { required: "Country is required" })}
+                    {...register("country", {
+                      required: "Country is required",
+                    })}
                     className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {errors.country && <p className="text-xs text-red-500 mt-1">{errors.country.message}</p>}
+                  {errors.country && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.country.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Division dropdown (admin) or read-only input (manager) */}
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-slate-500 flex items-center gap-1">
-                    Division * {!isAdmin && <Lock className="h-3 w-3 text-slate-400 animate-pulse" />}
+                    Division *{" "}
+                    {!isAdmin && (
+                      <Lock className="h-3 w-3 text-slate-400 animate-pulse" />
+                    )}
                   </label>
                   {isAdmin ? (
                     <select
-                      {...register("division", { required: "Division is required" })}
+                      {...register("division", {
+                        required: "Division is required",
+                      })}
                       className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                     >
                       <option value="">Select Division</option>
                       {DIVISIONS.map((div) => (
-                        <option key={div} value={div}>{div}</option>
+                        <option key={div} value={div}>
+                          {div}
+                        </option>
                       ))}
                     </select>
                   ) : (
@@ -333,23 +406,34 @@ export default function CreateOrderPage() {
                       className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-slate-500 cursor-not-allowed outline-none"
                     />
                   )}
-                  {errors.division && <p className="text-xs text-red-500 mt-1">{errors.division.message}</p>}
+                  {errors.division && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.division.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* District dropdown (admin) or read-only input (manager) */}
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-slate-500 flex items-center gap-1">
-                    District * {!isAdmin && <Lock className="h-3 w-3 text-slate-400 animate-pulse" />}
+                    District *{" "}
+                    {!isAdmin && (
+                      <Lock className="h-3 w-3 text-slate-400 animate-pulse" />
+                    )}
                   </label>
                   {isAdmin ? (
                     <select
                       disabled={!selectedDivision}
-                      {...register("district", { required: "District is required" })}
+                      {...register("district", {
+                        required: "District is required",
+                      })}
                       className="w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <option value="">Select District</option>
                       {districtsForDivision.map((dist) => (
-                        <option key={dist} value={dist}>{dist}</option>
+                        <option key={dist} value={dist}>
+                          {dist}
+                        </option>
                       ))}
                     </select>
                   ) : (
@@ -360,7 +444,11 @@ export default function CreateOrderPage() {
                       className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-slate-500 cursor-not-allowed outline-none"
                     />
                   )}
-                  {errors.district && <p className="text-xs text-red-500 mt-1">{errors.district.message}</p>}
+                  {errors.district && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.district.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -368,12 +456,15 @@ export default function CreateOrderPage() {
             {/* Section 2: Products Search & List */}
             <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm space-y-4">
               <h2 className="text-lg font-semibold text-slate-800 border-b border-gray-50 pb-3 flex items-center gap-2">
-                <ShoppingCart className="h-5 w-5 text-red-500" /> Products Selection
+                <ShoppingCart className="h-5 w-5 text-red-500" /> Products
+                Selection
               </h2>
 
               {/* Product Search */}
               <div className="relative">
-                <label className="mb-1.5 block text-xs font-semibold text-slate-500">Search Product</label>
+                <label className="mb-1.5 block text-xs font-semibold text-slate-500">
+                  Search Product
+                </label>
                 <div className="relative flex items-center">
                   <Search className="absolute left-3.5 h-4 w-4 text-slate-400" />
                   <input
@@ -383,7 +474,9 @@ export default function CreateOrderPage() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full rounded-2xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
                   />
-                  {searching && <Loader2 className="absolute right-3.5 h-4 w-4 animate-spin text-slate-400" />}
+                  {searching && (
+                    <Loader2 className="absolute right-3.5 h-4 w-4 animate-spin text-slate-400" />
+                  )}
                 </div>
 
                 {/* Dropdown list of matched products */}
@@ -391,9 +484,9 @@ export default function CreateOrderPage() {
                   <div className="absolute z-10 left-0 right-0 mt-2 max-h-60 overflow-y-auto rounded-2xl border border-gray-150 bg-white shadow-xl flex flex-col">
                     <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-100 text-xs text-slate-500 font-semibold sticky top-0">
                       <span>Available Products ({searchResults.length})</span>
-                      <button 
-                        type="button" 
-                        onClick={() => setSearchResults([])} 
+                      <button
+                        type="button"
+                        onClick={() => setSearchResults([])}
                         className="text-slate-400 hover:text-slate-650 transition cursor-pointer"
                       >
                         <X className="h-3.5 w-3.5" />
@@ -401,7 +494,10 @@ export default function CreateOrderPage() {
                     </div>
                     <ul className="divide-y divide-gray-50">
                       {searchResults.map((prod) => {
-                        const price = prod.discountPrice != null ? prod.discountPrice : prod.price;
+                        const price =
+                          prod.discountPrice != null
+                            ? prod.discountPrice
+                            : prod.price;
                         return (
                           <li key={prod._id || prod.id}>
                             <button
@@ -410,10 +506,16 @@ export default function CreateOrderPage() {
                               className="w-full flex items-center justify-between px-4 py-3 cursor-pointer text-left text-sm text-slate-700 hover:bg-red-50/50 transition-colors"
                             >
                               <div>
-                                <span className="font-semibold text-slate-800">{prod.name}</span>
-                                <span className="block text-xs text-slate-450">Stock: {prod.stock} units</span>
+                                <span className="font-semibold text-slate-800">
+                                  {prod.name}
+                                </span>
+                                <span className="block text-xs text-slate-450">
+                                  Stock: {prod.stock} units
+                                </span>
                               </div>
-                              <span className="font-semibold text-red-600">৳{price.toFixed(2)}</span>
+                              <span className="font-semibold text-red-600">
+                                ৳{price.toFixed(2)}
+                              </span>
                             </button>
                           </li>
                         );
@@ -425,15 +527,20 @@ export default function CreateOrderPage() {
 
               {/* Selected items table */}
               <div className="space-y-3">
-                <label className="block text-xs font-semibold text-slate-500">Selected Products</label>
+                <label className="block text-xs font-semibold text-slate-500">
+                  Selected Products
+                </label>
                 {items.length === 0 ? (
                   <div className="rounded-2xl border border-dashed border-gray-250 py-10 px-4 text-center bg-gray-50/20 flex flex-col items-center justify-center">
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600 mb-3 shadow-xs">
                       <Package className="h-6 w-6" />
                     </div>
-                    <h3 className="text-sm font-semibold text-slate-800">No products added yet</h3>
+                    <h3 className="text-sm font-semibold text-slate-800">
+                      No products added yet
+                    </h3>
                     <p className="mt-1.5 text-xs text-slate-450 max-w-xs mx-auto">
-                      Search for specific items using the search box above or browse the complete list of all products.
+                      Search for specific items using the search box above or
+                      browse the complete list of all products.
                     </p>
                     <button
                       type="button"
@@ -448,25 +555,42 @@ export default function CreateOrderPage() {
                     <table className="w-full text-sm">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-4 py-3 text-left font-semibold text-slate-650">Product Name</th>
-                          <th className="px-4 py-3 text-right font-semibold text-slate-650">Price</th>
-                          <th className="px-4 py-3 text-center font-semibold text-slate-650 w-24">Quantity</th>
-                          <th className="px-4 py-3 text-right font-semibold text-slate-650">Total</th>
+                          <th className="px-4 py-3 text-left font-semibold text-slate-650">
+                            Product Name
+                          </th>
+                          <th className="px-4 py-3 text-right font-semibold text-slate-650">
+                            Price
+                          </th>
+                          <th className="px-4 py-3 text-center font-semibold text-slate-650 w-24">
+                            Quantity
+                          </th>
+                          <th className="px-4 py-3 text-right font-semibold text-slate-650">
+                            Total
+                          </th>
                           <th className="px-4 py-3 text-center font-semibold text-slate-650 w-12"></th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
                         {items.map((item) => (
                           <tr key={item.product}>
-                            <td className="px-4 py-3.5 font-medium text-slate-850">{item.name}</td>
-                            <td className="px-4 py-3.5 text-right text-slate-650">৳{item.price.toFixed(2)}</td>
+                            <td className="px-4 py-3.5 font-medium text-slate-850">
+                              {item.name}
+                            </td>
+                            <td className="px-4 py-3.5 text-right text-slate-650">
+                              ৳{item.price.toFixed(2)}
+                            </td>
                             <td className="px-4 py-3.5">
                               <input
                                 type="number"
                                 min={1}
                                 max={item.stock}
                                 value={item.quantity}
-                                onChange={(e) => handleQtyChange(item.product, parseInt(e.target.value) || 1)}
+                                onChange={(e) =>
+                                  handleQtyChange(
+                                    item.product,
+                                    parseInt(e.target.value) || 1,
+                                  )
+                                }
                                 className="w-full text-center rounded-xl border border-gray-200 py-1 text-sm outline-none focus:border-red-400"
                               />
                             </td>
@@ -495,12 +619,16 @@ export default function CreateOrderPage() {
           {/* Right Column (Summary & Submit) */}
           <div className="space-y-6">
             <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 sticky top-6">
-              <h2 className="text-lg font-semibold text-slate-800 border-b border-gray-50 pb-3">Order Summary</h2>
+              <h2 className="text-lg font-semibold text-slate-800 border-b border-gray-50 pb-3">
+                Order Summary
+              </h2>
 
               <div className="space-y-2 text-sm text-slate-650">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-slate-800">৳{subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-800">
+                    ৳{subtotal.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping Cost</span>
@@ -511,8 +639,12 @@ export default function CreateOrderPage() {
               </div>
 
               <div className="border-t border-gray-100 pt-4 flex justify-between items-end">
-                <span className="text-sm font-semibold text-slate-700 font-sans">Total Amount</span>
-                <span className="text-2xl font-bold text-red-600 font-sans">৳{total.toFixed(2)}</span>
+                <span className="text-sm font-semibold text-slate-700 font-outfit">
+                  Total Amount
+                </span>
+                <span className="text-2xl font-bold text-red-600 font-outfit">
+                  ৳{total.toFixed(2)}
+                </span>
               </div>
 
               <button

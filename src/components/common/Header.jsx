@@ -87,7 +87,10 @@ export default function Header() {
       label: c.name,
       href: `/products/category/${c.slug}`,
     })),
-    { label: "Campaign", href: "#" },
+    { label: "Campaign", href: "/campaign" },
+    { label: "Company", href: "/company" },
+    { label: "Partner", href: "/partner" },
+    { label: "Contact", href: "/contact" },
   ];
 
   useEffect(() => {
@@ -116,7 +119,7 @@ export default function Header() {
     .toUpperCase();
 
   return (
-    <section className="w-full bg-white shadow-sm sticky top-0 z-50 font-sans">
+    <section className="w-full bg-white shadow-sm sticky top-0 z-50 font-outfit">
       {/* Top Bar: Logos, Search, Profile, Cart */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-4">

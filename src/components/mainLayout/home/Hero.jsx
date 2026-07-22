@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 // JSON Data Structure
 const sliderData = [
@@ -93,9 +93,9 @@ export default function HeroSlider() {
             </div>
 
             {/* Content */}
-            {index === currentIndex && (
+            {/* {index === currentIndex && (
               <div className="absolute inset-0 z-20 flex flex-col justify-center items-start max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 text-white">
-                {/* Subtitle with accent element */}
+
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -108,7 +108,7 @@ export default function HeroSlider() {
                   </span>
                 </motion.div>
 
-                {/* Headline with custom line-height and text shadow */}
+
                 <motion.h1
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@ export default function HeroSlider() {
                   {slide.title}
                 </motion.h1>
 
-                {/* CTA Button with brand tint shadow */}
+
                 <motion.a
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -132,7 +132,7 @@ export default function HeroSlider() {
                   {slide.ctaText}
                 </motion.a>
               </div>
-            )}
+            )} */}
           </div>
         ))}
       </div>

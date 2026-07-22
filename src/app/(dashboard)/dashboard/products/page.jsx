@@ -66,13 +66,15 @@ export default function ProductsPage() {
   const filteredProducts = useMemo(() => {
     if (selectedCategory === "all") return products;
     return products.filter((product) => {
-      const productCategoryId = product.category?._id || product.category?.id || product.category;
+      const productCategoryId =
+        product.category?._id || product.category?.id || product.category;
       return productCategoryId === selectedCategory;
     });
   }, [products, selectedCategory]);
 
   const getCategoryName = (product) => {
-    const categoryId = product.category?._id || product.category?.id || product.category;
+    const categoryId =
+      product.category?._id || product.category?.id || product.category;
     const category = categories.find((c) => (c._id || c.id) === categoryId);
     return category?.name || "Uncategorized";
   };
@@ -119,10 +121,15 @@ export default function ProductsPage() {
     <RoleGuard allowedRoles={["manager", "admin"]}>
       <div className="space-y-6">
         <div className="rounded-3xl border border-red-100 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">Catalog Management</p>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-800">Products</h1>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red-500">
+            Catalog Management
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold text-slate-800">
+            Products
+          </h1>
           <p className="mt-2 text-sm text-slate-600">
-            Manage all products in your store — add new ones, edit existing, or remove items.
+            Manage all products in your store — add new ones, edit existing, or
+            remove items.
           </p>
         </div>
 
@@ -137,7 +144,10 @@ export default function ProductsPage() {
             >
               <option value="all">All Categories</option>
               {categories.map((category) => (
-                <option key={category._id || category.id} value={category._id || category.id}>
+                <option
+                  key={category._id || category.id}
+                  value={category._id || category.id}
+                >
                   {category.name}
                 </option>
               ))}
@@ -176,14 +186,19 @@ export default function ProductsPage() {
                     <th className="px-4 py-3 font-medium">Stock</th>
                     <th className="px-4 py-3 font-medium">Divisions</th>
                     <th className="px-4 py-3 font-medium">Status</th>
-                    <th className="px-4 py-3 font-medium text-right">Actions</th>
+                    <th className="px-4 py-3 font-medium text-right">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {filteredProducts.map((product) => {
                     const productId = product._id || product.id;
                     const isActive = product.active !== false;
-                    const imageUrl = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null;
+                    const imageUrl =
+                      Array.isArray(product.images) && product.images.length > 0
+                        ? product.images[0]
+                        : null;
 
                     return (
                       <tr key={productId} className="hover:bg-gray-50">
@@ -191,18 +206,27 @@ export default function ProductsPage() {
                           <div className="flex items-center gap-3">
                             <div className="h-12 w-12 overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
                               <img
-                                src={imageUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='12' fill='%236b7280' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"}
+                                src={
+                                  imageUrl ||
+                                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-family='outfit-serif' font-size='12' fill='%236b7280' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"
+                                }
                                 alt={product.name}
                                 className="h-full w-full object-cover"
                               />
                             </div>
                             <div>
-                              <p className="font-medium text-slate-800">{product.name}</p>
-                              <p className="text-xs text-slate-500">{product.slug}</p>
+                              <p className="font-medium text-slate-800">
+                                {product.name}
+                              </p>
+                              <p className="text-xs text-slate-500">
+                                {product.slug}
+                              </p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-slate-600">{getCategoryName(product)}</td>
+                        <td className="px-4 py-3 text-slate-600">
+                          {getCategoryName(product)}
+                        </td>
                         <td className="px-4 py-3 text-slate-800">
                           ৳{Number(product.price).toFixed(2)}
                           {product.compareAtPrice && (
@@ -211,9 +235,12 @@ export default function ProductsPage() {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-3 text-slate-600">{product.stock}</td>
+                        <td className="px-4 py-3 text-slate-600">
+                          {product.stock}
+                        </td>
                         <td className="px-4 py-3">
-                          {!product.availableDivisions || product.availableDivisions.length === 0 ? (
+                          {!product.availableDivisions ||
+                          product.availableDivisions.length === 0 ? (
                             <span className="rounded-full bg-green-100 text-green-700 px-2.5 py-1 text-xs font-medium">
                               All Divisions
                             </span>
@@ -271,14 +298,23 @@ export default function ProductsPage() {
               {filteredProducts.map((product) => {
                 const productId = product._id || product.id;
                 const isActive = product.active !== false;
-                const imageUrl = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null;
+                const imageUrl =
+                  Array.isArray(product.images) && product.images.length > 0
+                    ? product.images[0]
+                    : null;
 
                 return (
-                  <div key={productId} className="overflow-hidden rounded-3xl border border-red-100 bg-white p-4 shadow-sm">
+                  <div
+                    key={productId}
+                    className="overflow-hidden rounded-3xl border border-red-100 bg-white p-4 shadow-sm"
+                  >
                     <div className="flex items-start gap-4">
                       <div className="h-20 w-20 overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
                         <img
-                          src={imageUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='12' fill='%236b7280' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"}
+                          src={
+                            imageUrl ||
+                            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-family='outfit-serif' font-size='12' fill='%236b7280' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"
+                          }
                           alt={product.name}
                           className="h-full w-full object-cover"
                         />
@@ -286,8 +322,12 @@ export default function ProductsPage() {
                       <div className="flex-1">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <h3 className="font-semibold text-slate-800">{product.name}</h3>
-                            <p className="text-xs text-slate-500 mt-1">{getCategoryName(product)}</p>
+                            <h3 className="font-semibold text-slate-800">
+                              {product.name}
+                            </h3>
+                            <p className="text-xs text-slate-500 mt-1">
+                              {getCategoryName(product)}
+                            </p>
                           </div>
                           <span
                             className={`rounded-full px-2.5 py-1 text-xs font-medium ${
@@ -301,7 +341,9 @@ export default function ProductsPage() {
                         </div>
                         <div className="mt-3 flex items-center gap-4 text-sm text-slate-600">
                           <div>
-                            <span className="font-medium text-slate-800">৳{Number(product.price).toFixed(2)}</span>
+                            <span className="font-medium text-slate-800">
+                              ৳{Number(product.price).toFixed(2)}
+                            </span>
                             {product.compareAtPrice && (
                               <span className="ml-2 text-xs text-slate-400 line-through">
                                 ৳{Number(product.compareAtPrice).toFixed(2)}
@@ -312,7 +354,8 @@ export default function ProductsPage() {
                         </div>
 
                         <div className="mt-2.5">
-                          {!product.availableDivisions || product.availableDivisions.length === 0 ? (
+                          {!product.availableDivisions ||
+                          product.availableDivisions.length === 0 ? (
                             <span className="inline-block rounded-full bg-green-100 text-green-700 px-2 py-0.5 text-xs font-medium">
                               All Divisions
                             </span>
