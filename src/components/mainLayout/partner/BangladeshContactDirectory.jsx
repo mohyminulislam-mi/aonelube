@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 const divisionsData = [
   {
     division: "DHAKA",
@@ -155,29 +156,28 @@ const divisionsData = [
 export default function BangladeshContactDirectory() {
   const [activeDivisionIndex, setActiveDivisionIndex] = useState(0);
   const [selectedDistrict, setSelectedDistrict] = useState(
-    divisionsData[0].districts[0],
+    divisionsData[0].districts[0]
   );
 
   const handleDivisionChange = (index) => {
     setActiveDivisionIndex(index);
-    // Tab change korle dynamic-vabe prothom district active hobe
     if (divisionsData[index].districts.length > 0) {
       setSelectedDistrict(divisionsData[index].districts[0]);
     }
   };
 
   return (
-    <div className="bg-[#1f242d] p-6 sm:p-10 rounded-xl max-w-6xl mx-auto text-slate-200 font-sans shadow-2xl border border-slate-800">
+    <div className="bg-white p-6 sm:p-10 rounded-2xl max-w-6xl mx-auto text-slate-800 font-sans shadow-sm border border-slate-200/80">
       {/* 1. Top Division Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-700/60 pb-4">
+      <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-4">
         {divisionsData.map((item, index) => (
           <button
             key={item.division}
             onClick={() => handleDivisionChange(index)}
-            className={`px-4 py-2 text-xs font-semibold tracking-wider transition-all duration-200 uppercase rounded-sm ${
+            className={`px-4 py-2 text-xs font-semibold tracking-wider transition-all duration-200 uppercase rounded-lg ${
               activeDivisionIndex === index
-                ? "bg-[#191d24] text-[#f2cc68] border border-[#f2cc68]"
-                : "bg-[#191d24]/60 text-slate-300 hover:text-white border border-slate-700/50"
+                ? "bg-primary text-white shadow-sm"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
             }`}
           >
             {item.division}
@@ -188,17 +188,17 @@ export default function BangladeshContactDirectory() {
       {/* 2. Main Content Area */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         {/* Left Side: Districts Scroll List */}
-        <div className="md:col-span-5 bg-[#191d24] border border-slate-800 rounded-md p-2 h-80 overflow-y-auto custom-scrollbar">
+        <div className="md:col-span-5 bg-slate-50 border border-slate-200/80 rounded-xl p-2 h-80 overflow-y-auto custom-scrollbar">
           {divisionsData[activeDivisionIndex].districts.map((district) => {
             const isSelected = selectedDistrict?.name === district.name;
             return (
               <button
                 key={district.name}
                 onClick={() => setSelectedDistrict(district)}
-                className={`w-full text-left px-4 py-2.5 my-1 text-sm rounded transition-colors ${
+                className={`w-full text-left px-4 py-2.5 my-1 text-sm rounded-lg transition-all ${
                   isSelected
-                    ? "bg-[#f2cc68] text-slate-900 font-medium"
-                    : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                    ? "bg-primary text-white font-medium shadow-sm"
+                    : "text-slate-700 hover:bg-slate-200/60 hover:text-slate-900"
                 }`}
               >
                 {district.name}
@@ -211,46 +211,46 @@ export default function BangladeshContactDirectory() {
         <div className="md:col-span-7 flex flex-col justify-between">
           {/* Header Title */}
           <div className="text-center mb-6">
-            <h2 className="text-xl font-medium text-white tracking-wide">
+            <h2 className="text-xl font-bold text-slate-900 tracking-wide">
               {selectedDistrict?.name}
             </h2>
-            <div className="w-16 h-[2px] bg-[#f2cc68] mx-auto mt-1"></div>
+            <div className="w-16 h-[2px] bg-primary mx-auto mt-1 rounded-full"></div>
           </div>
 
           {/* Contact Card Box */}
           {selectedDistrict ? (
-            <div className="bg-[#191d24] border border-slate-800 rounded-md p-6 shadow-inner">
-              <h3 className="font-bold text-white text-base mb-2">
+            <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-6 shadow-sm">
+              <h3 className="font-bold text-slate-900 text-base mb-2">
                 {selectedDistrict.company}
               </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
+              <p className="text-slate-600 text-sm leading-relaxed">
                 {selectedDistrict.address}
               </p>
-              <p className="text-slate-400 text-sm mb-4">
+              <p className="text-slate-500 text-sm mb-4">
                 {selectedDistrict.country}
               </p>
 
-              <div className="text-sm space-y-1 text-slate-300 mb-6">
+              <div className="text-sm space-y-1.5 text-slate-700 mb-6">
                 <p>
-                  <span className="text-slate-400">Phone: </span>
-                  {selectedDistrict.phone}
+                  <span className="text-slate-500">Phone: </span>
+                  <span className="font-medium text-slate-900">{selectedDistrict.phone}</span>
                 </p>
                 <p>
-                  <span className="font-semibold text-white">Email: </span>
+                  <span className="font-semibold text-slate-900">Email: </span>
                   <a
                     href={`mailto:${selectedDistrict.email}`}
-                    className="text-[#f2cc68] hover:underline"
+                    className="text-primary font-medium hover:underline"
                   >
                     {selectedDistrict.email}
                   </a>
                 </p>
                 <p>
-                  <span className="font-semibold text-white">Website: </span>
+                  <span className="font-semibold text-slate-900">Website: </span>
                   <a
                     href={selectedDistrict.website}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[#f2cc68] hover:underline"
+                    className="text-primary font-medium hover:underline"
                   >
                     {selectedDistrict.website}
                   </a>
@@ -261,7 +261,7 @@ export default function BangladeshContactDirectory() {
               <div className="flex gap-3">
                 <a
                   href={`mailto:${selectedDistrict.email}`}
-                  className="bg-[#f2cc68] hover:bg-[#e0b852] text-slate-900 font-medium text-xs px-5 py-2 rounded transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-white font-medium text-xs px-5 py-2.5 rounded-lg transition-all shadow-sm"
                 >
                   Email
                 </a>
@@ -269,14 +269,14 @@ export default function BangladeshContactDirectory() {
                   href={selectedDistrict.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="border border-[#f2cc68] text-[#f2cc68] hover:bg-[#f2cc68]/10 text-xs px-5 py-2 rounded transition-colors"
+                  className="border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 font-medium text-xs px-5 py-2.5 rounded-lg transition-all"
                 >
                   Website
                 </a>
               </div>
             </div>
           ) : (
-            <div className="text-center text-slate-500 py-12">
+            <div className="text-center text-slate-400 py-12">
               Select a district to view contact details
             </div>
           )}
