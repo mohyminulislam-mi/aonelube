@@ -42,6 +42,9 @@ export default function Header() {
   const pathname = usePathname();
   const [categories, setCategories] = useState([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [mobileExpandedCategory, setMobileExpandedCategory] = useState(null);
+  const navRef = useRef(null);
 
   const searchParams = useSearchParams();
   const searchParamQuery = searchParams ? searchParams.get("search") || "" : "";
@@ -82,14 +85,6 @@ export default function Header() {
     loadCategories();
   }, []);
 
-  const navigationItems = [
-    ...categories.map((c) => ({
-      label: c.name,
-      href: `/products/category/${c.slug}`,
-    })),
-    { label: "Campaign", href: "#" },
-  ];
-
   useEffect(() => {
     if (!isAccountMenuOpen) return;
 
@@ -106,9 +101,23 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isAccountMenuOpen]);
 
+  useEffect(() => {
+    if (!activeCategory) return;
+
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setActiveCategory(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [activeCategory]);
+
   const closeMenus = () => {
     setIsAccountMenuOpen(false);
     setIsMobileMenuOpen(false);
+    setActiveCategory(null);
   };
 
   const userInitial = (user?.name || user?.email || "U")
@@ -288,7 +297,7 @@ export default function Header() {
       </div>
 
       {/* Navigation Bar - Desktop (xl and up) */}
-      <div className="hidden xl:block border-t border-gray-200 bg-white">
+      <div className="hidden xl:block border-t border-gray-200 bg-white" ref={navRef}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <nav className="flex items-center space-x-1 py-1">
             {isLoadingCategories ? (
@@ -300,22 +309,89 @@ export default function Header() {
                 <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
               </div>
             ) : (
-              navigationItems.map((item, index) => {
-                const isActive = pathname === item.href;
-                return (
-                  <LinkNext
-                    key={index}
-                    href={item.href}
-                    className={`px-3 py-3 text-[13px] font-bold tracking-wide whitespace-nowrap transition-colors border-b-2 ${
-                      isActive
-                        ? "text-primary border-primary"
-                        : "text-gray-700 hover:text-primary border-transparent"
-                    }`}
-                  >
-                    {item.label}
-                  </LinkNext>
-                );
-              })
+              <>
+                {categories.map((c) => {
+                  const categoryHref = `/products/category/${c.slug}`;
+                  const isActive = pathname === categoryHref;
+                  const hasSubCategories = Array.isArray(c.subCategories) && c.subCategories.length > 0;
+                  const isHovered = activeCategory === c.slug;
+
+                  return (
+                    <div
+                      key={c._id || c.id || c.slug}
+                      className="relative"
+                      onMouseEnter={() => {
+                        if (hasSubCategories) setActiveCategory(c.slug);
+                      }}
+                      onMouseLeave={() => setActiveCategory(null)}
+                    >
+                      <LinkNext
+                        href={categoryHref}
+                        onClick={() => setActiveCategory(null)}
+                        className={`inline-flex items-center gap-1 px-3 py-3 text-[13px] font-bold tracking-wide whitespace-nowrap transition-colors border-b-2 ${
+                          isActive || isHovered
+                            ? "text-primary border-primary"
+                            : "text-gray-700 hover:text-primary border-transparent"
+                        }`}
+                      >
+                        <span>{c.name}</span>
+                        {hasSubCategories && (
+                          <ChevronDown
+                            className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                              isHovered ? "rotate-180 text-primary" : "text-gray-400"
+                            }`}
+                          />
+                        )}
+                      </LinkNext>
+
+                      {/* Mega Dropdown Panel */}
+                      <AnimatePresence>
+                        {hasSubCategories && isHovered && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                            className="absolute left-0 top-full z-50 min-w-[240px] pt-1"
+                          >
+                            <div className="rounded-b-2xl rounded-tr-2xl border border-gray-100 bg-white p-3 shadow-xl space-y-1">
+                              {c.subCategories.map((sub, idx) => (
+                                <LinkNext
+                                  key={idx}
+                                  href={sub.customLink || `/products?sub=${sub.slug}`}
+                                  onClick={() => setActiveCategory(null)}
+                                  className="block rounded-xl px-3 py-2 text-xs font-semibold text-gray-600 transition-colors hover:bg-red-50 hover:text-primary"
+                                >
+                                  {sub.name}
+                                </LinkNext>
+                              ))}
+                              <div className="my-1.5 h-px bg-gray-100" />
+                              <LinkNext
+                                href={categoryHref}
+                                onClick={() => setActiveCategory(null)}
+                                className="block rounded-xl px-3 py-2 text-xs font-bold text-primary transition-colors hover:bg-red-50"
+                              >
+                                View All {c.name} &rarr;
+                              </LinkNext>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+
+                <LinkNext
+                  href="#"
+                  className={`px-3 py-3 text-[13px] font-bold tracking-wide whitespace-nowrap transition-colors border-b-2 ${
+                    pathname === "#"
+                      ? "text-primary border-primary"
+                      : "text-gray-700 hover:text-primary border-transparent"
+                  }`}
+                >
+                  Campaign
+                </LinkNext>
+              </>
             )}
           </nav>
 
@@ -329,7 +405,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer. */}
+      {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
         <div className="xl:hidden border-t border-gray-200 bg-white px-4 pt-4 pb-6 space-y-4 shadow-inner">
           {/* Mobile Search */}
@@ -370,7 +446,7 @@ export default function Header() {
                       closeMenus();
                       router.push("/dashboard");
                     }}
-                    className="flex w-full items-center gap-2  cursor-pointer rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
+                    className="flex w-full items-center gap-2 cursor-pointer rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700"
                   >
                     <LayoutDashboard className="h-4 w-4 text-primary" />
                     Dashboard
@@ -429,23 +505,104 @@ export default function Header() {
                 <div className="h-8 w-full bg-gray-100 rounded animate-pulse" />
               </div>
             ) : (
-              navigationItems.map((item, index) => {
-                const isActive = pathname === item.href;
-                return (
-                  <LinkNext
-                    key={index}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
-                      isActive
-                        ? "bg-primary/15 text-primary"
-                        : "text-gray-700 hover:text-primary hover:bg-gray-50"
-                    }`}
-                  >
-                    {item.label}
-                  </LinkNext>
-                );
-              })
+              <>
+                {categories.map((c) => {
+                  const categoryHref = `/products/category/${c.slug}`;
+                  const isActive = pathname === categoryHref;
+                  const hasSubCategories = Array.isArray(c.subCategories) && c.subCategories.length > 0;
+                  const isExpanded = mobileExpandedCategory === c.slug;
+
+                  if (!hasSubCategories) {
+                    return (
+                      <LinkNext
+                        key={c._id || c.id || c.slug}
+                        href={categoryHref}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                          isActive
+                            ? "bg-primary/15 text-primary"
+                            : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                        }`}
+                      >
+                        {c.name}
+                      </LinkNext>
+                    );
+                  }
+
+                  return (
+                    <div key={c._id || c.id || c.slug} className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <LinkNext
+                          href={categoryHref}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`flex-1 px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                            isActive
+                              ? "bg-primary/15 text-primary"
+                              : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                          }`}
+                        >
+                          {c.name}
+                        </LinkNext>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setMobileExpandedCategory(isExpanded ? null : c.slug)
+                          }
+                          className="p-2.5 text-gray-500 hover:text-primary cursor-pointer"
+                        >
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform duration-200 ${
+                              isExpanded ? "rotate-180 text-primary" : ""
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="pl-4 space-y-1 overflow-hidden"
+                          >
+                            {c.subCategories.map((sub, idx) => (
+                              <LinkNext
+                                key={idx}
+                                href={sub.customLink || `/products?sub=${sub.slug}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block px-3 py-2 rounded-md text-xs font-semibold text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                              >
+                                {sub.name}
+                              </LinkNext>
+                            ))}
+                            <LinkNext
+                              href={categoryHref}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="block px-3 py-2 rounded-md text-xs font-bold text-primary hover:bg-red-50 transition-colors"
+                            >
+                              View All {c.name} &rarr;
+                            </LinkNext>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+
+                <LinkNext
+                  href="#"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                    pathname === "#"
+                      ? "bg-primary/15 text-primary"
+                      : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                  }`}
+                >
+                  Campaign
+                </LinkNext>
+              </>
             )}
           </nav>
 

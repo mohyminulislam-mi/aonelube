@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { ImagePlus, Loader2, PencilLine, Trash2, UploadCloud, X } from "lucide-react";
+import { ImagePlus, Loader2, PencilLine, Plus, Trash2, UploadCloud, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import RoleGuard from "@/components/dashboard/RoleGuard";
 import { createCategory, deleteCategory, getCategories, updateCategory } from "@/lib/api";
@@ -40,6 +40,49 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // ── Subcategory state ───────────────────────────────────────────────
+  const [subCategories, setSubCategories] = useState(() =>
+    Array.isArray(editingCategory?.subCategories)
+      ? editingCategory.subCategories.map((s) => ({
+          name: s.name || "",
+          slug: s.slug || "",
+          customLink: s.customLink || "",
+        }))
+      : []
+  );
+
+  const makeSlug = (text) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+  const addSubCategory = () =>
+    setSubCategories((prev) => [...prev, { name: "", slug: "", customLink: "" }]);
+
+  const removeSubCategory = (index) =>
+    setSubCategories((prev) => prev.filter((_, i) => i !== index));
+
+  const updateSubCategory = (index, field, value) => {
+    setSubCategories((prev) =>
+      prev.map((item, i) => {
+        if (i !== index) return item;
+        const updated = { ...item, [field]: value };
+        // Auto-generate slug when the name changes
+        if (field === "name") {
+          updated.slug = makeSlug(value);
+          // Auto-generate customLink when name changes and no custom link set yet
+          if (!item.customLink) {
+            updated.customLink = `/products?sub=${makeSlug(value)}`;
+          }
+        }
+        return updated;
+      })
+    );
+  };
+
   const {
     register,
     handleSubmit,
@@ -68,10 +111,20 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
         image: undefined,
       });
       setImagePreview(editingCategory.image || null);
+      setSubCategories(
+        Array.isArray(editingCategory.subCategories)
+          ? editingCategory.subCategories.map((s) => ({
+              name: s.name || "",
+              slug: s.slug || "",
+              customLink: s.customLink || "",
+            }))
+          : []
+      );
       return;
     }
 
     setImagePreview(null);
+    setSubCategories([]);
   }, [editingCategory, reset]);
 
   useEffect(() => {
@@ -118,6 +171,9 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
       formData.append("slug", data.slug);
       formData.append("description", data.description);
 
+      // Append subcategories as JSON
+      formData.append("subCategories", JSON.stringify(subCategories));
+
       if (data.image?.[0]) {
         formData.append("image", data.image[0]);
       }
@@ -146,6 +202,7 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
 
       reset({ name: "", slug: "", description: "", image: undefined });
       setImagePreview(null);
+      setSubCategories([]);
       onSuccess();
     } catch (error) {
       Swal.fire({
@@ -263,6 +320,84 @@ function CategoryForm({ editingCategory, onSuccess, onCancel, isInModal = false 
             </div>
           )}
           {errors.image ? <p className="mt-2 text-sm text-red-600">{errors.image.message}</p> : null}
+        </div>
+      </div>
+
+      {/* ── Subcategories Section ─────────────────────────────────── */}
+      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-slate-700">Subcategories</span>
+          <button
+            type="button"
+            onClick={addSubCategory}
+            className="inline-flex items-center gap-1.5 cursor-pointer rounded-full border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            Add Subcategory
+          </button>
+        </div>
+
+        {subCategories.length === 0 && (
+          <p className="text-xs text-slate-400 text-center py-3">
+            No subcategories yet. Click &ldquo;+ Add Subcategory&rdquo; to begin.
+          </p>
+        )}
+
+        <div className="space-y-3">
+          {subCategories.map((sub, index) => (
+            <div
+              key={index}
+              className="relative grid gap-2 rounded-xl border border-gray-200 bg-white p-3 pr-10 sm:grid-cols-3"
+            >
+              {/* Name */}
+              <div>
+                <label className="mb-1 block text-xs font-medium text-slate-600">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={sub.name}
+                  onChange={(e) => updateSubCategory(index, "name", e.target.value)}
+                  placeholder="e.g. Fully Synthetic Oils"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                />
+              </div>
+
+              {/* Slug */}
+              <div>
+                <label className="mb-1 block text-xs font-medium text-slate-600">Slug</label>
+                <input
+                  type="text"
+                  value={sub.slug}
+                  onChange={(e) => updateSubCategory(index, "slug", e.target.value)}
+                  placeholder="fully-synthetic-oils"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                />
+              </div>
+
+              {/* Custom Link */}
+              <div>
+                <label className="mb-1 block text-xs font-medium text-slate-600">Custom Link</label>
+                <input
+                  type="text"
+                  value={sub.customLink}
+                  onChange={(e) => updateSubCategory(index, "customLink", e.target.value)}
+                  placeholder="/products?sub=fully-synthetic-oils"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                />
+              </div>
+
+              {/* Remove button */}
+              <button
+                type="button"
+                onClick={() => removeSubCategory(index)}
+                className="absolute right-2.5 top-2.5 cursor-pointer rounded-full p-1 text-slate-400 transition hover:bg-red-50 hover:text-red-500"
+                title="Remove subcategory"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
