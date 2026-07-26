@@ -80,7 +80,7 @@ export default function PopularSearches() {
 
   if (loading) {
     return (
-      <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-outfit">
         <div className="max-w-7xl mx-auto">
           {/* Section Title & Header (Skeleton) */}
           <div className="flex items-end justify-between mb-8">
@@ -119,7 +119,7 @@ export default function PopularSearches() {
   }
 
   return (
-    <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <section className="bg-white py-12 px-4 sm:px-6 lg:px-8 font-outfit">
       <div className="max-w-7xl mx-auto">
         {/* Section Title & Header */}
         <div className="flex items-end justify-between mb-8">

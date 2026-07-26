@@ -117,7 +117,7 @@ export default function AllProductsPage({
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-outfit">
       <div className="max-w-7xl mx-auto">
         {/* Top Control Bar */}
         <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between mb-6">

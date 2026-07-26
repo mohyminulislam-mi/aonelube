@@ -1,5 +1,11 @@
 import "./globals.css";
+import { Outfit } from "next/font/google";
 import { AuthProvider } from "./(mainLayout)/provider/AuthProvider";
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   metadataBase: new URL("https://www.aonelube.com"),
@@ -100,8 +106,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
+    <html lang="en">
+      <body 
+        className={`${outfit.variable} antialiased min-h-full flex flex-col`}
+      
+      >
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

@@ -166,7 +166,7 @@ export default function CategoryProductsPage() {
   // ---------- success ----------
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F9FA] font-sans">
+    <div className="flex flex-col min-h-screen bg-[#F8F9FA] font-outfit">
       <Breadcrumbs />
 
       <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-14">

@@ -53,7 +53,7 @@ export default function CategorySection({ category, products }) {
   const bannerImage = getCategoryImage(category);
 
   return (
-    <section className="w-full font-sans mb-14">
+    <section className="w-full font-outfit mb-14">
       {/* Full-width Category Banner */}
       <div
         className="relative w-full h-[200px] md:h-[240px] bg-cover bg-center overflow-hidden flex items-center"

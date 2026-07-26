@@ -28,7 +28,7 @@ export default async function FeaturedProducts() {
   if (products.length === 0) return null;
 
   return (
-    <section className="bg-[#F8F9FA] py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <section className="bg-[#F8F9FA] py-12 px-4 sm:px-6 lg:px-8 font-outfit">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="flex items-end justify-between mb-8">

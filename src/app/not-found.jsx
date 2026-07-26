@@ -6,7 +6,7 @@ import { AlertCircle, ArrowLeft, Home } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="bg-white text-slate-800 min-h-screen font-sans flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="bg-white text-slate-800 min-h-screen font-outfit flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Subtle Pattern */}
       <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ED1C24_1px,transparent_1px)] [background-size:24px_24px]"></div>
 

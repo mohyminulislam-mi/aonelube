@@ -20,24 +20,55 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const members = [
+  {
+    name: "Tanvir Ahmed",
+    role: "Chief Executive Officer (CEO)",
+    email: "tanvir@example.com",
+    phone: "+880 1711-000001",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=500&auto=format&fit=crop"
+  },
+  {
+    name: "Arif Hossain",
+    role: "Chief Technology Officer (CTO)",
+    email: "arif@example.com",
+    phone: "+880 1711-000002",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=500&auto=format&fit=crop"
+  },
+  
+  {
+    name: "Rahat Chowdhury",
+    role: "Lead Digital Marketer",
+    email: "rahat@example.com",
+    phone: "+880 1711-000005",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop"
+  },
+  {
+    name: "Kamrul Hasan",
+    role: "Head of Sales",
+    email: "kamrul@example.com",
+    phone: "+880 1711-000006",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=500&auto=format&fit=crop"
+  }
+];
+
   return (
-    <div className="bg-white text-slate-800 min-h-screen font-sans">
+    <div className="bg-white text-slate-800 min-h-screen font-outfit">
       {/* Header / Hero Section */}
-      <section className="bg-slate-900 text-white py-16 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+      <section className=" py-12 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ED1C24_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="max-w-4xl mx-auto relative z-10">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
             Get In <span className="text-primary">Touch</span>
           </h1>
-          <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
-            Have questions about our premium German-engineered lubricants or
-            need bulk pricing? Reach out to our team.
+          <p className="text-base/6 text-slate-500 max-w-md mx-auto mt-1">
+            Have questions about our premium German-engineered lubricants or need bulk pricing? Reach out to our team.
           </p>
         </div>
       </section>
 
       {/* Main Content: Info & Form */}
-      <section className="max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+      <section className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
           {/* Left Column: Contact Details (2/5 span) */}
           <div className="lg:col-span-2 space-y-8">
@@ -61,7 +92,7 @@ export default function ContactPage() {
                     Call Us
                   </h4>
                   <p className="text-slate-600 mt-1 font-medium">
-                    +880 1234-567890
+                    +880 1850120709
                   </p>
                   <p className="text-xs text-slate-400">
                     Mon-Fri from 9am to 6pm
@@ -78,7 +109,7 @@ export default function ContactPage() {
                     Email Support
                   </h4>
                   <p className="text-slate-600 mt-1 font-medium">
-                    info@aonelube.com
+                    rjgroup@gmail.com
                   </p>
                   <p className="text-xs text-slate-400">
                     We respond within 24 hours
@@ -217,6 +248,64 @@ export default function ContactPage() {
               </button>
             </form>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 py-16 px-6">
+        {/* Section Header */}
+        <div className="text-center mb-11">
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Meet Our Team
+          </h1>
+          <p className="text-base/6 text-slate-500 max-w-md mx-auto mt-1">
+            A group of designers and engineers working together to build
+            reliable and thoughtful digital experiences.
+          </p>
+        </div>
+
+        {/* Team Cards Grid */}
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {members.map((member, index) => (
+            <div
+              key={index}
+              className="bg-white border border-slate-100 hover:border-slate-300 transition-all duration-300 rounded-xl p-5 shadow-sm hover:shadow-md flex flex-col justify-between"
+            >
+              <div>
+                {/* Member Image */}
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="h-[240px] w-full object-cover object-top rounded-lg"
+                />
+
+                {/* Name & Title */}
+                <h3 className="text-lg font-semibold text-slate-800 mt-4">
+                  {member.name}
+                </h3>
+                <p className="text-sm font-medium text-slate-500 mt-0.5">
+                  {member.role}
+                </p>
+
+                {/* Email & Phone Details */}
+                <div className="mt-4 space-y-2 border-t border-slate-100 pt-3 text-xs text-slate-600">
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="flex items-center gap-2 hover:text-slate-900 transition-colors"
+                  >
+                    <Mail className="size-4 text-slate-400 shrink-0" />
+                    <span>{member.email}</span>
+                  </a>
+                  <a
+                    href={`tel:${member.phone}`}
+                    className="flex items-center gap-2 hover:text-slate-900 transition-colors"
+                  >
+                    <Phone className="size-4 text-slate-400 shrink-0" />
+                    <span>{member.phone}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
