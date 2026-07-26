@@ -312,8 +312,8 @@ export default function Header() {
             ) : (
               <>
                 {categories.map((c) => {
-                  const categoryHref = `/products/category/${c.slug}`;
-                  const isActive = pathname === categoryHref;
+                  const categoryHref = `/?category=${c.slug}`;
+                  const isActive = pathname === "/" && searchParams?.get("category") === c.slug;
                   const hasSubCategories = Array.isArray(c.subCategories) && c.subCategories.length > 0;
                   const isHovered = activeCategory === c.slug;
 
@@ -359,7 +359,7 @@ export default function Header() {
                               {c.subCategories.map((sub, idx) => (
                                 <LinkNext
                                   key={idx}
-                                  href={sub.customLink || `/products?sub=${sub.slug}`}
+                                  href={sub.customLink || `/?sub=${sub.slug}`}
                                   onClick={() => setActiveCategory(null)}
                                   className="block rounded-xl px-3 py-2 text-xs font-semibold text-gray-600 transition-colors hover:bg-red-50 hover:text-primary"
                                 >
@@ -508,8 +508,8 @@ export default function Header() {
             ) : (
               <>
                 {categories.map((c) => {
-                  const categoryHref = `/products/category/${c.slug}`;
-                  const isActive = pathname === categoryHref;
+                  const categoryHref = `/?category=${c.slug}`;
+                  const isActive = pathname === "/" && searchParams?.get("category") === c.slug;
                   const hasSubCategories = Array.isArray(c.subCategories) && c.subCategories.length > 0;
                   const isExpanded = mobileExpandedCategory === c.slug;
 
@@ -571,7 +571,7 @@ export default function Header() {
                             {c.subCategories.map((sub, idx) => (
                               <LinkNext
                                 key={idx}
-                                href={sub.customLink || `/products?sub=${sub.slug}`}
+                                href={sub.customLink || `/?sub=${sub.slug}`}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="block px-3 py-2 rounded-md text-xs font-semibold text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
                               >

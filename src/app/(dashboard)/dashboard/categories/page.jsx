@@ -262,8 +262,8 @@ function CategoryForm({
             type="button"
             onClick={() => setFormType("category")}
             className={`flex-1 rounded-xl py-2 text-sm font-semibold transition cursor-pointer ${formType === "category"
-                ? "bg-white text-slate-800 shadow-xs"
-                : "text-slate-500 hover:text-slate-700"
+              ? "bg-white text-slate-800 shadow-xs"
+              : "text-slate-500 hover:text-slate-700"
               }`}
           >
             Main Category
@@ -272,8 +272,8 @@ function CategoryForm({
             type="button"
             onClick={() => setFormType("subcategory")}
             className={`flex-1 rounded-xl py-2 text-sm font-semibold transition cursor-pointer ${formType === "subcategory"
-                ? "bg-white text-slate-800 shadow-xs"
-                : "text-slate-500 hover:text-slate-700"
+              ? "bg-white text-slate-800 shadow-xs"
+              : "text-slate-500 hover:text-slate-700"
               }`}
           >
             Sub-Category

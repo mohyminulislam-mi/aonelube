@@ -14,8 +14,17 @@ export const AuthProvider = ({ children }) => {
       const data = await apiGet("/api/auth/me");
       setUser(data?.user || null);
     } catch (error) {
-      if (error?.message !== "Not authorized to access this route") {
+      const msg = error?.message || "";
+      const isExpectedAuthError =
+        msg.includes("Not authorized") ||
+        msg.includes("User not found") ||
+        msg.includes("token");
+
+      if (!isExpectedAuthError) {
         console.error("Auth check failed:", error);
+      } else if (msg.includes("User not found")) {
+        // Clear invalid token cookie if user no longer exists in DB
+        apiPost("/api/auth/logout", {}).catch(() => {});
       }
       setUser(null);
     } finally {

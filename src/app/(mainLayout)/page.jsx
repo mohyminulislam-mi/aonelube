@@ -1,12 +1,19 @@
-import FeaturedProducts from "@/components/mainLayout/home/FeaturedProducts";
-import HeroSlider from "@/components/mainLayout/home/Hero";
+import { Suspense } from "react";
+import LandingPageContent from "@/components/mainLayout/home/LandingPageContent";
+import { Loader2 } from "lucide-react";
 
-
-export default async function Home() {
+export default function Home() {
   return (
-    <section>
-      <HeroSlider />
-      <FeaturedProducts />
-    </section>
+    <main className="min-h-screen bg-gray-50">
+      <Suspense
+        fallback={
+          <div className="py-20 flex flex-col items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        }
+      >
+        <LandingPageContent />
+      </Suspense>
+    </main>
   );
 }

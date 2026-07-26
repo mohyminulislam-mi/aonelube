@@ -171,20 +171,19 @@ export default function CategoryProductsPage() {
 
       <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
         {/* Page Header */}
-        <div className="mb-8 pb-6 border-b border-gray-200">
-          <span className="text-xs font-bold text-primary uppercase tracking-wider block mb-1">
-            Browse Category
-          </span>
-          <h1 className="text-2xl md:text-3xl font-black text-gray-950 tracking-tight">
-            {category.name}
-          </h1>
-          {category.description && (
-            <p className="text-gray-500 text-sm mt-2 max-w-2xl leading-relaxed">
-              {category.description}
-            </p>
-          )}
-          <p className="text-gray-400 text-xs font-semibold mt-3">
-            {totalCount} {totalCount === 1 ? "product" : "products"} found
+        <div className="mb-8 pb-3 border-b-2 border-gray-900 flex items-end justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-black text-gray-950 tracking-tight capitalize">
+              {category.name}
+            </h1>
+            {category.description && (
+              <p className="text-gray-500 text-sm mt-1 max-w-2xl leading-relaxed">
+                {category.description}
+              </p>
+            )}
+          </div>
+          <p className="text-gray-400 text-xs font-semibold shrink-0">
+            {totalCount} {totalCount === 1 ? "product" : "products"}
           </p>
         </div>
 
