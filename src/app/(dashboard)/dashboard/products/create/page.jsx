@@ -39,6 +39,8 @@ export default function CreateProductPage() {
   } = useForm({
     defaultValues: {
       name: "",
+      shortTitle: "",
+      liter: "",
       slug: "",
       brand: "",
       sku: "",
@@ -142,6 +144,8 @@ export default function CreateProductPage() {
 
       const formData = new FormData();
       formData.append("name", data.name);
+      formData.append("shortTitle", data.shortTitle || "");
+      formData.append("liter", data.liter || "");
       formData.append("slug", data.slug);
       formData.append("brand", data.brand);
       formData.append("sku", data.sku);
@@ -175,6 +179,8 @@ export default function CreateProductPage() {
 
       reset({
         name: "",
+        shortTitle: "",
+        liter: "",
         slug: "",
         brand: "",
         sku: "",
@@ -223,14 +229,38 @@ export default function CreateProductPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 rounded-3xl border border-red-100 bg-white p-5 shadow-sm md:p-6">
           <div className="grid gap-4 lg:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">Product Name</label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">Product Name (Long Title)</label>
               <input
                 type="text"
                 {...register("name", { required: "Product name is required" })}
                 className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
-                placeholder="e.g. Mobil 1 5W-30"
+                placeholder="e.g. Mobil 1 Extended Performance 5W-30 Full Synthetic Motor Oil"
               />
               {errors.name ? <p className="mt-1 text-sm text-red-600">{errors.name.message}</p> : null}
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">Short Title</label>
+              <input
+                type="text"
+                {...register("shortTitle")}
+                className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                placeholder="e.g. Mobil 1 5W-30"
+              />
+              <p className="mt-1 text-xs text-slate-500">Short title for product cards & badges</p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">Liter / Volume</label>
+              <input
+                type="text"
+                {...register("liter")}
+                className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                placeholder="e.g. 1 Liter / 4L / 5L"
+              />
+              <p className="mt-1 text-xs text-slate-500">Volume (e.g., 1L, 4L, 5L, 20L)</p>
             </div>
 
             <div>

@@ -43,6 +43,8 @@ function buildSpecRows(product) {
 
   // Then append root-level known fields that are not already shown
   const fieldMap = [
+    { key: "shortTitle", label: "Short Title" },
+    { key: "liter", label: "Liter / Volume" },
     { key: "viscosity", label: "Viscosity Grade" },
     { key: "api_grade", label: "API Grade" },
     { key: "acea_grade", label: "ACEA Grade" },
@@ -269,14 +271,26 @@ export default function ProductDetails({ product }) {
                 )}
               </div> */}
 
-              {/* Title */}
-              <h1 className="text-2xl sm:text-3xl font-black text-gray-950 leading-tight">
-                {product?.name}
-              </h1>
-
+              {/* Title & Short Title */}
               <div>
-                <h3 className="font-extrabold text-xl">1 Litter</h3>
+                <h1 className="text-2xl sm:text-3xl font-black text-gray-950 leading-tight">
+                  {product?.name}
+                </h1>
+                {product?.shortTitle ? (
+                  <p className="text-sm font-medium text-slate-500 mt-1">
+                    {product.shortTitle}
+                  </p>
+                ) : null}
               </div>
+
+              {/* Liter / Volume Badge */}
+              {product?.liter || product?.volume ? (
+                <div>
+                  <span className="font-extrabold text-sm text-primary inline-flex items-center gap-1.5 bg-red-50 text-red-600 px-3 py-1 rounded-lg border border-red-100">
+                    {product.liter || product.volume}
+                  </span>
+                </div>
+              ) : null}
 
               {/* Rating Row */}
               <div className="flex items-center gap-2">
