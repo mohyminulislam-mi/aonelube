@@ -12,6 +12,7 @@ import {
   getCategories,
   updateCategory,
 } from "@/lib/api";
+import { compressImage } from "@/lib/imageCompressor";
 
 function normalizeCategories(payload) {
   if (Array.isArray(payload)) return payload;
@@ -213,7 +214,8 @@ function CategoryForm({
       formData.append("subCategories", JSON.stringify(subCategories));
 
       if (data.image?.[0]) {
-        formData.append("image", data.image[0]);
+        const compressed = await compressImage(data.image[0]);
+        formData.append("image", compressed);
       }
 
       if (editingCategory) {

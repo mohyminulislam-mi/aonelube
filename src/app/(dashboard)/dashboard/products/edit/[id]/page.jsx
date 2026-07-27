@@ -8,6 +8,7 @@ import { ImagePlus, Loader2, Plus, Trash2, UploadCloud } from "lucide-react";
 import RoleGuard from "@/components/dashboard/RoleGuard";
 import { updateProduct, getCategories, getProductDetail } from "@/lib/api";
 import { DIVISIONS } from "@/lib/bangladeshData";
+import { compressMultipleImages } from "@/lib/imageCompressor";
 
 function normalizeCategories(payload) {
   if (Array.isArray(payload)) return payload;
@@ -190,6 +191,8 @@ export default function EditProductPage() {
     try {
       setIsSubmitting(true);
 
+      const compressedFiles = await compressMultipleImages(selectedFiles);
+
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("slug", data.slug);
@@ -212,7 +215,7 @@ export default function EditProductPage() {
         formData.append("existingImages", img);
       });
 
-      selectedFiles.forEach((file) => {
+      compressedFiles.forEach((file) => {
         formData.append("images", file);
       });
 
