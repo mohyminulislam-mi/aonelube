@@ -1,14 +1,37 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://aonelube-server.vercel.app";
 
+export function getToken() {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("aonelube_token") || localStorage.getItem("token") || "";
+  }
+  return "";
+}
+
+export function setAuthToken(token) {
+  if (typeof window !== "undefined" && token) {
+    localStorage.setItem("aonelube_token", token);
+    localStorage.setItem("token", token);
+  }
+}
+
+export function removeAuthToken() {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("aonelube_token");
+    localStorage.removeItem("token");
+  }
+}
+
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
+  const token = getToken();
 
   const config = {
     method: options.method || "GET",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
     ...options,
@@ -30,10 +53,16 @@ async function request(endpoint, options = {}) {
 
 async function requestFormData(endpoint, method, formData) {
   const url = `${API_BASE_URL}${endpoint}`;
+  const token = getToken();
+
+  const headers = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
 
   const response = await fetch(url, {
     method,
     credentials: "include",
+    headers,
     body: formData,
   });
 

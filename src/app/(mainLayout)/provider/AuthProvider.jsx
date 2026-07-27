@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { apiGet, apiPost, updateProfile } from "@/lib/api";
+import { apiGet, apiPost, updateProfile, setAuthToken, removeAuthToken } from "@/lib/api";
 
 const AuthContext = createContext();
 
@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
       } else if (msg.includes("User not found")) {
         // Clear invalid token cookie if user no longer exists in DB
         apiPost("/api/auth/logout", {}).catch(() => {});
+        removeAuthToken();
       }
       setUser(null);
     } finally {
@@ -38,12 +39,18 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const data = await apiPost("/api/auth/login", credentials);
+    if (data?.token) {
+      setAuthToken(data.token);
+    }
     setUser(data?.user || null);
     return data;
   };
 
   const register = async (payload) => {
     const data = await apiPost("/api/auth/register", payload);
+    if (data?.token) {
+      setAuthToken(data.token);
+    }
     setUser(data?.user || null);
     return data;
   };
@@ -52,6 +59,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await apiPost("/api/auth/logout", {});
     } finally {
+      removeAuthToken();
       setUser(null);
     }
   };
