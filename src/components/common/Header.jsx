@@ -85,7 +85,6 @@ export default function Header() {
     loadCategories();
   }, []);
 
-
   useEffect(() => {
     if (!isAccountMenuOpen) return;
 
@@ -298,7 +297,10 @@ export default function Header() {
       </div>
 
       {/* Navigation Bar - Desktop (xl and up) */}
-      <div className="hidden xl:block border-t border-gray-200 bg-white" ref={navRef}>
+      <div
+        className="hidden xl:block border-t border-gray-200 bg-white"
+        ref={navRef}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <nav className="flex items-center space-x-1 py-1">
             {isLoadingCategories ? (
@@ -313,8 +315,12 @@ export default function Header() {
               <>
                 {categories.map((c) => {
                   const categoryHref = `/?category=${c.slug}`;
-                  const isActive = pathname === "/" && searchParams?.get("category") === c.slug;
-                  const hasSubCategories = Array.isArray(c.subCategories) && c.subCategories.length > 0;
+                  const isActive =
+                    pathname === "/" &&
+                    searchParams?.get("category") === c.slug;
+                  const hasSubCategories =
+                    Array.isArray(c.subCategories) &&
+                    c.subCategories.length > 0;
                   const isHovered = activeCategory === c.slug;
 
                   return (
@@ -339,7 +345,9 @@ export default function Header() {
                         {hasSubCategories && (
                           <ChevronDown
                             className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                              isHovered ? "rotate-180 text-primary" : "text-gray-400"
+                              isHovered
+                                ? "rotate-180 text-primary"
+                                : "text-gray-400"
                             }`}
                           />
                         )}
@@ -383,7 +391,7 @@ export default function Header() {
                 })}
 
                 <LinkNext
-                  href="#"
+                  href="/campaign"
                   className={`px-3 py-3 text-[13px] font-bold tracking-wide whitespace-nowrap transition-colors border-b-2 ${
                     pathname === "#"
                       ? "text-primary border-primary"
@@ -392,6 +400,59 @@ export default function Header() {
                 >
                   Campaign
                 </LinkNext>
+                <div className="relative group inline-block">
+                  {/* Main Link/Button */}
+                  <LinkNext
+                    href="#"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`px-3 py-2.5 rounded-md text-[13px] font-semibold transition-all flex items-center justify-between gap-1.5 ${
+                      pathname === "#"
+                        ? "bg-primary/15 text-primary"
+                        : "text-gray-700 group-hover:text-primary group-hover:bg-gray-50"
+                    }`}
+                  >
+                    <span>Company</span>
+                    {/* Animated Arrow Icon */}
+                    <svg
+                      className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </LinkNext>
+
+                  {/* Dropdown Submenu */}
+                  <div className="absolute left-0 top-full hidden w-44 rounded-md bg-white p-2 shadow-lg border border-gray-100 group-hover:block z-50">
+                    <LinkNext
+                      href="/partners"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      Partners
+                    </LinkNext>
+                    <LinkNext
+                      href="/campaign"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      Campaign
+                    </LinkNext>
+                    <LinkNext
+                      href="/aonelube"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      Aonelube
+                    </LinkNext>
+                  </div>
+                </div>
               </>
             )}
           </nav>
@@ -509,8 +570,12 @@ export default function Header() {
               <>
                 {categories.map((c) => {
                   const categoryHref = `/?category=${c.slug}`;
-                  const isActive = pathname === "/" && searchParams?.get("category") === c.slug;
-                  const hasSubCategories = Array.isArray(c.subCategories) && c.subCategories.length > 0;
+                  const isActive =
+                    pathname === "/" &&
+                    searchParams?.get("category") === c.slug;
+                  const hasSubCategories =
+                    Array.isArray(c.subCategories) &&
+                    c.subCategories.length > 0;
                   const isExpanded = mobileExpandedCategory === c.slug;
 
                   if (!hasSubCategories) {
@@ -547,7 +612,9 @@ export default function Header() {
                         <button
                           type="button"
                           onClick={() =>
-                            setMobileExpandedCategory(isExpanded ? null : c.slug)
+                            setMobileExpandedCategory(
+                              isExpanded ? null : c.slug,
+                            )
                           }
                           className="p-2.5 text-gray-500 hover:text-primary cursor-pointer"
                         >
@@ -593,7 +660,7 @@ export default function Header() {
                 })}
 
                 <LinkNext
-                  href="#"
+                  href="/campaign"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
                     pathname === "#"
@@ -603,6 +670,59 @@ export default function Header() {
                 >
                   Campaign
                 </LinkNext>
+                <div className="relative group inline-block">
+                  {/* Main Link/Button */}
+                  <LinkNext
+                    href="#"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all flex items-center justify-between gap-1.5 ${
+                      pathname === "#"
+                        ? "bg-primary/15 text-primary"
+                        : "text-gray-700 group-hover:text-primary group-hover:bg-gray-50"
+                    }`}
+                  >
+                    <span>Company</span>
+                    {/* Animated Arrow Icon */}
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </LinkNext>
+
+                  {/* Dropdown Submenu */}
+                  <div className="absolute left-0 top-full hidden w-44 rounded-md bg-white p-2 shadow-lg border border-gray-100 group-hover:block z-50">
+                    <LinkNext
+                      href="/partners"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      Partners
+                    </LinkNext>
+                    <LinkNext
+                      href="/campaign"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      Campaign
+                    </LinkNext>
+                    <LinkNext
+                      href="/aonelube"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      Aonelube
+                    </LinkNext>
+                  </div>
+                </div>
               </>
             )}
           </nav>

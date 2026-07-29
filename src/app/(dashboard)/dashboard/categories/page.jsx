@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { ImagePlus, Loader2, PencilLine, Plus, Trash2, UploadCloud, X } from "lucide-react";
+import { FolderTree, ImagePlus, Loader2, PencilLine, Plus, Trash2, UploadCloud, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import RoleGuard from "@/components/dashboard/RoleGuard";
 import {
