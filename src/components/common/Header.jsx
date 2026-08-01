@@ -403,10 +403,10 @@ export default function Header() {
                 <div className="relative group inline-block">
                   {/* Main Link/Button */}
                   <LinkNext
-                    href="#"
+                    href="/company"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`px-3 py-2.5 rounded-md text-[13px] font-semibold transition-all flex items-center justify-between gap-1.5 ${
-                      pathname === "#"
+                      pathname === "/company"
                         ? "bg-primary/15 text-primary"
                         : "text-gray-700 group-hover:text-primary group-hover:bg-gray-50"
                     }`}
@@ -429,27 +429,27 @@ export default function Header() {
                   </LinkNext>
 
                   {/* Dropdown Submenu */}
-                  <div className="absolute left-0 top-full hidden w-44 rounded-md bg-white p-2 shadow-lg border border-gray-100 group-hover:block z-50">
+                  <div className="absolute left-0 top-full hidden w-48 rounded-md bg-white p-2 shadow-lg border border-gray-100 group-hover:block z-50">
                     <LinkNext
-                      href="/partners"
+                      href="/partner"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
                     >
-                      Partners
+                      Partner
                     </LinkNext>
                     <LinkNext
-                      href="/campaign"
+                      href="/quality-assurance"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
                     >
-                      Campaign
+                      Quality Assurance
                     </LinkNext>
                     <LinkNext
-                      href="/aonelube"
+                      href="/contact"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
                     >
-                      Aonelube
+                      Contact
                     </LinkNext>
                   </div>
                 </div>
@@ -670,58 +670,71 @@ export default function Header() {
                 >
                   Campaign
                 </LinkNext>
-                <div className="relative group inline-block">
-                  {/* Main Link/Button */}
-                  <LinkNext
-                    href="#"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-all flex items-center justify-between gap-1.5 ${
-                      pathname === "#"
-                        ? "bg-primary/15 text-primary"
-                        : "text-gray-700 group-hover:text-primary group-hover:bg-gray-50"
-                    }`}
-                  >
-                    <span>Company</span>
-                    {/* Animated Arrow Icon */}
-                    <svg
-                      className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <LinkNext
+                      href="/company"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex-1 px-3 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                        pathname === "/company"
+                          ? "bg-primary/15 text-primary"
+                          : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
+                      Company
+                    </LinkNext>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileExpandedCategory(
+                          mobileExpandedCategory === "company" ? null : "company"
+                        )
+                      }
+                      className="p-2.5 text-gray-500 hover:text-primary cursor-pointer"
+                    >
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform duration-200 ${
+                          mobileExpandedCategory === "company"
+                            ? "rotate-180 text-primary"
+                            : ""
+                        }`}
                       />
-                    </svg>
-                  </LinkNext>
-
-                  {/* Dropdown Submenu */}
-                  <div className="absolute left-0 top-full hidden w-44 rounded-md bg-white p-2 shadow-lg border border-gray-100 group-hover:block z-50">
-                    <LinkNext
-                      href="/partners"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
-                    >
-                      Partners
-                    </LinkNext>
-                    <LinkNext
-                      href="/campaign"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
-                    >
-                      Campaign
-                    </LinkNext>
-                    <LinkNext
-                      href="/aonelube"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
-                    >
-                      Aonelube
-                    </LinkNext>
+                    </button>
                   </div>
+
+                  <AnimatePresence>
+                    {mobileExpandedCategory === "company" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="pl-4 space-y-1 overflow-hidden"
+                      >
+                        <LinkNext
+                          href="/partner"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block px-3 py-2 rounded-md text-xs font-semibold text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                        >
+                          Partner
+                        </LinkNext>
+                        <LinkNext
+                          href="/quality-assurance"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block px-3 py-2 rounded-md text-xs font-semibold text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                        >
+                          Quality Assurance
+                        </LinkNext>
+                        <LinkNext
+                          href="/contact"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block px-3 py-2 rounded-md text-xs font-semibold text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                        >
+                          Contact
+                        </LinkNext>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </>
             )}
