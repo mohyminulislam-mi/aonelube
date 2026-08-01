@@ -1,11 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
+import { getSiteContent } from "@/lib/api";
+
+const DEFAULT_DATA = {
+  heading: "Quality Assurance",
+  description:
+    "Aonelube is certified according to the international quality management standard ISO 9001. This certification ensures that all internal processes are continuously improved and consistently aligned with the latest global standards. In doing so, we safeguard the high quality of our products — to the satisfaction of our customers and with pride in our company.",
+  dekraImage: "/dekra-seal.png",
+  isoImage: "/iso-certificate.png",
+  stats: [
+    { value: "100%", label: "German Tech Standard" },
+    { value: "ISO 9001", label: "Quality Management" },
+    { value: "64", label: "Districts Coverage" },
+    { value: "DEKRA", label: "Certified Safety" },
+  ],
+  cta: {
+    heading: "Become an Authorized Sales Partner",
+    description:
+      "Join our certified distribution network across Bangladesh. Fill out the form below to receive dealership requirements.",
+  },
+};
 
 export default function QualityAssurance() {
+  const [data, setData] = useState(DEFAULT_DATA);
+
+  useEffect(() => {
+    getSiteContent("quality")
+      .then((res) => {
+        if (res && res.heading) setData(res);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="bg-white py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-100 overflow-hidden">
       <div className="max-w-5xl mx-auto mb-10">
@@ -26,7 +56,7 @@ export default function QualityAssurance() {
 
           {/* Heading */}
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Quality Assurance
+            {data.heading}
           </h2>
 
           {/* Accent Line */}
@@ -34,13 +64,7 @@ export default function QualityAssurance() {
 
           {/* Description Copy */}
           <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-2">
-            <strong className="text-slate-900">Aonelube</strong> is certified
-            according to the international quality management standard{" "}
-            <span className="font-semibold text-slate-800">ISO 9001</span>. This
-            certification ensures that all internal processes are continuously
-            improved and consistently aligned with the latest global standards.
-            In doing so, we safeguard the high quality of our products — to the
-            satisfaction of our customers and with pride in our company.
+            {data.description}
           </p>
         </motion.div>
 
@@ -57,7 +81,7 @@ export default function QualityAssurance() {
             <div className="bg-slate-50 border border-slate-100 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-slate-200 transition-all group duration-300 w-full max-w-[320px] flex justify-center items-center">
               <div className="relative w-full h-[280px]">
                 <Image
-                  src="/dekra-seal.png" // Replace with your DEKRA logo image path
+                  src={data.dekraImage || "/dekra-seal.png"}
                   alt="DEKRA ISO 9001 Seal"
                   fill
                   className="object-contain transform group-hover:scale-105 transition-transform duration-300"
@@ -77,7 +101,7 @@ export default function QualityAssurance() {
             <div className="bg-slate-50 border border-slate-100 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-slate-200 transition-all group duration-300 w-full max-w-[320px] flex justify-center items-center">
               <div className="relative w-full h-[280px]">
                 <Image
-                  src="/iso-certificate.png" // Replace with your ISO Certificate image path
+                  src={data.isoImage || "/iso-certificate.png"}
                   alt="Aonelube ISO 9001:2015 Certificate"
                   fill
                   className="object-contain transform group-hover:scale-105 transition-transform duration-300"
@@ -87,52 +111,27 @@ export default function QualityAssurance() {
           </motion.div>
         </div>
       </div>
-      {/* 2. Trust Metrics / Key Stats */}
+
+      {/* Trust Metrics / Key Stats */}
       <div className="bg-slate-50 border-y border-slate-100 py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="p-4">
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              100%
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-              German Tech Standard
-            </p>
-          </div>
-          <div className="p-4">
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              ISO 9001
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-              Quality Management
-            </p>
-          </div>
-          <div className="p-4">
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              64
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-              Districts Coverage
-            </p>
-          </div>
-          <div className="p-4">
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              DEKRA
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-              Certified Safety
-            </p>
-          </div>
+          {(data.stats || []).map((stat, idx) => (
+            <div key={idx} className="p-4">
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{stat.value}</h3>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">{stat.label}</p>
+            </div>
+          ))}
         </div>
       </div>
-      {/* 5. Campaign Call to Action (CTA) Form */}
+
+      {/* CTA Form */}
       <div id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-4xl mx-auto bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-12 shadow-xl text-center">
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Become an Authorized Sales Partner
+            {data.cta?.heading}
           </h2>
           <p className="text-slate-500 text-sm sm:text-base max-w-lg mx-auto mt-2">
-            Join our certified distribution network across Bangladesh. Fill out
-            the form below to receive dealership requirements.
+            {data.cta?.description}
           </p>
 
           <form
@@ -141,9 +140,7 @@ export default function QualityAssurance() {
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Your Name
-                </label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
                 <input
                   type="text"
                   placeholder="e.g. Rahat Chowdhury"
@@ -151,9 +148,7 @@ export default function QualityAssurance() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Phone Number
-                </label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
                 <input
                   type="text"
                   placeholder="+880 1700-000000"

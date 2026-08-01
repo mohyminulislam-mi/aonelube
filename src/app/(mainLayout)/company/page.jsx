@@ -1,39 +1,59 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { getSiteContent } from "@/lib/api";
+
+const DEFAULT_PRODUCTS = [
+  { name: "Engine Oils", description: "Engineered to meet exact mechanical specifications required for extreme high-temperature applications." },
+  { name: "Transmission Fluids", description: "Engineered to meet exact mechanical specifications required for extreme high-temperature applications." },
+  { name: "Hydraulic Oils", description: "Engineered to meet exact mechanical specifications required for extreme high-temperature applications." },
+  { name: "Gear Oils", description: "Engineered to meet exact mechanical specifications required for extreme high-temperature applications." },
+  { name: "Industrial Lubricants", description: "Engineered to meet exact mechanical specifications required for extreme high-temperature applications." },
+  { name: "Automotive Fluids", description: "Engineered to meet exact mechanical specifications required for extreme high-temperature applications." },
+];
+
+const DEFAULT_DATA = {
+  hero: {
+    heading: "The German Engineering Standard",
+    paragraph1: "Aonelube is a leading Bangladeshi lubricant company committed to delivering premium-quality German lubricants for automotive and industrial applications. Our products are manufactured using advanced German technology and meet internationally recognized quality standards.",
+    paragraph2: "We offer a comprehensive range of engine oils, transmission fluids, hydraulic oils, and industrial lubricants designed to maximize efficiency and extend equipment life with trusted lubrication solutions.",
+    quote: "German Technology. Premium Performance. Trusted in Bangladesh.",
+  },
+  products: DEFAULT_PRODUCTS,
+  network: {
+    parentOrg: "AB Petroleum",
+    headOffice: "695/2/D, Manikdi Road, ECB Chattar, Dhaka Cantorment, Dhaka-1206",
+    corporateOffice: "C-2 KDA Avenue, Khulna, Bangladesh",
+    corporatePhone: "+880 1720220031",
+  },
+};
+
+// Framer Motion Variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
 
 export default function Company() {
-  const coreProducts = [
-    "Engine Oils",
-    "Transmission Fluids",
-    "Hydraulic Oils",
-    "Gear Oils",
-    "Industrial Lubricants",
-    "Automotive Fluids",
-  ];
+  const [data, setData] = useState(DEFAULT_DATA);
 
-  // Framer Motion Variants for clean scroll staggers
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
+  useEffect(() => {
+    getSiteContent("company")
+      .then((res) => {
+        if (res && res.hero) setData(res);
+      })
+      .catch(() => {});
+  }, []);
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
+  const { hero, products, network } = data;
 
   return (
     <section className="bg-slate-50/50 text-slate-800 min-h-screen font-outfit overflow-x-hidden">
@@ -46,11 +66,8 @@ export default function Company() {
           variants={staggerContainer}
           className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
         >
-          {/* Image Section - 50% (6 cols) */}
-          <motion.div
-            variants={fadeInUp}
-            className="lg:col-span-6 relative group"
-          >
+          {/* Image Section */}
+          <motion.div variants={fadeInUp} className="lg:col-span-6 relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-primary to-red-600 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-1000"></div>
             <div className="relative bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
               <Image
@@ -64,29 +81,16 @@ export default function Company() {
             </div>
           </motion.div>
 
-          {/* Content Section - 50% (6 cols) */}
+          {/* Content Section */}
           <motion.div variants={fadeInUp} className="lg:col-span-6 space-y-3">
             <h2 className="text-3xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              The German Engineering Standard
+              {hero.heading}
             </h2>
             <div className="w-16 h-1 bg-primary rounded-full"></div>
-            <p className="text-slate-600 leading-relaxed text-base sm:text-lg">
-              Aonelube is a leading Bangladeshi lubricant company committed to
-              delivering premium-quality German lubricants for automotive and
-              industrial applications. Our products are manufactured using
-              advanced German technology and meet internationally recognized
-              quality standards.
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              We offer a comprehensive range of engine oils, transmission
-              fluids, hydraulic oils, and industrial lubricants designed to
-              maximize efficiency and extend equipment life with trusted
-              lubrication solutions.
-            </p>
+            <p className="text-slate-600 leading-relaxed text-base sm:text-lg">{hero.paragraph1}</p>
+            <p className="text-slate-600 leading-relaxed">{hero.paragraph2}</p>
             <div className="pt-2 border-l-4 border-primary pl-4 bg-slate-50 py-2 rounded-r-lg">
-              <p className="text-slate-900 font-semibold italic">
-                German Technology. Premium Performance. Trusted in Bangladesh.
-              </p>
+              <p className="text-slate-900 font-semibold italic">{hero.quote}</p>
             </div>
           </motion.div>
         </motion.div>
@@ -104,12 +108,10 @@ export default function Company() {
             <span className="text-primary font-bold text-xs uppercase tracking-widest">
               Our Spectrum
             </span>
-            <h2 className="text-3xl font-extrabold text-slate-900 mt-2">
-              What We Deliver
-            </h2>
+            <h2 className="text-3xl font-extrabold text-slate-900 mt-2">What We Deliver</h2>
             <p className="text-slate-500 mt-3 text-base">
-              Comprehensive lubrication solutions engineered specifically to
-              fulfill the exact operational configurations of modern systems.
+              Comprehensive lubrication solutions engineered specifically to fulfill the exact
+              operational configurations of modern systems.
             </p>
           </motion.div>
 
@@ -120,7 +122,7 @@ export default function Company() {
             variants={staggerContainer}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {coreProducts.map((product, idx) => (
+            {(products || []).map((product, idx) => (
               <motion.div
                 key={idx}
                 variants={fadeInUp}
@@ -132,12 +134,9 @@ export default function Company() {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">
-                    {product}
+                    {product.name}
                   </h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">
-                    Engineered to meet exact mechanical specifications required
-                    for extreme high-temperature applications.
-                  </p>
+                  <p className="text-sm text-slate-500 leading-relaxed">{product.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -159,13 +158,10 @@ export default function Company() {
               <span className="text-primary font-bold text-xs uppercase tracking-widest">
                 Distribution Network
               </span>
-              <h2 className="text-3xl font-bold text-slate-900">
-                We Service All Bangladesh
-              </h2>
+              <h2 className="text-3xl font-bold text-slate-900">We Service All Bangladesh</h2>
               <p className="text-slate-500 max-w-md">
-                Ensuring continuous product availability and seamless corporate
-                fleet service delivery nationwide from tracking distribution
-                hubs.
+                Ensuring continuous product availability and seamless corporate fleet service
+                delivery nationwide from tracking distribution hubs.
               </p>
               <div className="pt-4 rounded-2xl overflow-hidden border border-slate-100 shadow-inner bg-slate-50 flex justify-center">
                 <Image
@@ -190,7 +186,7 @@ export default function Company() {
                   Parent Organization
                 </span>
                 <h2 className="text-4xl font-extrabold text-slate-900 mt-1">
-                  AB Petroleum
+                  {network?.parentOrg || "AB Petroleum"}
                 </h2>
                 <div className="w-12 h-1 bg-slate-900 mt-2"></div>
               </div>
@@ -201,13 +197,8 @@ export default function Company() {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">
-                      Head Office
-                    </h3>
-                    <p className="text-sm text-slate-600 mt-1">
-                      695/2/D, Manikdi Road, ECB Chattar, Dhaka Cantorment,
-                      Dhaka-1206
-                    </p>
+                    <h3 className="font-bold text-slate-900 text-base">Head Office</h3>
+                    <p className="text-sm text-slate-600 mt-1">{network?.headOffice}</p>
                   </div>
                 </div>
 
@@ -216,16 +207,14 @@ export default function Company() {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">
-                      Corporate Office
-                    </h3>
-                    <p className="text-sm text-slate-600 mt-1">
-                      C-2 KDA Avenue, Khulna, Bangladesh
-                    </p>
-                    <div className="flex items-center gap-2 text-primary font-medium text-sm mt-3 pt-3 border-t border-slate-200/60">
-                      <Phone size={14} />
-                      <span>+880 1720220031</span>
-                    </div>
+                    <h3 className="font-bold text-slate-900 text-base">Corporate Office</h3>
+                    <p className="text-sm text-slate-600 mt-1">{network?.corporateOffice}</p>
+                    {network?.corporatePhone && (
+                      <div className="flex items-center gap-2 text-primary font-medium text-sm mt-3 pt-3 border-t border-slate-200/60">
+                        <Phone size={14} />
+                        <span>{network.corporatePhone}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

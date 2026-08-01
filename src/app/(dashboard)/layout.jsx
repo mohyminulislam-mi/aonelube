@@ -10,6 +10,7 @@ import {
   LogOut,
   Menu,
   Package,
+  Palette,
   PlusCircle,
   ShieldAlert,
   ShoppingBag,
@@ -37,7 +38,8 @@ const getNavItems = (role, isApproved) => {
       { href: "/dashboard/products", label: "Manage Products", icon: Package },
       { href: "/dashboard/categories", label: "Manage Categories", icon: LayoutGrid },
       { href: "/dashboard/users", label: "Manage Users", icon: User },
-      { href: "/dashboard/customers", label: "Customers", icon: Users }
+      { href: "/dashboard/customers", label: "Customers", icon: Users },
+      { href: "/dashboard/customize", label: "Customize Pages", icon: Palette }
     );
   } else if (role === "manager" && isApproved) {
     // Approved manager: division-scoped order/product management

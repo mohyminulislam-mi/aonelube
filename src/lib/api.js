@@ -222,3 +222,16 @@ export async function updateProfile(data) {
     body: data,
   });
 }
+
+// ==================== SITE CONTENT (CMS) ====================
+export async function getSiteContent(page) {
+  return request(`/api/site-content/${page}`, { method: "GET" });
+}
+
+export async function updateSiteContent(page, data) {
+  return request(`/api/site-content/${page}`, {
+    method: "PUT",
+    body: data,
+  });
+}
+

@@ -4,7 +4,19 @@ import Image from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
 
-const PartnerMap = () => {
+const DEFAULT_MAP = {
+  badgeText: "Nationwide Distribution & Support",
+  headline: "POWERING VEHICLES & INDUSTRIES ACROSS BANGLADESH",
+  description:
+    "At Aonelube, we are dedicated to delivering world-class lubrication solutions across all 8 divisions and 64 districts of Bangladesh. Built with advanced German technology, our premium engine oils perform under the toughest conditions.",
+  subDescription:
+    "Whether you are looking to become an authorized dealer, retail partner, or corporate distributor, join our growing national network.",
+  tagline: "German Technology. Premium Performance. Trusted in Bangladesh.",
+};
+
+const PartnerMap = ({ mapData }) => {
+  const data = mapData || DEFAULT_MAP;
+
   return (
     <div className="py-12 bg-white px-4 sm:px-6 lg:px-8 border-t border-slate-100">
       <div className="max-w-6xl mx-auto">
@@ -41,37 +53,30 @@ const PartnerMap = () => {
                 {/* Subtitle / Badge */}
                 <div>
                   <span className="text-primary font-bold text-[11px] tracking-wider uppercase bg-primary/10 border border-primary/20 px-3 py-1 rounded-full inline-block">
-                    Nationwide Distribution & Support
+                    {data.badgeText}
                   </span>
                 </div>
 
                 {/* Main Headline */}
                 <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 leading-snug">
-                  POWERING VEHICLES & INDUSTRIES ACROSS BANGLADESH
+                  {data.headline}
                 </h2>
 
                 <div className="w-12 h-1 bg-primary rounded-full"></div>
 
                 {/* Description Body */}
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  At <strong className="text-slate-900">Aonelube</strong>, we
-                  are dedicated to delivering world-class lubrication solutions
-                  across all 8 divisions and 64 districts of Bangladesh. Built
-                  with advanced German technology, our premium engine oils
-                  perform under the toughest conditions.
+                  {data.description}
                 </p>
 
                 <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                  Whether you are looking to become an authorized dealer, retail
-                  partner, or corporate distributor, join our growing national
-                  network.
+                  {data.subDescription}
                 </p>
 
                 {/* Tagline Accent Box */}
                 <div className="border-l-2 border-primary pl-3 bg-white py-2 rounded-r-lg border border-slate-100 shadow-sm">
                   <p className="text-slate-700 font-semibold italic text-xs sm:text-sm">
-                    German Technology. Premium Performance. Trusted in
-                    Bangladesh.
+                    {data.tagline}
                   </p>
                 </div>
 
